@@ -1,1 +1,1 @@
-# loyalty-platform
+# loyalty-platform-mobile
