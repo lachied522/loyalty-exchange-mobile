@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { TextInput } from 'react-native';
+import { Keyboard, TextInput, TouchableWithoutFeedback } from 'react-native';
 
 import { cn } from '~/lib/utils';
 

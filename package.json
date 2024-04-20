@@ -1,8 +1,9 @@
 {
-  "name": "@rnr/starter-base",
-  "main": "index.js",
+  "name": "loyalty-platform-mobile",
+  "main": "expo-router/entry",
   "version": "1.0.0",
   "scripts": {
+    "start": "expo start",
     "dev": "expo start -c --ios",
     "dev:web": "expo start -c --web",
     "dev:android": "expo start -c --android",
@@ -30,6 +31,7 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-native": "0.73.6",
+    "react-native-dotenv": "^3.4.11",
     "react-native-elements": "^3.4.3",
     "react-native-reanimated": "~3.6.2",
     "react-native-safe-area-context": "4.8.2",
@@ -37,14 +39,15 @@
     "react-native-svg": "14.1.0",
     "react-native-url-polyfill": "^2.0.0",
     "react-native-web": "~0.19.6",
-    "tailwind-merge": "^2.2.1",
-    "tailwindcss": "^3.4.1",
+    "tailwind-merge": "^2.3.0",
     "tailwindcss-animate": "^1.0.7",
     "zustand": "^4.4.7"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
     "@types/react": "~18.2.45",
+    "babel-plugin-module-resolver": "^5.0.2",
+    "tailwindcss": "^3.4.3",
     "typescript": "^5.1.3"
   },
   "private": true
