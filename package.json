@@ -41,7 +41,8 @@
     "react-native-web": "~0.19.6",
     "tailwind-merge": "^2.3.0",
     "tailwindcss-animate": "^1.0.7",
-    "zustand": "^4.4.7"
+    "zustand": "^4.4.7",
+    "expo-web-browser": "~12.8.2"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

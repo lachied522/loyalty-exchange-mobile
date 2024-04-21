@@ -1,15 +1,15 @@
 import { useState, useEffect } from 'react';
 import { Alert, View, SafeAreaView, ScrollView } from 'react-native';
-import { Stack, Link } from 'expo-router';
+import { Stack, Link, router } from 'expo-router';
+
+import { supabase } from '@/lib/supabase';
 
 import { Button } from '~/components/ui/button';
 import { Input } from '~/components/ui/input';
 import { Text } from '~/components/ui/text';
-
-import { supabase } from '@/lib/supabase';
+import { H1 } from '~/components/ui/typography';
 
 import type { Session } from '@supabase/supabase-js';
-import { H1 } from '~/components/ui/typography';
 
 export default function Login() {
     const [session, setSession] = useState<Session | null>(null);
@@ -46,10 +46,16 @@ export default function Login() {
       } = await supabase.auth.signUp({
         email: email,
         password: password,
-      })
+      });
   
-      if (error) Alert.alert(error.message);
-      setLoading(false);
+      if (error) {
+        Alert.alert(error.message);
+        setLoading(false);
+        return
+      };
+      
+      // navigate to home page
+      router.replace('/');
     }
   
     return (
@@ -60,10 +66,9 @@ export default function Login() {
               }}
           />
           <ScrollView 
-            contentContainerStyle={{ height: '100%', alignItems: 'center', justifyContent: 'space-between', padding: 12 }} 
+            contentContainerStyle={{ height: '100%', alignItems: 'center', justifyContent: 'space-between', padding: 24 }} 
             keyboardShouldPersistTaps='handled'
           >
-            <Text>Image Placeholder</Text>
             <H1>Welcome Back</H1>
 
             <View className='w-full flex flex-col gap-2'>
