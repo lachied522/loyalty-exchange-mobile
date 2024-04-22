@@ -1,7 +1,8 @@
 import { Stack } from "expo-router";
 
-import MainContextProvider from "./context/MainContext";
 import { useGlobalContext, type GlobalState } from "~/app/context/GlobalContext";
+
+import MainContextProvider from "./context/MainContext";
 
 export default function MainLayout() {
     const { session } = useGlobalContext() as GlobalState;
