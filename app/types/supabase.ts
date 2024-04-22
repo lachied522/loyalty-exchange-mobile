@@ -9,18 +9,39 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      clients: {
+        Row: {
+          client_name: string | null
+          created_at: string
+          id: string
+        }
+        Insert: {
+          client_name?: string | null
+          created_at?: string
+          id?: string
+        }
+        Update: {
+          client_name?: string | null
+          created_at?: string
+          id?: string
+        }
+        Relationships: []
+      }
       points: {
         Row: {
+          balance: number
           id: string
           store_id: string
           user_id: string
         }
         Insert: {
+          balance?: number
           id: string
           store_id: string
           user_id: string
         }
         Update: {
+          balance?: number
           id?: string
           store_id?: string
           user_id?: string
@@ -42,26 +63,120 @@ export type Database = {
           },
         ]
       }
+      reward_types: {
+        Row: {
+          cost: number
+          id: string
+          store_id: string
+          title: string
+        }
+        Insert: {
+          cost: number
+          id?: string
+          store_id: string
+          title: string
+        }
+        Update: {
+          cost?: number
+          id?: string
+          store_id?: string
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "public_reward_types_store_id_fkey"
+            columns: ["store_id"]
+            isOneToOne: false
+            referencedRelation: "stores"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      rewards: {
+        Row: {
+          earned_at: string
+          id: string
+          redeemed: boolean
+          redeemed_at: string | null
+          reward_id: string
+          user_id: string | null
+        }
+        Insert: {
+          earned_at?: string
+          id?: string
+          redeemed?: boolean
+          redeemed_at?: string | null
+          reward_id: string
+          user_id?: string | null
+        }
+        Update: {
+          earned_at?: string
+          id?: string
+          redeemed?: boolean
+          redeemed_at?: string | null
+          reward_id?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "public_rewards_reward_id_fkey"
+            columns: ["reward_id"]
+            isOneToOne: false
+            referencedRelation: "reward_types"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "public_rewards_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       stores: {
         Row: {
+          address_line_1: string | null
+          city: string | null
+          client_id: string
           created_at: string
           id: string
-          location: string[] | null
+          name: string
+          points_rate: number
+          postcode: string | null
           vendor_name: string
         }
         Insert: {
+          address_line_1?: string | null
+          city?: string | null
+          client_id: string
           created_at?: string
-          id: string
-          location?: string[] | null
+          id?: string
+          name: string
+          points_rate?: number
+          postcode?: string | null
           vendor_name: string
         }
         Update: {
+          address_line_1?: string | null
+          city?: string | null
+          client_id?: string
           created_at?: string
           id?: string
-          location?: string[] | null
+          name?: string
+          points_rate?: number
+          postcode?: string | null
           vendor_name?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "public_stores_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       users: {
         Row: {

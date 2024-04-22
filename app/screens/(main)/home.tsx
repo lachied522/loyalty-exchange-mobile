@@ -1,4 +1,4 @@
-import { SafeAreaView, View, Text } from "react-native";
+import { SafeAreaView, View, ScrollView } from "react-native";
 import { Stack } from "expo-router";
 
 import { useGlobalContext, type GlobalState } from "@/context/GlobalContext";
@@ -6,37 +6,49 @@ import { useGlobalContext, type GlobalState } from "@/context/GlobalContext";
 import { H1, Large } from "~/components/ui/typography";
 
 import TransactionsTable from "./components/transactions-table";
-import MyRewards from "./components/my-rewards";
+import RewardsTable from "./components/rewards-table";
+import PointsTable from "./components/points-table";
 
 export default function Home() {
     const { userData } = useGlobalContext() as GlobalState;
 
     return (
-        <SafeAreaView>
+        <SafeAreaView style={{ flex: 1, marginTop: 40 }}>
             <Stack.Screen
                 options={{
                     headerShown: false
                 }}
             />
-            <View className='h-full flex flex-col justify-between p-6'>
-                <View className='flex flex-row gap-2'>
-                    <H1>Points</H1>
+            <ScrollView
+                contentContainerStyle={{ padding: 24 }} 
+                keyboardShouldPersistTaps='handled'
+            >
+                <View>
+                    <View className='flex flex-row gap-2'>
+                        <H1>Points</H1>
 
-                    <H1>{userData.points_balance}</H1>
-                </View>
+                        <H1>{userData.points_balance}</H1>
+                    </View>
 
-                <View className='gap-2'>
-                    <Large>My Rewards</Large>
+                    <View className='gap-2'>
+                        <Large>My Rewards</Large>
 
-                    <MyRewards />
-                </View>
+                        <RewardsTable data={[]} />
+                    </View>
 
-                <View className='gap-2'>
-                    <Large>My Latest Purchases</Large>
+                    <View className='gap-2'>
+                        <Large>My Points</Large>
 
-                    <TransactionsTable transactions={userData.transactions} />
-                </View>            
-            </View>
+                        <PointsTable data={[]} />
+                    </View>
+
+                    <View className='gap-2'>
+                        <Large>My Latest Purchases</Large>
+
+                        <TransactionsTable transactions={userData.transactions} />
+                    </View>
+                </View>         
+            </ScrollView>
         </SafeAreaView>
     )
 }

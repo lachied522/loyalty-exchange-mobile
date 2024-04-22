@@ -11,7 +11,7 @@ async function fetchUserTransactionsData(BasiqUserId: string | null): Promise<Tr
     // get Basiq access token
     const BasiqServerAccessToken = await getBasiqServerAccessToken();
 
-    return fetch(`https://au-api.basiq.io/users/${BasiqUserId}/transactions?limit=50`, {
+    return fetch(`https://au-api.basiq.io/users/${BasiqUserId}/transactions?limit=10`, {
         headers: {
             'Authorization': `Bearer ${BasiqServerAccessToken}`,
             'Accept': 'application/json',
@@ -30,7 +30,7 @@ export async function fetchUserData(session: Session | null) {
 
     if (error) {
         console.log(error);
-        throw new Error(`Error fecthing data ${error}`);
+        throw new Error(`Error fecthing user data ${error}`);
     };
 
     // fetch transactions data from Basiq
@@ -42,4 +42,18 @@ export async function fetchUserData(session: Session | null) {
     };
 }
 
+export async function fetchStoreData(storeID: string) {
+    const { data, error } = await supabase
+    .from('stores')
+    .select('*')
+    .eq('id', storeID);
+
+    if (error) {
+        console.log(`Error fecthing store data ${error}`);
+    };
+
+    return data? data[0]: data;
+}
+
 export type UserData = NonNullable<ResolvedPromise<ReturnType<typeof fetchUserData>>>;
+export type StoreData = NonNullable<ResolvedPromise<ReturnType<typeof fetchStoreData>>>;

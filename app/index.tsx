@@ -1,5 +1,3 @@
-import { Redirect } from "expo-router";
-
 import Main from './screens/(main)/home';
 
 import { useGlobalContext, type GlobalState } from "./context/GlobalContext";

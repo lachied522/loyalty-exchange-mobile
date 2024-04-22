@@ -1,13 +1,12 @@
 // https://rnr-docs.vercel.app/components/table/
 import { useMemo } from 'react';
-import { View, ScrollView, useWindowDimensions } from 'react-native';
+import { ScrollView, useWindowDimensions } from 'react-native';
 import { FlashList } from '@shopify/flash-list';
 
 import {
     Table,
     TableBody,
     TableCell,
-    TableFooter,
     TableHead,
     TableHeader,
     TableRow,
@@ -53,7 +52,7 @@ export default function TransactionsTable({ transactions }: TransactionsTablePro
       }, [width]);
 
     return (
-      <ScrollView contentContainerStyle={{ height: 500 }} horizontal bounces={false} showsHorizontalScrollIndicator={false}>
+      <ScrollView contentContainerStyle={{ width: '100%', height: 500 }} horizontal bounces={false} showsHorizontalScrollIndicator={false}>
         <Table aria-labelledby='transctions-table'>
           <TableHeader>
             <TableRow>
