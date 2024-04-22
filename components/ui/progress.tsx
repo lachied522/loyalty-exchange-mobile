@@ -45,7 +45,7 @@ function Indicator({ value, className }: { value: number | undefined | null; cla
   if (Platform.OS === 'web') {
     return (
       <ProgressPrimitive.Indicator
-        className={cn('h-full w-full flex-1 bg-primary web:transition-all', className)}
+        className={cn('h-full w-full flex-1 bg-slate-100 web:transition-all', className)}
         style={{ transform: `translateX(-${100 - (value ?? 0)}%)` }}
       />
     );
@@ -53,7 +53,7 @@ function Indicator({ value, className }: { value: number | undefined | null; cla
 
   return (
     <ProgressPrimitive.Indicator asChild>
-      <Animated.View style={indicator} className={cn('h-full bg-foreground', className)} />
+      <Animated.View style={indicator} className={cn('h-full bg-white', className)} />
     </ProgressPrimitive.Indicator>
   );
 }

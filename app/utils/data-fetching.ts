@@ -2,22 +2,23 @@ import { supabase } from "@/lib/supabase";
 import { getBasiqServerAccessToken } from "@/lib/basiq";
 
 import type { Session } from "@supabase/supabase-js";
-import type { ResolvedPromise } from "@/types/helpers";
 
-async function fetchUserTransactionsData(BasiqUserId: string) {
-    console.log(BasiqUserId);
+import type { ResolvedPromise } from "@/types/helpers";
+import type { Transaction } from "@/types/basiq";
+
+async function fetchUserTransactionsData(BasiqUserId: string | null): Promise<Transaction[]> {
+    if (!BasiqUserId) return [];
     // get Basiq access token
     const BasiqServerAccessToken = await getBasiqServerAccessToken();
 
-    console.log(BasiqServerAccessToken);
-
-    return fetch(`https://au-api.basiq.io/users/${BasiqUserId}/transactions?limit=500`, {
+    return fetch(`https://au-api.basiq.io/users/${BasiqUserId}/transactions?limit=50`, {
         headers: {
             'Authorization': `Bearer ${BasiqServerAccessToken}`,
             'Accept': 'application/json',
         }
     })
-    .then((res) => res.json());
+    .then((res) => res.json())
+    .then((res) => res.data);
 }
 
 export async function fetchUserData(session: Session | null) {

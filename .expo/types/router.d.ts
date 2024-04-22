@@ -7,7 +7,7 @@ declare module "expo-router" {
   export * from 'expo-router/build';
 
   // prettier-ignore
-  type StaticRoutes = `/` | `/context/GlobalContext` | `/lib/basiq` | `/lib/supabase` | `/screens/(main)/context/MainContext` | `/screens/context/MainContext` | `/screens/(main)/home` | `/screens/home` | `/screens/(start)/context/StartContext` | `/screens/context/StartContext` | `/screens/(start)/forgot-password` | `/screens/forgot-password` | `/screens/(start)/login` | `/screens/login` | `/screens/(start)/onboarding` | `/screens/onboarding` | `/screens/(start)/signup` | `/screens/signup` | `/screens/(start)/welcome` | `/screens/welcome` | `/types/helpers` | `/utils/data-fetching` | `/screens/(main)/components/transactions` | `/screens/components/transactions`;
+  type StaticRoutes = `/` | `/context/GlobalContext` | `/lib/basiq` | `/lib/supabase` | `/screens/(main)/components/my-rewards` | `/screens/components/my-rewards` | `/screens/(main)/components/reward-modal` | `/screens/components/reward-modal` | `/screens/(main)/components/transactions-table` | `/screens/components/transactions-table` | `/screens/(main)/context/MainContext` | `/screens/context/MainContext` | `/screens/(main)/home` | `/screens/home` | `/screens/(start)/context/StartContext` | `/screens/context/StartContext` | `/screens/(start)/forgot-password` | `/screens/forgot-password` | `/screens/(start)/login` | `/screens/login` | `/screens/(start)/onboarding` | `/screens/onboarding` | `/screens/(start)/signup` | `/screens/signup` | `/screens/(start)/welcome` | `/screens/welcome` | `/types/basiq` | `/types/helpers` | `/types/supabase` | `/utils/data-fetching`;
   // prettier-ignore
   type DynamicRoutes<T extends string> = never;
   // prettier-ignore

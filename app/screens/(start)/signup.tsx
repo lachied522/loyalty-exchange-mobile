@@ -47,13 +47,13 @@ export default function Signup() {
     }
   
     return (
-      <SafeAreaView style={{ flex: 1, marginTop: 40, padding: 24 }}>
-        <Stack.Screen
+        <SafeAreaView>
+          <Stack.Screen
               options={{
                   headerShown: false
               }}
           />
-          <ScrollView 
+          <ScrollView
             contentContainerStyle={{ height: '100%', alignItems: 'center', justifyContent: 'space-between', padding: 24 }} 
             keyboardShouldPersistTaps='handled'
           >

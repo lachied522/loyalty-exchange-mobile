@@ -37,8 +37,6 @@ export default function GlobalContextProvider({
     const [email, setEmail] = useState('test@test.com'); // TODO: remove defaults!!!
     const [mobile, setMobile] = useState('0400527849');
 
-    console.log(userData);
-
     return (
         <GlobalContext.Provider value={{
             session,

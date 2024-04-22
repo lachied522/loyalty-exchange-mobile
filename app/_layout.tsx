@@ -1,15 +1,29 @@
 import '~/global.css';
 
 import { useEffect, useState } from 'react';
-import { AppState } from "react-native";
+import { AppState, View } from "react-native";
 import { SplashScreen, Stack } from "expo-router";
+
+import { ThemeProvider, type Theme } from '@react-navigation/native';
 
 import type { Session } from '@supabase/supabase-js';
 
 import { supabase } from "@/lib/supabase";
 import { fetchUserData, type UserData } from '@/utils/data-fetching';
 
+import { NAV_THEME } from '~/lib/constants';
+
 import GlobalContextProvider from './context/GlobalContext';
+
+export {
+  // Catch any errors thrown by the Layout component.
+  ErrorBoundary,
+} from 'expo-router';
+
+const LIGHT_THEME: Theme = {
+  dark: false,
+  colors: NAV_THEME.light,
+};
 
 // Tells Supabase Auth to continuously refresh the session automatically if
 // the app is in the foreground. When this is added, you will continue to receive
@@ -17,9 +31,9 @@ import GlobalContextProvider from './context/GlobalContext';
 // if the user's session is terminated. This should only be registered once.
 AppState.addEventListener('change', (state) => {
   if (state === 'active') {
-    supabase.auth.startAutoRefresh()
+    supabase.auth.startAutoRefresh();
   } else {
-    supabase.auth.stopAutoRefresh()
+    supabase.auth.stopAutoRefresh();
   }
 });
 
@@ -62,9 +76,13 @@ export default function Layout() {
     if (isLoaded) SplashScreen.hideAsync();
 }, [isLoaded]);
 
+  if (!(isLoaded && userData)) return null;
+
   return (
-    <GlobalContextProvider session={session} userData={userData}>
-      <Stack />
-    </GlobalContextProvider>
+    <ThemeProvider value={LIGHT_THEME}>
+      <GlobalContextProvider session={session} userData={userData}>
+        <Stack />
+      </GlobalContextProvider>
+    </ThemeProvider>
   )
 }
