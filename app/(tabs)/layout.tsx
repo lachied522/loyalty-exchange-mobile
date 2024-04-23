@@ -1,6 +1,6 @@
 import { Stack } from "expo-router";
 
-import { useGlobalContext, type GlobalState } from "~/app/context/GlobalContext";
+import { useGlobalContext, type GlobalState } from "@/context/GlobalContext";
 
 import MainContextProvider from "./context/MainContext";
 

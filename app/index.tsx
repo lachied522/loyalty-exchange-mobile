@@ -1,4 +1,4 @@
-import Main from './screens/(main)/home';
+import { Redirect } from 'expo-router';
 
 import { useGlobalContext, type GlobalState } from "./context/GlobalContext";
 
@@ -9,7 +9,5 @@ export default function Index() {
     //     return <Redirect href='/screens/welcome' />
     // }
 
-    return (
-        <Main />
-    )
+    return <Redirect href='/home/' />
 }

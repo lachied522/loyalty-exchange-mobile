@@ -1,7 +1,7 @@
 import '~/global.css';
 
 import { useEffect, useState } from 'react';
-import { AppState, View } from "react-native";
+import { AppState } from "react-native";
 import { SplashScreen, Stack } from "expo-router";
 
 import { ThemeProvider, type Theme } from '@react-navigation/native';
@@ -9,7 +9,7 @@ import { ThemeProvider, type Theme } from '@react-navigation/native';
 import type { Session } from '@supabase/supabase-js';
 
 import { supabase } from "@/lib/supabase";
-import { fetchUserData, type UserData } from '@/utils/data-fetching';
+import { fetchUserData, type UserData } from '@/utils/crud';
 
 import { NAV_THEME } from '~/lib/constants';
 
@@ -61,7 +61,7 @@ export default function Layout() {
         setSession(session);
         if (!isMounted) {
           // fetch user data
-          const data = await fetchUserData(session);
+          const data = await fetchUserData();
           // update state
           setUserData(data);
         }

@@ -13,17 +13,23 @@ export type Database = {
         Row: {
           client_name: string | null
           created_at: string
+          email: string | null
           id: string
+          stripe_customer_id: string | null
         }
         Insert: {
           client_name?: string | null
           created_at?: string
+          email?: string | null
           id?: string
+          stripe_customer_id?: string | null
         }
         Update: {
           client_name?: string | null
           created_at?: string
+          email?: string | null
           id?: string
+          stripe_customer_id?: string | null
         }
         Relationships: []
       }
@@ -36,7 +42,7 @@ export type Database = {
         }
         Insert: {
           balance?: number
-          id: string
+          id?: string
           store_id: string
           user_id: string
         }
@@ -178,23 +184,68 @@ export type Database = {
           },
         ]
       }
+      transactions: {
+        Row: {
+          amount: number
+          date: string
+          id: string
+          points: number
+          store_id: string
+          user_id: string
+        }
+        Insert: {
+          amount?: number
+          date?: string
+          id?: string
+          points?: number
+          store_id: string
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          date?: string
+          id?: string
+          points?: number
+          store_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "public_transactions_store_id_fkey"
+            columns: ["store_id"]
+            isOneToOne: false
+            referencedRelation: "stores"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "public_transactions_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       users: {
         Row: {
           basiq_user_id: string | null
-          created_at: string
           id: string
+          joined: string
+          last_updated: string
           points_balance: number
         }
         Insert: {
           basiq_user_id?: string | null
-          created_at?: string
           id: string
+          joined?: string
+          last_updated?: string
           points_balance?: number
         }
         Update: {
           basiq_user_id?: string | null
-          created_at?: string
           id?: string
+          joined?: string
+          last_updated?: string
           points_balance?: number
         }
         Relationships: [

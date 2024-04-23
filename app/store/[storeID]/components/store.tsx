@@ -3,7 +3,7 @@ import { Stack } from "expo-router";
 
 import { H1 } from "~/components/ui/typography";
 
-import type { StoreData } from "~/app/utils/data-fetching";
+import type { StoreData } from "~/app/utils/crud";
 
 interface StoreProps {
     data: StoreData

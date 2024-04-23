@@ -2,7 +2,7 @@ import { useState, useEffect, createContext, useContext } from "react";
 
 import type { Session } from "@supabase/supabase-js";
 
-import type { UserData } from "@/utils/data-fetching";
+import type { UserData } from "@/utils/crud";
 
 const GlobalContext = createContext<any>(null);
 

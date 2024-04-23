@@ -1,17 +1,19 @@
 import { SafeAreaView, View, ScrollView } from "react-native";
-import { Stack } from "expo-router";
+import { Stack, usePathname } from "expo-router";
 
 import { useGlobalContext, type GlobalState } from "@/context/GlobalContext";
 
 import { H1, Large } from "~/components/ui/typography";
 
-import TransactionsTable from "./components/transactions-table";
 import RewardsTable from "./components/rewards-table";
 import PointsTable from "./components/points-table";
 import AccountIcon from "./components/account-icon";
 
 export default function Home() {
     const { userData } = useGlobalContext() as GlobalState;
+    const pathname = usePathname();
+
+    console.log(pathname);
 
     return (
         <SafeAreaView style={{ flex: 1, marginTop: 64, marginBottom: 36 }}>
@@ -45,12 +47,6 @@ export default function Home() {
                     <Large>My Points</Large>
 
                     <PointsTable data={[]} />
-                </View>
-
-                <View className='gap-2'>
-                    <Large>My Latest Purchases</Large>
-
-                    <TransactionsTable transactions={userData.transactions} />
                 </View>
             </ScrollView>
         </SafeAreaView>

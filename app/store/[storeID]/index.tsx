@@ -4,9 +4,9 @@ import { Stack, useLocalSearchParams } from 'expo-router';
 
 import { Large } from '~/components/ui/typography';
 
-import { fetchStoreData, type StoreData } from '~/app/utils/data-fetching';
+import { fetchStoreData, type StoreData } from '@/utils/crud';
 
-import Store from '~/app/screens/(store)/store';
+import Store from './components/store';
 
 export default function StoreIDPage() {
     const { storeID } = useLocalSearchParams();
