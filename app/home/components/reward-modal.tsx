@@ -49,7 +49,7 @@ export default function RewardModal({ data }: RewardProps) {
             animationType="slide"
             transparent={true}
             visible={isVisible}
-            onRequestClose={() => setIsVisible(!isVisible)}
+            onRequestClose={() => setIsVisible(false)}
         >
             <View className='flex flex-1 flex-col items-center justify-center gap-12 bg-yellow-400 p-6 relative'>
                 <Button className='absolute right-6 top-12' onPress={() => setIsVisible(false)}>

@@ -2,9 +2,7 @@ import { supabase } from "@/lib/supabase";
 
 import { fetchUserTransactions } from "./transactions";
 
-import type { Session } from "@supabase/supabase-js";
-
-import type { TablesInsert } from "@/types/supabase";
+import type { TablesInsert, TablesUpdate } from "@/types/supabase";
 import type { ResolvedPromise } from "@/types/helpers";
 
 export async function fetchUserData() {
@@ -19,7 +17,7 @@ export async function fetchUserData() {
     const { data, error } = await supabase
     .from('users')
     .select('*, points(*), rewards(*), transactions(*)')
-    .eq('id', '1e29fa1b-1c03-4099-8f2e-63bb3ef0ae2a'); 
+    .eq('id', '1e29fa1b-1c03-4099-8f2e-63bb3ef0ae2a'); // TODO: use actual user id
 
     if (error) {
         console.log(error);
@@ -39,23 +37,29 @@ export async function fetchUserData() {
     };
 }
 
-export async function updateUserPointsBalance(balance: number) {
+export async function updateUserRecord(record: TablesUpdate<'users'>) {
     // get user session
-    const { data: { session } } = await supabase.auth.getSession();
+    // const { data: { session } } = await supabase.auth.getSession();
 
-    if (!session) {
-        throw new Error('User not logged in');
-    }
+    // if (!session) {
+    //     throw new Error('User not logged in');
+    // }
 
-    const { error } = await supabase
+    // ensure points_balance is integer
+    const newRecord: TablesUpdate<'users'> = { ...record, points_balance: Math.round(record.points_balance!) };
+
+    const { data, error } = await supabase
     .from('users')
-    .update({ points_balance: balance })
-    .eq('id', session.user.id);
+    .update(newRecord)
+    .eq('id', '1e29fa1b-1c03-4099-8f2e-63bb3ef0ae2a') // TODO!
+    .select('*, points(*), rewards(*), transactions(*)'); 
     
     if (error) {
-        console.log(`Error fecthing updating points balance ${error}`);
-        throw new Error(`Error fecthing updating points balance ${error}`);
+        console.log(`Error updating user record: `, error);
+        throw new Error(`Error updating user record ${error}`);
     };
+
+    return data;
 }
 
 export async function fetchStoreData(storeID: string) {
@@ -91,28 +95,33 @@ export async function insertTransactions(records: TablesInsert<'transactions'>[]
     .insert(records);
 
     if (error) {
-        console.log(`Error fecthing updating points balance ${error}`);
-        throw new Error(`Error fecthing updating points balance ${error}`);
+        console.log(`Error inserting transactions:`, error);
+        throw new Error(`Error inserting transactions ${error}`);
     };
 }
 
-export async function updatePointsBalanceAtStore(store_id: string, balance: number) {
+export async function upsertPointsRecords(records: Omit<TablesInsert<'points'>[], 'user_id'>) {
     // get user session
-    const { data: { session } } = await supabase.auth.getSession();
+    // const { data: { session } } = await supabase.auth.getSession();
 
-    if (!session) {
-        throw new Error('User not logged in');
-    }
+    // if (!session) {
+    //     throw new Error('User not logged in');
+    // }
+
+    // add user user id to records and ensure balance is integer
+    const newRecords = records.map((record) => ({ 
+        ...record,
+        balance: Math.round(record.balance!),
+        user_id: '1e29fa1b-1c03-4099-8f2e-63bb3ef0ae2a' // TODO
+    }));
 
     const { error } = await supabase
     .from('points')
-    .update({ balance })
-    .eq('user_id', session.user.id)
-    .eq('store_id', store_id!);
+    .upsert(newRecords, { onConflict: 'user_id, store_id' });
 
     if (error) {
-        console.log(`Error fecthing updating points balance ${error}`);
-        throw new Error(`Error fecthing updating points balance ${error}`);
+        console.log(`Error updating points balance: `, error);
+        throw new Error(`Error updating points balance ${error}`);
     };
 }
 

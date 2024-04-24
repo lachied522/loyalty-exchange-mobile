@@ -2,7 +2,7 @@ import '~/global.css';
 
 import { useEffect, useState } from 'react';
 import { AppState } from "react-native";
-import { SplashScreen, Stack } from "expo-router";
+import { SplashScreen, Stack, Tabs } from "expo-router";
 
 import { ThemeProvider, type Theme } from '@react-navigation/native';
 
@@ -81,7 +81,7 @@ export default function Layout() {
   return (
     <ThemeProvider value={LIGHT_THEME}>
       <GlobalContextProvider session={session} userData={userData}>
-        <Stack />
+            <Stack />
       </GlobalContextProvider>
     </ThemeProvider>
   )
