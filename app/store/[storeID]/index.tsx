@@ -1,7 +1,10 @@
 import { useState, useEffect } from 'react';
 import { SafeAreaView, View } from 'react-native';
-import { Stack, useLocalSearchParams } from 'expo-router';
+import { Stack, Link, useLocalSearchParams } from 'expo-router';
 
+import { ChevronLeft } from "lucide-react-native";
+
+import { Button } from "~/components/ui/button";
 import { Large } from '~/components/ui/typography';
 
 import { fetchStoreData, type StoreData } from '@/utils/crud';
@@ -33,8 +36,14 @@ export default function StoreIDPage() {
         <SafeAreaView>
             <Stack.Screen
                 options={{
-                    title: '',
-                    headerBackTitle: 'Back',
+                    title: data? data.name: '',
+                    headerLeft: () => (
+                        <Link href='/home/' asChild>
+                            <Button>
+                                <ChevronLeft size={36} />
+                            </Button>
+                        </Link>
+                    )
                 }}
             />
             {isLoading ? (
@@ -42,7 +51,7 @@ export default function StoreIDPage() {
                 <Large>Loading...</Large>
             </View>
             ) : data ? (
-                <Store data={data} />
+                <Store storeData={data} />
             ) : (
             <View>
                 <Large>Not Found</Large>

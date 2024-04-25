@@ -36,19 +36,16 @@ export type Database = {
       points: {
         Row: {
           balance: number
-          id: string
           store_id: string
           user_id: string
         }
         Insert: {
           balance?: number
-          id?: string
           store_id: string
           user_id: string
         }
         Update: {
           balance?: number
-          id?: string
           store_id?: string
           user_id?: string
         }
@@ -77,7 +74,7 @@ export type Database = {
           title: string
         }
         Insert: {
-          cost: number
+          cost?: number
           id?: string
           store_id: string
           title: string
@@ -150,6 +147,7 @@ export type Database = {
           name: string
           points_rate: number
           postcode: string | null
+          state: string | null
           vendor_name: string
         }
         Insert: {
@@ -161,6 +159,7 @@ export type Database = {
           name: string
           points_rate?: number
           postcode?: string | null
+          state?: string | null
           vendor_name: string
         }
         Update: {
@@ -172,6 +171,7 @@ export type Database = {
           name?: string
           points_rate?: number
           postcode?: string | null
+          state?: string | null
           vendor_name?: string
         }
         Relationships: [

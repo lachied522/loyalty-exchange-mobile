@@ -17,19 +17,17 @@ import { Large } from '~/components/ui/typography';
 
 import { cn } from '~/lib/utils';
 
-import Reward from './reward';
+import { useGlobalContext, type GlobalState } from '@/context/GlobalContext';
 
-import type { Database } from '~/app/types/supabase';
+import Reward from './reward-trigger';
 
-interface RewardsTableProps {
-    data: Database['public']['Tables']['rewards']['Row'][]
-}
 
-export default function RewardsTable({ data }: RewardsTableProps) {
+export default function RewardsTable() {
+    const { userData } = useGlobalContext() as GlobalState;
     const { width } = useWindowDimensions();
 
     const columnWidths = useMemo(() => {
-        const MIN_COLUMN_WIDTHS = [60, 120, 60];
+        const MIN_COLUMN_WIDTHS = [60, 60, 120];
 
         return MIN_COLUMN_WIDTHS.map((minWidth) => {
           const evenWidth = width / MIN_COLUMN_WIDTHS.length;
@@ -42,36 +40,36 @@ export default function RewardsTable({ data }: RewardsTableProps) {
             <Table aria-labelledby='rewards-table'>
                 <TableHeader>
                     <TableRow>
-                        <TableHead className='px-0.5' style={{ width: columnWidths[0] }}>
+                        <TableHead style={{ width: columnWidths[0] }} className='p-0'>
                             <Text>Reward</Text>
                         </TableHead>
-                        <TableHead style={{ width: columnWidths[1] }}>
+                        <TableHead style={{ width: columnWidths[1] }} className='p-0'>
                             <Text>Store</Text>
                         </TableHead>
-                        <TableHead style={{ width: columnWidths[2] }}>
+                        <TableHead style={{ width: columnWidths[2] }} className='p-0'>
                             <Text>Redeem</Text>
                         </TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
                     <FlashList
-                        data={data}
+                        data={userData.rewards}
                         estimatedItemSize={45}
                         showsVerticalScrollIndicator={false}
                         renderItem={({ item, index }) => (
-                            <TableRow 
-                                key={`reward-${index}`} // TODO
-                                className={cn('active:bg-secondary', index % 2 && 'bg-muted/40')}
+                            <TableRow
+                                key={item.id}
+                                className={cn('min-h-[100] active:bg-secondary', index % 2 && 'bg-muted/40')}
                             >
-                                <TableCell style={{ width: columnWidths[0] }}>
-                                    <Text>1 free coffee</Text>
+                                <TableCell style={{ width: columnWidths[0], display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 0 }}>
+                                    <Large>{item.reward_types?.title}</Large>
                                 </TableCell>
-                                <TableCell style={{ width: columnWidths[1] }}>
+                                <TableCell style={{ width: columnWidths[1], display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 0 }}>
                                     <Link href={`./store/${item.id}`}>
-                                        <Text className='max-h-[50px] text-slate-700 font-medium truncate'>Test Coffee Shop</Text>
+                                        <Text className='max-w-[100px] text-slate-700 font-medium truncate'>Test Coffee Shop</Text>
                                     </Link>
                                 </TableCell>
-                                <TableCell style={{ width: columnWidths[2] }}>
+                                <TableCell style={{ width: columnWidths[2], display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 0 }}>
                                     <Reward />
                                 </TableCell>
                             </TableRow>

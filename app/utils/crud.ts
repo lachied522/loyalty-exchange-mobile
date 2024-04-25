@@ -16,7 +16,7 @@ export async function fetchUserData() {
     // fetch data from Supabase
     const { data, error } = await supabase
     .from('users')
-    .select('*, points(*), rewards(*), transactions(*)')
+    .select('*, rewards(*, reward_types(*)), points(*), transactions(*)')
     .eq('id', '1e29fa1b-1c03-4099-8f2e-63bb3ef0ae2a'); // TODO: use actual user id
 
     if (error) {
@@ -45,12 +45,9 @@ export async function updateUserRecord(record: TablesUpdate<'users'>) {
     //     throw new Error('User not logged in');
     // }
 
-    // ensure points_balance is integer
-    const newRecord: TablesUpdate<'users'> = { ...record, points_balance: Math.round(record.points_balance!) };
-
     const { data, error } = await supabase
     .from('users')
-    .update(newRecord)
+    .update(record)
     .eq('id', '1e29fa1b-1c03-4099-8f2e-63bb3ef0ae2a') // TODO!
     .select('*, points(*), rewards(*), transactions(*)'); 
     
@@ -108,10 +105,9 @@ export async function upsertPointsRecords(records: Omit<TablesInsert<'points'>[]
     //     throw new Error('User not logged in');
     // }
 
-    // add user user id to records and ensure balance is integer
+    // add user user id to records
     const newRecords = records.map((record) => ({ 
         ...record,
-        balance: Math.round(record.balance!),
         user_id: '1e29fa1b-1c03-4099-8f2e-63bb3ef0ae2a' // TODO
     }));
 
@@ -122,6 +118,18 @@ export async function upsertPointsRecords(records: Omit<TablesInsert<'points'>[]
     if (error) {
         console.log(`Error updating points balance: `, error);
         throw new Error(`Error updating points balance ${error}`);
+    };
+}
+
+export async function updateRewardRecord(record: TablesUpdate<'rewards'>) {
+    const { error } = await supabase
+    .from('rewards')
+    .update(record)
+    .eq('id', record.id!);
+
+    if (error) {
+        console.log(`Error updating reward: `, error);
+        throw new Error(`Error updating reward ${error}`);
     };
 }
 

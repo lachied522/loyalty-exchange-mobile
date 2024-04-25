@@ -3,11 +3,14 @@ import {
     fetchStoresByVendorName,
     insertTransactions,
     upsertPointsRecords,
-    updateUserRecord
+    updateUserRecord,
+    updateRewardRecord,
+    type UserData
 } from "./crud";
 
 import type { Transaction } from "@/types/basiq";
 import type { TablesInsert } from "@/types/supabase";
+import type { Reward } from "@/types/helpers";
 
 export async function createTransactionRecords(
     transactions: Transaction[],
@@ -66,7 +69,7 @@ export async function refresh() {
     // Step 4: upsert points records for each store
     promises.push(upsertPointsRecords(
         Array.from(pointsMap).map(([store, balance]) => ({
-            balance: Math.round(balance),
+            balance,
             store_id: store,
             user_id: data.id,
         }))
@@ -82,9 +85,22 @@ export async function refresh() {
         last_updated: new Date().toISOString(),
     }));
 
-    await Promise.all(promises);
+    return await Promise.all(promises);
 }
 
-export async function redeemReward() {
-    return
+export async function setRewardRedeemed(reward: Reward, userData: UserData) {
+    // Step 1: set redeemed column to true
+    await updateRewardRecord({
+        id: reward.id,
+        redeemed: true,
+        redeemed_at: new Date().toISOString(),
+    });
+
+    // Step 2: adjust user's points balance
+    const newBalance = userData.points_balance - (reward.reward_types?.cost || 0);
+    return await upsertPointsRecords([{
+        balance: newBalance,
+        store_id: reward.reward_types!.store_id,
+        user_id: userData.id,
+    }]);
 }

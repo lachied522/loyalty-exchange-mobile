@@ -7,11 +7,11 @@ declare module "expo-router" {
   export * from 'expo-router/build';
 
   // prettier-ignore
-  type StaticRoutes = `/` | `/(start)/context/StartContext` | `/context/StartContext` | `/(start)/forgot-password` | `/forgot-password` | `/(start)/login` | `/login` | `/(start)/onboarding` | `/onboarding` | `/(start)/signup` | `/signup` | `/(start)/welcome` | `/welcome` | `/context/GlobalContext` | `/home/account` | `/home/components/points-table` | `/home/components/refresh-trigger` | `/home/components/reward-modal` | `/home/components/reward` | `/home/components/rewards-table` | `/home/components/transactions-table` | `/home/context/MainContext` | `/home/home` | `/home/` | `/home/layout` | `/home/my-rewards` | `/lib/basiq` | `/lib/supabase` | `/types/basiq` | `/types/helpers` | `/types/supabase` | `/utils/crud` | `/utils/functions` | `/utils/transactions`;
+  type StaticRoutes = `/` | `/(start)/context/StartContext` | `/context/StartContext` | `/(start)/forgot-password` | `/forgot-password` | `/(start)/login` | `/login` | `/(start)/onboarding` | `/onboarding` | `/(start)/signup` | `/signup` | `/(start)/welcome` | `/welcome` | `/context/GlobalContext` | `/context/GlobalReducer` | `/home/account-screen` | `/home/components/points-table` | `/home/components/refresh-trigger` | `/home/components/reward-card` | `/home/components/reward-modal` | `/home/components/reward-trigger` | `/home/components/rewards-list` | `/home/components/rewards-table` | `/home/context/MainContext` | `/home/home-screen` | `/home/` | `/home/my-rewards` | `/lib/basiq` | `/lib/supabase` | `/types/basiq` | `/types/helpers` | `/types/supabase` | `/utils/crud` | `/utils/functions` | `/utils/transactions`;
   // prettier-ignore
-  type DynamicRoutes<T extends string> = `/store/${SingleRoutePart<T>}/components/store` | `/store/${SingleRoutePart<T>}/`;
+  type DynamicRoutes<T extends string> = `/store/${SingleRoutePart<T>}/components/reward-progress` | `/store/${SingleRoutePart<T>}/components/store` | `/store/${SingleRoutePart<T>}/components/transactions-table` | `/store/${SingleRoutePart<T>}/`;
   // prettier-ignore
-  type DynamicRouteTemplate = `/store/[storeID]/components/store` | `/store/[storeID]/`;
+  type DynamicRouteTemplate = `/store/[storeID]/components/reward-progress` | `/store/[storeID]/components/store` | `/store/[storeID]/components/transactions-table` | `/store/[storeID]/`;
 
   type RelativePathString = `./${string}` | `../${string}` | '..';
   type AbsoluteRoute = DynamicRouteTemplate | StaticRoutes;

@@ -80,7 +80,7 @@ export default function Layout() {
 
   return (
     <ThemeProvider value={LIGHT_THEME}>
-      <GlobalContextProvider session={session} userData={userData}>
+      <GlobalContextProvider session={session} initialState={userData}>
             <Stack />
       </GlobalContextProvider>
     </ThemeProvider>

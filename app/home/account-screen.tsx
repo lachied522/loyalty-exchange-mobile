@@ -18,25 +18,20 @@ export default function Account() {
         <SafeAreaView style={{ flex: 1, marginBottom: 64 }}>
             <Stack.Screen
                 options={{
-                    title: '',
-                    headerBackTitle: 'Back',
+                    title: 'My Account'
                 }}
             />
             <ScrollView
-                contentContainerStyle={{ height: '100%', alignItems: 'center', justifyContent: 'space-between', padding: 24 }} 
+                contentContainerStyle={{ alignItems: 'center', justifyContent: 'space-between', padding: 24, gap: 24 }} 
                 keyboardShouldPersistTaps='handled'
             >
-                <View className='w-full flex flex-row items-center justify-center'>
-                    <H1>Account Page</H1>
-                </View>
-
                 <View className='w-full flex gap-6'>
                     <View className='flex flex-row justify-between'>
                         <H2>My Linked Cards</H2>
 
-                        <View className='flex flex-row items-center gap-1'>
+                        <View className='flex flex-row items-center gap-2'>
                             <Large>Manage</Large>
-                            <ExternalLink size={18} color='black' />
+                            <ExternalLink size={20} color='black' />
                         </View>
                     </View>
 
@@ -47,8 +42,8 @@ export default function Account() {
                 
                 <Button onPress={onLogout}>
                     <View className='flex flex-row items-center gap-2'>
-                        <H3 className='text-red-500'>Signout</H3>
-                        <LogOut size={32} color='red' />
+                        <H3 className=''>Log out</H3>
+                        <LogOut size={24} color='black' />
                     </View>
                 </Button>
             </ScrollView>

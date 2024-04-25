@@ -1,6 +1,6 @@
 // https://rnr-docs.vercel.app/components/table/
 import { useMemo } from 'react';
-import { ScrollView, useWindowDimensions } from 'react-native';
+import { ScrollView, View, useWindowDimensions } from 'react-native';
 import { FlashList } from '@shopify/flash-list';
 
 import {
@@ -12,6 +12,7 @@ import {
     TableRow,
 } from '~/components/ui/table';
 import { Text } from '~/components/ui/text';
+import { Large } from '~/components/ui/typography';
 
 import { cn } from '~/lib/utils';
 
@@ -36,10 +37,10 @@ function formatAmmount(amount: string) {
 
 
 interface TransactionsTableProps {
-    transactions: Transaction[]
+    data: Transaction[]
 }
 
-export default function TransactionsTable({ transactions }: TransactionsTableProps) {
+export default function TransactionsTable({ data }: TransactionsTableProps) {
     const { width } = useWindowDimensions();
 
     const columnWidths = useMemo(() => {
@@ -49,7 +50,7 @@ export default function TransactionsTable({ transactions }: TransactionsTablePro
           const evenWidth = width / MIN_COLUMN_WIDTHS.length;
           return evenWidth > minWidth ? evenWidth : minWidth;
         });
-      }, [width]);
+    }, [width]);
 
     return (
       <ScrollView contentContainerStyle={{ width: '100%', height: 500 }} horizontal bounces={false} showsHorizontalScrollIndicator={false}>
@@ -69,7 +70,7 @@ export default function TransactionsTable({ transactions }: TransactionsTablePro
           </TableHeader>
           <TableBody>
             <FlashList
-              data={transactions.slice(0, 30)} // TO DO: pagination
+              data={data?.slice(0, 30) || []} // TO DO: pagination
               estimatedItemSize={45}
               showsVerticalScrollIndicator={false}
               renderItem={({ item: transaction, index }) => {
@@ -90,6 +91,12 @@ export default function TransactionsTable({ transactions }: TransactionsTablePro
                   </TableRow>
                 );
               }}
+              ListEmptyComponent={() => (
+                <View className='flex flex-col items-center justify-center gap-2 p-6'>
+                    <Large>Nothing here yet.</Large>
+                    <Text>When you shop here your recent transactions will appear here.</Text>
+                </View>
+            )}
             />
           </TableBody>
         </Table>

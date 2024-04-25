@@ -7,13 +7,15 @@ import { Button } from '~/components/ui/button';
 import { Progress } from '~/components/ui/progress';
 import { H1, H2, H3, Large } from "~/components/ui/typography";
 
+import type { Reward } from '@/types/helpers';
+
 interface RewardProps {
-    data: any
+    rewardData: Reward
 }
 
 const MAX_TIME = 30;
 
-export default function RewardModal({ data }: RewardProps) {
+export default function RewardModal({ rewardData }: RewardProps) {
     const [isVisible, setIsVisible] = useState<boolean>(true); // default to open
     const [timeElapsed, setTimeElapsed] = useState<number>(0);
     const [currentTime, setCurrentTime] = useState<Date>(new Date());
@@ -51,8 +53,8 @@ export default function RewardModal({ data }: RewardProps) {
             visible={isVisible}
             onRequestClose={() => setIsVisible(false)}
         >
-            <View className='flex flex-1 flex-col items-center justify-center gap-12 bg-yellow-400 p-6 relative'>
-                <Button className='absolute right-6 top-12' onPress={() => setIsVisible(false)}>
+            <View className='flex flex-1 flex-col items-center justify-center bg-yellow-400 gap-12 relative'>
+                <Button className='absolute right-0 top-12' onPress={() => setIsVisible(false)}>
                     <X size={48} color='black' />
                 </Button>
 

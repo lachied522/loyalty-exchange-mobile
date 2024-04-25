@@ -1,26 +1,27 @@
-import { useState } from "react";
 import { View, Text, TouchableOpacity } from 'react-native';
 import { Stack, usePathname } from "expo-router";
 
 import { createBottomTabNavigator, type BottomTabBarButtonProps } from '@react-navigation/bottom-tabs';
 
-import { useGlobalContext, type GlobalState } from "@/context/GlobalContext";
-
-import Home from "./home";
-import Account from "./account";
-import MyRewards from "./my-rewards";
 import { BadgeDollarSign, CircleUserRound, HomeIcon } from "lucide-react-native";
-import { cn } from "~/lib/utils";
+
+import { useMainContext, type MainState } from "./context/MainContext";
+
+import Home from "./home-screen";
+import Account from "./account-screen";
+import MyRewards from "./my-rewards";
 
 
 // couldn't get expo tabs to work, have to use react native tabs
 const Tab = createBottomTabNavigator();
 
 export default function MainLayout() {
-    const { session } = useGlobalContext() as GlobalState;
-    // manually control whether rewards is open, navigation is too confusing
-    const [myRewardsIsOpen, setMyRewardsIsOpen] = useState<boolean>(false);
+    const { myRewardsIsOpen, setMyRewardsIsOpen } = useMainContext() as MainState;
+    // const [myRewardsIsOpen, setMyRewardsIsOpen] = useState<boolean>(false);
 
+    const pathname = usePathname();
+
+    console.log(pathname);
     return (
         <>
             <Stack.Screen
