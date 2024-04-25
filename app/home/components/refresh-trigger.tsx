@@ -1,14 +1,16 @@
 import { useState, useCallback } from "react";
 import { View } from "react-native";
 
-import { RefreshCw } from "lucide-react-native";
-
 import { Button } from "~/components/ui/button";
+import { RefreshCw } from "~/components/Icons";
 import { cn } from "~/lib/utils";
 
-import { refresh } from "@/utils/functions";
+import { shadowStyles } from "~/lib/constants";
+
+import { useGlobalContext, type GlobalState } from "@/context/GlobalContext";
 
 export default function RefreshTrigger() {
+    const { refresh } = useGlobalContext() as GlobalState;
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const onPress = async () => {
@@ -17,7 +19,7 @@ export default function RefreshTrigger() {
     }
 
     return (
-        <View className="w-16 h-16 flex items-center justify-center bg-slate-100 rounded-[18] shadow-sm">
+        <View className="w-16 h-16 flex items-center justify-center bg-white rounded-[18]" style={shadowStyles.small}>
             <Button 
                 onPress={onPress}
                 disabled={isLoading}

@@ -1,11 +1,11 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Modal, SafeAreaView, View } from "react-native";
 
-import { X } from 'lucide-react-native';
-
 import { Button } from '~/components/ui/button';
 import { Progress } from '~/components/ui/progress';
 import { H1, H2, H3, Large } from "~/components/ui/typography";
+
+import { X } from '~/components/Icons';
 
 import type { Reward } from '@/types/helpers';
 

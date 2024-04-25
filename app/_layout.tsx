@@ -3,6 +3,7 @@ import '~/global.css';
 import { useEffect, useState } from 'react';
 import { AppState } from "react-native";
 import { SplashScreen, Stack, Tabs } from "expo-router";
+import { useFonts } from 'expo-font';
 
 import { ThemeProvider, type Theme } from '@react-navigation/native';
 
@@ -45,6 +46,13 @@ export default function Layout() {
   const [userData, setUserData] = useState<UserData | null>(null);
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
 
+  // load fonts
+  const [fontsLoaded, fontError] = useFonts({
+    'Raleway': require("assets/fonts/Raleway/static/Raleway-Regular.ttf"),
+    'Raleway-Medium': require("assets/fonts/Raleway/static/Raleway-Medium.ttf"),
+    'Raleway-SemiBold': require("assets/fonts/Raleway/static/Raleway-SemiBold.ttf"),
+  });
+
   // get user session
   useEffect(() => {
     let isMounted = false; // prevent useEffect from triggering twice
@@ -73,10 +81,10 @@ export default function Layout() {
   }, []);
 
   useEffect(() => {
-    if (isLoaded) SplashScreen.hideAsync();
-}, [isLoaded]);
+    if (isLoaded && (fontsLoaded || fontError)) SplashScreen.hideAsync();
+}, [isLoaded, fontsLoaded, fontError]);
 
-  if (!(isLoaded && userData)) return null;
+  if (!(isLoaded && userData && (fontsLoaded || fontError))) return null;
 
   return (
     <ThemeProvider value={LIGHT_THEME}>

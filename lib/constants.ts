@@ -1,3 +1,5 @@
+import { StyleSheet } from "react-native";
+
 export const NAV_THEME = {
   light: {
     background: 'hsl(0 0% 100%)', // background
@@ -16,3 +18,29 @@ export const NAV_THEME = {
     text: 'hsl(0 0% 98%)', // foreground
   },
 };
+
+// shadows are not visible with nativewind, see https://stackoverflow.com/questions/73372647/tailwind-css-in-react-native-box-shadow
+export const shadowStyles = StyleSheet.create({
+  medium: {
+      shadowColor: "#000",
+      shadowOffset: {
+          width: 0,
+          height: 6,
+      },
+      shadowOpacity: 0.30,
+      shadowRadius: 4.65,
+
+      elevation: 6,
+  },
+  small: {
+    shadowColor: "#000",
+    shadowOffset: {
+        width: 0,
+        height: 3,
+    },
+    shadowOpacity: 0.30,
+    shadowRadius: 4,
+
+    elevation: 6,
+}
+});

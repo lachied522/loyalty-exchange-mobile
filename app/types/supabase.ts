@@ -40,7 +40,7 @@ export type Database = {
           user_id: string
         }
         Insert: {
-          balance?: number
+          balance: number
           store_id: string
           user_id: string
         }
@@ -229,22 +229,28 @@ export type Database = {
       users: {
         Row: {
           basiq_user_id: string | null
+          first_name: string
           id: string
           joined: string
+          last_name: string
           last_updated: string
           points_balance: number
         }
         Insert: {
           basiq_user_id?: string | null
+          first_name: string
           id: string
           joined?: string
+          last_name?: string | null
           last_updated?: string
-          points_balance?: number
+          points_balance: number
         }
         Update: {
           basiq_user_id?: string | null
+          first_name?: string
           id?: string
           joined?: string
+          last_name?: string | null
           last_updated?: string
           points_balance?: number
         }

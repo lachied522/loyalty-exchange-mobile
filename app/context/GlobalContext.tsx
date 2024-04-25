@@ -4,9 +4,9 @@ import type { Session } from "@supabase/supabase-js";
 
 import { GlobalReducer, type Action } from "./GlobalReducer";
 
-import { setRewardRedeemed } from "@/utils/functions";
+import { refreshUserData, setRewardRedeemed } from "@/utils/functions";
 
-import type { UserData } from "@/utils/crud";
+import { fetchUserData, type UserData } from "@/utils/crud";
 import type { Reward } from "@/types/helpers";
 
 const GlobalContext = createContext<any>(null);
@@ -26,6 +26,7 @@ export type GlobalState = {
     setMobile: React.Dispatch<React.SetStateAction<string>>
     dispath: React.Dispatch<Action>
     redeemReward: (reward: Reward) => Promise<void>
+    refresh: () => Promise<void>
 }
 
 interface GlobalContextProps {
@@ -61,6 +62,23 @@ export default function GlobalContextProvider({
         [session, state]
     );
 
+    const refresh = useCallback(
+        async () => {
+            // if (!session) return Promise.reject('user not logged in');
+            
+            const hasNewData = await refreshUserData();
+            if (hasNewData) {
+                // update state
+                const newData = await fetchUserData();
+                dispatch({
+                    type: 'SET_DATA',
+                    payload: newData
+                })
+            }
+        },
+        [session, state]
+    );
+
     return (
         <GlobalContext.Provider value={{
             session,
@@ -72,6 +90,7 @@ export default function GlobalContextProvider({
             setEmail,
             setMobile,
             redeemReward,
+            refresh,
             dispatch,
         }}>
             {children}

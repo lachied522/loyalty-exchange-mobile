@@ -45,7 +45,7 @@ export async function createTransactionRecords(
     return transactions.reduce(reducer, []);
 }
 
-export async function refresh() {
+export async function refreshUserData() {
     // update user points balances based on recent transactions
     // this should be done on the server
 
@@ -55,7 +55,7 @@ export async function refresh() {
     // Step 2: create records for any new transactions
     const newTransactions = await createTransactionRecords(data.newTransactions, data.id);
 
-    if (newTransactions.length === 0) return; // nothing to do
+    if (newTransactions.length === 0) return false; // nothing to do
 
     // Step 3: sum points balance for each store
     let totalSpend = 0;
@@ -85,7 +85,9 @@ export async function refresh() {
         last_updated: new Date().toISOString(),
     }));
 
-    return await Promise.all(promises);
+    await Promise.all(promises);
+    
+    return true;
 }
 
 export async function setRewardRedeemed(reward: Reward, userData: UserData) {

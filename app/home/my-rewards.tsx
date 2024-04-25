@@ -1,9 +1,9 @@
 import { Modal, SafeAreaView, View } from "react-native";
 
-import { X } from 'lucide-react-native';
-
 import { Button } from '~/components/ui/button';
 import { H1 } from "~/components/ui/typography";
+import { X } from '~/components/Icons';
+
 import RewardsList from './components/rewards-list';
 
 interface MyRewardProps {
