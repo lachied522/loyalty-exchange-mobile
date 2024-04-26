@@ -12,6 +12,8 @@ import type { Session } from '@supabase/supabase-js';
 import { supabase } from "@/lib/supabase";
 import { fetchUserData, type UserData } from '@/utils/crud';
 
+import { PortalHost } from '~/components/primitives/portal';
+
 import { NAV_THEME } from '~/lib/constants';
 
 import GlobalContextProvider from './context/GlobalContext';
@@ -87,10 +89,13 @@ export default function Layout() {
   if (!(isLoaded && userData && (fontsLoaded || fontError))) return null;
 
   return (
-    <ThemeProvider value={LIGHT_THEME}>
-      <GlobalContextProvider session={session} initialState={userData}>
-            <Stack />
-      </GlobalContextProvider>
-    </ThemeProvider>
+    <>
+      <ThemeProvider value={LIGHT_THEME}>
+        <GlobalContextProvider session={session} initialState={userData}>
+              <Stack />
+        </GlobalContextProvider>
+      </ThemeProvider>
+      <PortalHost />
+    </>
   )
 }

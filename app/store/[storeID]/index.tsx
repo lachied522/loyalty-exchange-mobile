@@ -7,7 +7,9 @@ import { ChevronLeft } from "lucide-react-native";
 import { Button } from "~/components/ui/button";
 import { Large } from '~/components/ui/typography';
 
-import { fetchStoreData, type StoreData } from '@/utils/crud';
+import { shadowStyles } from '~/lib/constants';
+
+import { fetchStoresById, type StoreData } from '@/utils/crud';
 
 import Store from './components/store';
 
@@ -24,8 +26,10 @@ export default function StoreIDPage() {
         async function fetchData() {
             if (isMounted) return;
             
-            fetchStoreData(storeID as string)
-            .then((res) => setData(res))
+            fetchStoresById([storeID as string])
+            .then((res) => {
+                if (res) setData(res[0]);
+            })
             .finally(() => setIsLoading(false));
 
             isMounted = true;
@@ -38,11 +42,13 @@ export default function StoreIDPage() {
                 options={{
                     title: data? data.name: '',
                     headerLeft: () => (
-                        <Link href='/home/' asChild>
-                            <Button>
-                                <ChevronLeft size={36} />
-                            </Button>
-                        </Link>
+                        <View className='h-12 w-12 flex items-center justify-center rounded-[12] left-0' style={shadowStyles.button}>
+                            <Link href='/home/' asChild>
+                                <Button>
+                                    <ChevronLeft size={30} color='rgb(15 23 42)'/>
+                                </Button>
+                            </Link>
+                        </View>
                     )
                 }}
             />

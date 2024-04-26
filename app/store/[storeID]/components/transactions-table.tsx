@@ -35,7 +35,6 @@ function formatAmmount(amount: string) {
   return USDollar.format(parseFloat(amount));
 }
 
-
 interface TransactionsTableProps {
     data: Transaction[]
 }
@@ -57,7 +56,7 @@ export default function TransactionsTable({ data }: TransactionsTableProps) {
         <Table aria-labelledby='transctions-table'>
           <TableHeader>
             <TableRow>
-              <TableHead className='px-0.5' style={{ width: columnWidths[0] }}>
+              <TableHead style={{ width: columnWidths[0] }}>
                <Text>Date</Text>
               </TableHead>
               <TableHead style={{ width: columnWidths[1] }}>

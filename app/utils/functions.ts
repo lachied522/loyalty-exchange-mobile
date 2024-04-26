@@ -5,12 +5,35 @@ import {
     upsertPointsRecords,
     updateUserRecord,
     updateRewardRecord,
-    type UserData
+    type UserData,
+    type StoreData
 } from "./crud";
+
+import { fetchUserTransactions } from "./transactions";
 
 import type { Transaction } from "@/types/basiq";
 import type { TablesInsert } from "@/types/supabase";
 import type { Reward } from "@/types/helpers";
+
+
+export async function fetchAppData() {
+    // step 1: fetch user data
+    const userData = await fetchUserData();
+
+    // step 2: check if any recent transactions
+    const recentTransactions = await fetchUserTransactions(userData['basiq_user_id'], 10);
+
+    // step 3: filter out transactions based on time last updated
+    const lastUpdated = new Date(userData.last_updated);
+    const newTransactions = recentTransactions.filter((transaction) => new Date(transaction.postDate) > lastUpdated);
+
+    // step 4: populate store data
+
+    return {
+        ...userData,
+        newTransactions
+    };
+}
 
 export async function createTransactionRecords(
     transactions: Transaction[],
@@ -105,4 +128,22 @@ export async function setRewardRedeemed(reward: Reward, userData: UserData) {
         store_id: reward.reward_types!.store_id,
         user_id: userData.id,
     }]);
+}
+
+export async function convertExchangePointsToStorePoints(newExchangePoints: number, newStoreBalance: number, store: StoreData, userData: UserData) {
+    const promises = [];
+    
+    promises.push(upsertPointsRecords([{
+        balance: newStoreBalance,
+        store_id: store.id,
+        user_id: userData.id,
+    }]));
+
+    promises.push(updateUserRecord({
+        points_balance: newExchangePoints,
+    }));
+
+    await Promise.all(promises);
+
+    return true;
 }

@@ -19,13 +19,13 @@ export default function RefreshTrigger() {
     }
 
     return (
-        <View className="w-16 h-16 flex items-center justify-center bg-white rounded-[18]" style={shadowStyles.small}>
+        <View className="w-16 h-16 flex items-center justify-center bg-white rounded-[18]" style={shadowStyles.button}>
             <Button 
                 onPress={onPress}
                 disabled={isLoading}
                 className={cn('w-full h-full')}
             >
-                <RefreshCw size={36} color='black' />
+                <RefreshCw size={30} color='rgb(15 23 42)' />
             </Button>
         </View>
     )

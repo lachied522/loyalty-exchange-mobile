@@ -53,7 +53,7 @@ function Indicator({ value, className }: { value: number | undefined | null; cla
 
   return (
     <ProgressPrimitive.Indicator asChild>
-      <Animated.View style={indicator} className={cn('h-full bg-white', className)} />
+      <Animated.View style={indicator} className={cn('h-full bg-yellow-400', className)} />
     </ProgressPrimitive.Indicator>
   );
 }

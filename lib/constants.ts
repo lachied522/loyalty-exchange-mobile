@@ -21,26 +21,39 @@ export const NAV_THEME = {
 
 // shadows are not visible with nativewind, see https://stackoverflow.com/questions/73372647/tailwind-css-in-react-native-box-shadow
 export const shadowStyles = StyleSheet.create({
-  medium: {
-      shadowColor: "#000",
-      shadowOffset: {
-          width: 0,
-          height: 6,
-      },
-      shadowOpacity: 0.30,
-      shadowRadius: 4.65,
-
-      elevation: 6,
-  },
-  small: {
-    shadowColor: "#000",
+  button: {
+    shadowColor: 'rgba(0, 0, 0, 0.02)',
     shadowOffset: {
-        width: 0,
+        width: 3,
         height: 3,
     },
-    shadowOpacity: 0.30,
-    shadowRadius: 4,
-
+    shadowOpacity: 1,
+    shadowRadius: 3,
     elevation: 6,
-}
+    borderWidth: 1,
+    borderColor: 'rgba(27, 31, 35, 0.15)',
+  },
+  card: {
+    shadowColor: 'rgba(0, 0, 0, 0.02)',
+    shadowOffset: {
+        width: 3,
+        height: 3,
+    },
+    shadowRadius: 10,
+    elevation: 6,
+    borderWidth: 1,
+    borderColor: 'rgba(27, 31, 35, 0.15)',
+  },
+  edge: {
+    shadowColor: 'rgba(0, 0, 0, 0.16)',
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.50,
+    shadowRadius: 3,
+    elevation: 1,
+    borderWidth: 1,
+    borderColor: 'rgba(27, 31, 35, 0.15)',
+  }
 });

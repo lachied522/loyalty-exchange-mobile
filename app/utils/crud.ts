@@ -16,7 +16,7 @@ export async function fetchUserData() {
     // fetch data from Supabase
     const { data, error } = await supabase
     .from('users')
-    .select('*, rewards(*, reward_types(*)), points(*), transactions(*)')
+    .select('*, rewards(*, reward_types(*)), points(*, stores(*)), transactions(*)')
     .eq('id', '1e29fa1b-1c03-4099-8f2e-63bb3ef0ae2a'); // TODO: use actual user id
 
     if (error) {
@@ -59,17 +59,17 @@ export async function updateUserRecord(record: TablesUpdate<'users'>) {
     return data;
 }
 
-export async function fetchStoreData(storeID: string) {
+export async function fetchStoresById(stores: string[]) {
     const { data, error } = await supabase
     .from('stores')
     .select('*, reward_types(*)')
-    .eq('id', storeID);
+    .in('id', stores);
 
     if (error) {
         console.log(`Error fecthing store data ${error}`);
     };
 
-    return data? data[0]: data;
+    return data;
 }
 
 export async function fetchStoresByVendorName(vendorNames: string[]) {
@@ -134,4 +134,4 @@ export async function updateRewardRecord(record: TablesUpdate<'rewards'>) {
 }
 
 export type UserData = NonNullable<ResolvedPromise<ReturnType<typeof fetchUserData>>>;
-export type StoreData = NonNullable<ResolvedPromise<ReturnType<typeof fetchStoreData>>>;
+export type StoreData = NonNullable<ResolvedPromise<ReturnType<typeof fetchStoresById>>>[number];

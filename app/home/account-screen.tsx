@@ -1,4 +1,4 @@
-import { SafeAreaView, ScrollView, View, Text } from "react-native";
+import { SafeAreaView, ScrollView, View } from "react-native";
 import { Stack } from "expo-router";
 
 import { ExternalLink, LogOut } from "lucide-react-native";
@@ -41,7 +41,7 @@ export default function Account() {
                 </View>
                 
                 <Button onPress={onLogout}>
-                    <View className='flex flex-row items-center gap-2'>
+                    <View className='h-[50px] flex flex-row items-center gap-2'>
                         <H3 className=''>Log out</H3>
                         <LogOut size={24} color='black' />
                     </View>

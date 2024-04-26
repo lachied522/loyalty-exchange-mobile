@@ -1,5 +1,5 @@
 // https://rnr-docs.vercel.app/getting-started/initial-setup/
-import { AlertCircle, CheckCircle, LucideIcon, XCircle, RefreshCw, X } from 'lucide-react-native';
+import { AlertCircle, CheckCircle, LucideIcon, XCircle, RefreshCw, X, Info, ArrowRightLeft, ArrowBigRightDash } from 'lucide-react-native';
 import { cssInterop } from 'nativewind';
 
 function interopIcon(icon: LucideIcon) {
@@ -18,5 +18,8 @@ interopIcon(AlertCircle);
 interopIcon(CheckCircle);
 interopIcon(XCircle);
 interopIcon(RefreshCw);
+interopIcon(Info);
+interopIcon(ArrowRightLeft);
+interopIcon(ArrowBigRightDash);
 
-export { AlertCircle, CheckCircle, XCircle, RefreshCw, X };
+export { AlertCircle, CheckCircle, XCircle, RefreshCw, X, Info, ArrowRightLeft, ArrowBigRightDash };

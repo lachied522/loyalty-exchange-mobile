@@ -1,17 +1,21 @@
-import { SafeAreaView, View, ScrollView } from "react-native";
+import { SafeAreaView, View, ScrollView, TouchableOpacity } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Stack } from "expo-router";
 
-import { useGlobalContext, type GlobalState } from "@/context/GlobalContext";
-
 import { H1, H2, Large, Small } from "~/components/ui/typography";
-import { Text } from "~/components/ui/text";
+import { ArrowRightLeft } from "~/components/Icons";
+
+import { shadowStyles } from '~/lib/constants';
+
+import { useGlobalContext, type GlobalState } from "@/context/GlobalContext";
+import { useMainContext, type MainState } from "./context/MainContext";
 
 import PointsTable from "./components/points-table";
 import RefreshTrigger from "./components/refresh-trigger";
-import RewardsList from "./components/rewards-list";
+import AllTransactionsTable from "./components/all-transactions-table";
 
 export default function Home() {
+    const { pointsExchangeIsOpen, setPointsExchangeIsOpen } = useMainContext() as MainState;
     const { userData } = useGlobalContext() as GlobalState;
 
     const insets = useSafeAreaInsets();
@@ -21,18 +25,20 @@ export default function Home() {
             <Stack.Screen
                 options={{
                     header: () => (
-                        <View className='w-full flex flex-col items-stretch justify-center bg-white px-6 pb-10' style={{ paddingTop: insets.top }}>
-                            <View className='w-full items-center my-6'>
-                                <Large>Home</Large>
+                        <View className='w-full flex flex-col items-stretch justify-center bg-white px-6 pb-8 gap-2' style={{ paddingTop: insets.top, ...shadowStyles.edge }}>
+                            <View className='w-full items-center mt-1'>
+                                <H2>Welcome {userData.first_name}</H2>
                             </View>
                             <View className='flex flex-row items-start justify-between'>
-                                <View className='gap-1'>
-                                    <H2>{userData.first_name} {userData.last_name}</H2>
-
-                                    <View>
-                                        <H2>{Math.round(userData.points_balance).toLocaleString()}</H2>
+                                <View className='flex items-center justify-center rounded-xl border border-yellow-400 gap-2 p-2'>
+                                    <TouchableOpacity onPress={() => setPointsExchangeIsOpen(true)}>
+                                        <View className='flex flex-row items-center justify-start gap-2'>
+                                            <H2>{Math.max(Math.round(userData.points_balance), 0).toLocaleString()}</H2>
+                                            {/* <ArrowRightLeft color='rgb(250 204 21)' /> */}
+                                        </View>
+                                        
                                         <Small>LoyaltyExchange Points</Small>
-                                    </View>
+                                    </TouchableOpacity>
                                 </View>
 
                                 <RefreshTrigger />
@@ -42,19 +48,19 @@ export default function Home() {
                 }}
             />
             <ScrollView
-                contentContainerStyle={{ height: '100%', justifyContent: 'space-between', padding: 24, gap: 24 }}
+                contentContainerStyle={{ paddingVertical: 20, paddingHorizontal: 16, gap: 12 }}
                 keyboardShouldPersistTaps='handled'
             >
-                <View className='gap-2'>
-                    <Large>My Rewards</Large>
+                <View className='flex flex-col items-stretch gap-2'>
+                    <Large>My Stores</Large>
 
-                    <RewardsList />
+                    <PointsTable data={userData.points} />
                 </View>
 
-                <View className='gap-2'>
-                    <Large>My Points</Large>
+                <View className='flex flex-col items-stretch gap-4'>
+                    <Large>Recent Purchases</Large>
 
-                    <PointsTable data={[]} />
+                    <AllTransactionsTable />
                 </View>
             </ScrollView>
         </SafeAreaView>

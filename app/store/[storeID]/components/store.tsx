@@ -21,6 +21,10 @@ function formatAddress(storeData: StoreData) {
 ${storeData.city} ${storeData.state} ${storeData.postcode}`;
 }
 
+function formatRate(rate: number) {
+    return `Earn ${rate} points for every $1 spend`
+}
+
 export default function Store({ storeData }: StoreProps) {
     const { userData } = useGlobalContext() as GlobalState;
 
@@ -29,13 +33,17 @@ export default function Store({ storeData }: StoreProps) {
         return userData.points.find((obj) => obj.store_id === storeData.id)?.balance || 0;
     }, [userData, storeData]);
 
+    const userTransactions = useMemo(() => {
+        return userData.transactions.filter((obj) => obj.store_id === storeData.id) || [];
+    }, [userData, storeData]);
+
     return (
         <ScrollView
             contentContainerStyle={{ height: '100%', alignItems: 'center', justifyContent: 'space-between', padding: 24, gap: 64, marginTop: 24 }}
             keyboardShouldPersistTaps='handled'
         >
-            <View className='w-full flex flex-col gap-6'>
-                <View className='w-full flex flex-col items-start gap-2'>
+            <View className='w-full flex flex-col items-start gap-6'>
+                <View className='min-w-[120px] flex items-start justify-center rounded-xl border border-yellow-400 gap-2 p-2'>
                     <H1 className='font-semibold'>{Math.round(userPoints).toLocaleString()}</H1>
 
                     <Small className='max-w-[40%]'>{storeData.name} Points</Small>
@@ -44,7 +52,13 @@ export default function Store({ storeData }: StoreProps) {
                 <View className='w-full flex flex-row items-start justify-between'>
                     <Large>{'Location(s)'}</Large>
 
-                    <Large>{formatAddress(storeData)}</Large>
+                    <Large className='max-w-[50%] font-display'>{formatAddress(storeData)}</Large>
+                </View>
+
+                <View className='w-full flex flex-row items-start justify-between'>
+                    <Large>Points</Large>
+
+                    <Large className='max-w-[50%] font-display'>{formatRate(storeData.points_rate)}</Large>
                 </View>
             </View>
 

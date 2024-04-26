@@ -1,26 +1,25 @@
-import { useMemo } from 'react';
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
 
 import { FlashList } from '@shopify/flash-list';
+
+import { Large } from '~/components/ui/typography';
+import { Text } from '~/components/ui/text';
 
 import { useGlobalContext, type GlobalState } from '@/context/GlobalContext';
 
 import RewardCard from './reward-card';
-import { Large } from '~/components/ui/typography';
 
 export default function RewardsList() {
     const { userData } = useGlobalContext() as GlobalState;
 
-    const rewards = useMemo(() => {
-        return userData.rewards.filter((reward) => !reward.redeemed);
-    }, [userData.rewards]);
+    const rewards = userData.rewards.filter((reward) => !reward.redeemed);
 
     return (
-        <View className='h-[240] w-full p-6'>
+        <View className='h-[240px] w-full'>
             <FlashList
                 horizontal
                 data={rewards}
-                estimatedItemSize={45}
+                estimatedItemSize={160}
                 showsVerticalScrollIndicator={false}
                 renderItem={({ item }) => (
                     <RewardCard key={`reward-card-${item.id}`} data={item} />
