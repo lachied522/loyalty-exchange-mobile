@@ -16,7 +16,7 @@ export async function fetchUserData() {
     // fetch data from Supabase
     const { data, error } = await supabase
     .from('users')
-    .select('*, rewards(*, reward_types(*)), points(*, stores(*)), transactions(*)')
+    .select('*, points(*, stores(*)), rewards(*, reward_types(*)), transactions(*)')
     .eq('id', '1e29fa1b-1c03-4099-8f2e-63bb3ef0ae2a'); // TODO: use actual user id
 
     if (error) {
@@ -97,7 +97,7 @@ export async function insertTransactions(records: TablesInsert<'transactions'>[]
     };
 }
 
-export async function upsertPointsRecords(records: Omit<TablesInsert<'points'>[], 'user_id'>) {
+export async function upsertPointsRecords(records: Omit<TablesInsert<'points'>, 'user_id'>[]) {
     // get user session
     // const { data: { session } } = await supabase.auth.getSession();
 

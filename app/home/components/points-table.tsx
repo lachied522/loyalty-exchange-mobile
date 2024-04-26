@@ -14,7 +14,6 @@ import {
 } from '~/components/ui/table';
 import { Card, CardContent } from '~/components/ui/card';
 import { Text } from '~/components/ui/text';
-import { Button } from '~/components/ui/button';
 import { Large } from '~/components/ui/typography';
 import { ArrowRightLeft } from '~/components/Icons';
 
@@ -38,14 +37,11 @@ export default function PointsTable({ data }: RewardsTableProps) {
                     <Table aria-labelledby='points-table'>
                         <TableHeader>
                             <TableRow>
-                                <TableHead style={{ width: width / 3 }}>
+                                <TableHead style={{ width: width / 2 }}>
                                     <Text className='font-display-medium'>Store</Text>
                                 </TableHead>
-                                <TableHead style={{ width: width / 4 }}>
+                                <TableHead style={{ width: width / 2 }}>
                                     <Text className='font-display-medium'>Balance</Text>
-                                </TableHead>
-                                <TableHead style={{ width: width / 4 }}>
-                                    <Text className='font-display-medium'>Exchange</Text>
                                 </TableHead>
                             </TableRow>
                         </TableHeader>
@@ -56,16 +52,18 @@ export default function PointsTable({ data }: RewardsTableProps) {
                                 showsVerticalScrollIndicator={false}
                                 renderItem={({ item, index }) => (
                                     <TableRow key={`points-table-row-${index}`}>
-                                        <TableCell style={{ width: width / 3 }}>
+                                        <TableCell style={{ width: width / 2 }}>
                                             <Link href={`../../store/${item.store_id}`}>
-                                                <Text className='max-h-[50px] text-yellow-400 font-display-semibold underline truncate'>{item.stores!.name}</Text>
+                                                <Large className='max-h-[50px] text-yellow-400 font-display-semibold underline truncate'>{item.stores!.name}</Large>
                                             </Link>
                                         </TableCell>
-                                        <TableCell className='flex items-center justify-center' style={{ width: width / 4 }}>
-                                            <Text>{item.balance.toLocaleString()}</Text>
-                                        </TableCell>
-                                        <TableCell className='flex items-center justify-center' style={{ width: width / 4 }}>
-                                            <ExchangeDialog pointsData={item} />
+                                        <TableCell className='w-full flex items-center justify-center' style={{ width: width / 2 }}>
+                                            <ExchangeDialog pointsData={item}>
+                                                <View className='flex flex-row items-center justify-center gap-1'>
+                                                    <Large>{item.balance.toLocaleString()}</Large>
+                                                    <ArrowRightLeft size={16} color='black' />
+                                                </View>
+                                            </ExchangeDialog>
                                         </TableCell>
                                     </TableRow>
                                     )

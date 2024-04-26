@@ -29,7 +29,6 @@ export default function RewardProgress({ storeData, userPoints }: RewardProgress
                     </View>
                 </View>
             ))}
-            
         </View>
         ) : (
             <View className='w-full flex items-center'>

@@ -22,7 +22,7 @@ ${storeData.city} ${storeData.state} ${storeData.postcode}`;
 }
 
 function formatRate(rate: number) {
-    return `Earn ${rate} points for every $1 spend`
+    return `Earn ${rate} point(s) for every $1 spend`;
 }
 
 export default function Store({ storeData }: StoreProps) {

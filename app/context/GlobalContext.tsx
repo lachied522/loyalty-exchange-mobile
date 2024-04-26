@@ -4,7 +4,7 @@ import type { Session } from "@supabase/supabase-js";
 
 import { GlobalReducer, type Action } from "./GlobalReducer";
 
-import { refreshUserData, setRewardRedeemed } from "@/utils/functions";
+import { refreshUserData, setRewardRedeemed, convertToStorePoints } from "@/utils/functions";
 
 import { fetchUserData, type UserData } from "@/utils/crud";
 import type { Reward } from "@/types/helpers";
@@ -25,8 +25,9 @@ export type GlobalState = {
     setEmail: React.Dispatch<React.SetStateAction<string>>
     setMobile: React.Dispatch<React.SetStateAction<string>>
     dispath: React.Dispatch<Action>
-    redeemReward: (reward: Reward) => Promise<void>
     refresh: () => Promise<void>
+    redeemReward: (reward: Reward) => Promise<void>
+    convertPoints: (amount: number, rate: number, store_id: string) => Promise<void>
 }
 
 interface GlobalContextProps {
@@ -45,11 +46,32 @@ export default function GlobalContextProvider({
     const [email, setEmail] = useState('test@test.com'); // TODO: remove defaults!!!
     const [mobile, setMobile] = useState('0400527849');
 
+    const refresh = useCallback(
+        async () => {
+            // if (!session) return Promise.reject('user not logged in');
+            
+            return await refreshUserData()
+            .then((hasNewData) => {
+                if (hasNewData) {
+                    // update state
+                    fetchUserData()
+                    .then((newData) => {
+                        dispatch({
+                            type: 'SET_DATA',
+                            payload: newData
+                        })
+                    });
+                }
+            });
+        },
+        [session, state]
+    );
+
     const redeemReward = useCallback(
         async (reward: Reward) => {
             // if (!session) return Promise.reject('user not logged in');
             
-            return setRewardRedeemed(reward, state)
+            return await setRewardRedeemed(reward, state)
             .then(() => {
                 // update state
                 dispatch({
@@ -62,22 +84,40 @@ export default function GlobalContextProvider({
         [session, state]
     );
 
-    const refresh = useCallback(
-        async () => {
-            // if (!session) return Promise.reject('user not logged in');
-            
-            const hasNewData = await refreshUserData();
-            if (hasNewData) {
-                // update state
-                const newData = await fetchUserData();
-                dispatch({
-                    type: 'SET_DATA',
-                    payload: newData
-                })
-            }
+    const convertPoints = useCallback(
+        async (amount: number, rate: number, store_id: string) => {
+            console.log(amount);
+            const newPointsBalance = state.points_balance - amount;
+            const storePointsBalance = state.points.find((obj) => obj.store_id===store_id)?.balance || 0;
+
+            const newStorePointsBalance = amount * rate + storePointsBalance;
+
+            console.log('user', newPointsBalance);
+            console.log('store', newStorePointsBalance);
+
+            return await convertToStorePoints(newPointsBalance, newStorePointsBalance, store_id)
+            .then((success) => {
+                if (success) {
+                    // update state
+                    dispatch({
+                        type: 'SET_STORE_POINTS',
+                        payload: {
+                            value: storePointsBalance,
+                            store_id,
+                        }
+                    });
+
+                    dispatch({
+                        type: 'SET_EXCHANGE_POINTS',
+                        payload: {
+                            value: newPointsBalance,
+                        }
+                    });
+                }
+            });
         },
-        [session, state]
-    );
+        []
+    )
 
     return (
         <GlobalContext.Provider value={{
@@ -89,8 +129,9 @@ export default function GlobalContextProvider({
             setUsername,
             setEmail,
             setMobile,
-            redeemReward,
             refresh,
+            redeemReward,
+            convertPoints,
             dispatch,
         }}>
             {children}

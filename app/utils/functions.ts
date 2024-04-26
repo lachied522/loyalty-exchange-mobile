@@ -94,7 +94,6 @@ export async function refreshUserData() {
         Array.from(pointsMap).map(([store, balance]) => ({
             balance,
             store_id: store,
-            user_id: data.id,
         }))
     ));
 
@@ -126,21 +125,20 @@ export async function setRewardRedeemed(reward: Reward, userData: UserData) {
     return await upsertPointsRecords([{
         balance: newBalance,
         store_id: reward.reward_types!.store_id,
-        user_id: userData.id,
     }]);
 }
 
-export async function convertExchangePointsToStorePoints(newExchangePoints: number, newStoreBalance: number, store: StoreData, userData: UserData) {
+export async function convertToStorePoints(newPointsBalance: number, newStorePointsBalance: number, store_id: string) {
+    // convert LoyaltyExchange points to Store Points
     const promises = [];
-    
+
     promises.push(upsertPointsRecords([{
-        balance: newStoreBalance,
-        store_id: store.id,
-        user_id: userData.id,
+        balance: newStorePointsBalance,
+        store_id: store_id,
     }]));
 
     promises.push(updateUserRecord({
-        points_balance: newExchangePoints,
+        points_balance: newPointsBalance,
     }));
 
     await Promise.all(promises);

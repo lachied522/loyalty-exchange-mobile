@@ -8,6 +8,17 @@ export type Action = {
 } | {
     type: 'REDEEM_REWARD',
     payload: Reward
+} | {
+    type: 'SET_STORE_POINTS',
+    payload: {
+        store_id: string
+        value: number
+    }
+} | {
+    type: 'SET_EXCHANGE_POINTS',
+    payload: {
+        value: number
+    }
 }
 
 export function GlobalReducer(state: GlobalState['userData'], action: Action) {
@@ -30,6 +41,29 @@ export function GlobalReducer(state: GlobalState['userData'], action: Action) {
 
                     return reward;
                 })
+            }
+        }
+
+        case 'SET_STORE_POINTS': {
+            return {
+                ...state,
+                points: state.points.map((obj) => {
+                    if (obj.store_id===action.payload.store_id) {
+                        return {
+                            ...obj,
+                            balance: action.payload.value,
+                        }
+                    }
+
+                    return obj;
+                })
+            }
+        }
+
+        case 'SET_EXCHANGE_POINTS': {
+            return {
+                ...state,
+                points_balance: action.payload.value,
             }
         }
 

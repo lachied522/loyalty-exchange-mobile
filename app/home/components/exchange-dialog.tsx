@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useState } from 'react';
-import { View, ScrollView } from 'react-native';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { View, ScrollView, TouchableOpacity } from 'react-native';
 
 import {
     Dialog,
@@ -14,28 +14,51 @@ import {
 import { Progress } from '~/components/ui/progress';
 import { Button } from '~/components/ui/button';
 import { Input } from '~/components/ui/input';
+import { Large } from '~/components/ui/typography';
 import { Text } from '~/components/ui/text';
-import { ArrowRightLeft, ArrowBigRightDash } from '~/components/Icons';
+import { ArrowBigRightDash } from '~/components/Icons';
 
 import { cn } from '~/lib/utils';
 
 import { useGlobalContext, type GlobalState } from '@/context/GlobalContext';
-import { convertExchangePointsToStorePoints } from '@/utils/functions';
-import { Large } from '~/components/ui/typography';
+
+import { fetchStoresById, type StoreData } from '@/utils/crud';
+
+function convertToStorePoints(amount: string, rate: number) {
+    return parseFloat(amount) * 100 / rate;
+}
+
+function convertToExchangePoints(amount: string, rate: number) {
+    if (parseFloat(amount) > 0) return rate * 100 / parseFloat(amount);
+
+    return 0;
+}
+
 
 interface ExchangeDialogProps {
     pointsData: GlobalState['userData']['points'][number]
+    children: React.ReactNode
 }
 
-export default function ExchangeDialog({ pointsData }: ExchangeDialogProps) {
-    const { userData } = useGlobalContext() as GlobalState;
+export default function ExchangeDialog({ pointsData, children }: ExchangeDialogProps) {
+    const { userData, convertPoints } = useGlobalContext() as GlobalState;
     const [amount, setAmount] = useState<string>(''); // number of LoyaltyExchange points to be converted
     const [newStorePoints, setNewStorePoints] = useState<string>(''); // number of store points to receive
-    const [isValid, setIsValid] = useState<boolean>(true);
+    const [rewardData, setRewardData] = useState<StoreData['reward_types'] | null>();
+    const [isValid, setIsValid] = useState<boolean>(true); // is valid if 'amount' is less than available points
+
+    async function fetchRewardData(store_id: string) {
+        if (rewardData) return;
+
+        fetchStoresById([store_id])
+        .then((res) => {
+            if (res) setRewardData(res[0].reward_types);
+        });
+    }
 
     useEffect(() => {
         // adjust store points when user changes amount
-        const newValue = parseFloat(amount) * 100 / pointsData.stores!.points_rate;
+        const newValue = convertToStorePoints(amount, pointsData.stores!.points_rate);
         setNewStorePoints((newValue || '').toString());
 
         if (Number(amount) > userData.points_balance) {
@@ -43,13 +66,13 @@ export default function ExchangeDialog({ pointsData }: ExchangeDialogProps) {
         } else {
             setIsValid(true);
         }
-    }, [amount]);
+    }, [amount, pointsData.stores]);
 
     useEffect(() => {
         // set amount when user changes store points
-        const newValue = parseFloat(amount) * 100 / pointsData.stores!.points_rate;
+        const newValue = convertToExchangePoints(amount, pointsData.stores!.points_rate);
         setNewStorePoints((newValue || '').toString());
-    }, [newStorePoints]);
+    }, [newStorePoints, pointsData.stores]);
 
     const available = useMemo(() => {
         // available balance
@@ -61,28 +84,38 @@ export default function ExchangeDialog({ pointsData }: ExchangeDialogProps) {
         return pointsData.balance + Number(newStorePoints);
     }, [pointsData.balance, newStorePoints]);
 
-    const onChangeAmount = (s: string) => {
+    const onChangeAmount = useCallback((s: string) => {
         setAmount(s);
-    };
+    }, [setAmount]);
 
-    const onChangeStorePoints = (s: string) => {
+    const onChangeStorePoints = useCallback((s: string) => {
         setNewStorePoints(s);
-    };
+    }, [setNewStorePoints]);
 
-    const onSubmit = () => {
-        // convertExchangePointsToStorePoints(balanceRemaining, newStoreBalance, pointsData, userData);
+    const onSubmit = useCallback(async () => {
+        convertPoints(parseFloat(amount), pointsData.stores!.points_rate, pointsData.store_id)
+        .then(() => reset());
+    }, [amount, pointsData]);
+
+    const reset = () => {
+        setAmount('');
+        setNewStorePoints('');
+        setRewardData(null);
+        setIsValid(true);
     }
 
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <ArrowRightLeft size={24} color='black' />
+                <TouchableOpacity onPress={() => fetchRewardData(pointsData.store_id)}>
+                    {children}
+                </TouchableOpacity>
             </DialogTrigger>
             <DialogContent className='max-h-[480px] round-full m-2'>
                 <ScrollView keyboardShouldPersistTaps='handled'>
                     <DialogHeader>
                         <DialogTitle>
-                            Exchange Points
+                            Convert Points
                         </DialogTitle>
                         <DialogDescription className='flex flex-col gap-4 mb-3'>
                             <Text>Convert LoyaltyExchange points to {pointsData.stores!.name} points</Text>
@@ -121,10 +154,26 @@ export default function ExchangeDialog({ pointsData }: ExchangeDialogProps) {
                             </View>
                         </View>
 
-                        <View className='w-full flex flex-col items-center gap-2'>
+                        <View className='w-full flex flex-col items-center gap-6'>
                             <Large>Next Reward</Large>
 
-                            <Progress value={50} className='w-[160px] border border-slate-100' />
+                            {rewardData? (
+                                <>
+                                    {rewardData.map((reward, index) => (
+                                    <View key={`reward-${index}`} className='w-full flex flex-row items-start justify-between'>
+                                        <Large>{reward.title}</Large>
+
+                                        <View className='flex flex-col items-end gap-2'>
+                                            <Progress value={50} className='w-[160px] border border-slate-100' />
+
+                                            <Text>{Math.max(reward.cost - totalStorePoints, 0)} points to go!</Text>
+                                        </View>
+                                    </View>
+                                    ))}
+                                </>
+                            ) : (
+                                <View></View>
+                            )}                            
                         </View>
                     </View>
                     <DialogFooter className='flex items-end'>
