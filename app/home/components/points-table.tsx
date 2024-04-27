@@ -15,23 +15,24 @@ import {
 import { Card, CardContent } from '~/components/ui/card';
 import { Text } from '~/components/ui/text';
 import { Large } from '~/components/ui/typography';
-import { ArrowRightLeft } from '~/components/Icons';
 
 import { shadowStyles } from '~/lib/constants';
 
-import ExchangeDialog from './exchange-dialog';
-
 import type { UserData } from '@/utils/crud';
 
-interface RewardsTableProps {
+interface PointsTableProps {
     data: UserData['points']
 }
 
-export default function PointsTable({ data }: RewardsTableProps) {
+export default function PointsTable({ data }: PointsTableProps) {
     const { width } = useWindowDimensions();
 
+    const sortedData = useMemo(() => {
+        return data.sort((a, b) => b.balance - a.balance);
+    }, [data]);
+
     return (
-        <ScrollView contentContainerStyle={{ width: '100%', minHeight: 220 }} horizontal bounces={false} showsHorizontalScrollIndicator={true}>
+        <ScrollView contentContainerStyle={{ width: '100%', minHeight: 180 }} horizontal bounces={false} showsHorizontalScrollIndicator={false}>
             <Card className='w-full py-2' style={shadowStyles.card}>
                 <CardContent className='mx-auto'>
                     <Table aria-labelledby='points-table'>
@@ -47,23 +48,18 @@ export default function PointsTable({ data }: RewardsTableProps) {
                         </TableHeader>
                         <TableBody>
                             <FlashList
-                                data={data}
+                                data={sortedData}
                                 estimatedItemSize={45}
                                 showsVerticalScrollIndicator={false}
                                 renderItem={({ item, index }) => (
                                     <TableRow key={`points-table-row-${index}`}>
                                         <TableCell style={{ width: width / 2 }}>
                                             <Link href={`../../store/${item.store_id}`}>
-                                                <Large className='max-h-[50px] text-yellow-400 font-display-semibold underline truncate'>{item.stores!.name}</Large>
+                                                <Text className='max-h-[50px] text-yellow-400 underline truncate'>{item.stores!.name}</Text>
                                             </Link>
                                         </TableCell>
-                                        <TableCell className='w-full flex items-center justify-center' style={{ width: width / 2 }}>
-                                            <ExchangeDialog pointsData={item}>
-                                                <View className='flex flex-row items-center justify-center gap-1'>
-                                                    <Large>{item.balance.toLocaleString()}</Large>
-                                                    <ArrowRightLeft size={16} color='black' />
-                                                </View>
-                                            </ExchangeDialog>
+                                        <TableCell style={{ width: width / 2 }}>
+                                            <Large>{item.balance.toLocaleString()}</Large>
                                         </TableCell>
                                     </TableRow>
                                     )

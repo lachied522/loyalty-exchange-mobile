@@ -7,6 +7,8 @@ import { H1, H2, H3, Large } from "~/components/ui/typography";
 
 import { X } from '~/components/Icons';
 
+import { useGlobalContext, type GlobalState } from '@/context/GlobalContext';
+
 import type { Reward } from '@/types/helpers';
 
 interface RewardProps {
@@ -16,6 +18,7 @@ interface RewardProps {
 const MAX_TIME = 30;
 
 export default function RewardModal({ rewardData }: RewardProps) {
+    const { storeData, dispatch } = useGlobalContext() as GlobalState;
     const [isVisible, setIsVisible] = useState<boolean>(true); // default to open
     const [timeElapsed, setTimeElapsed] = useState<number>(0);
     const [currentTime, setCurrentTime] = useState<Date>(new Date());
@@ -24,6 +27,11 @@ export default function RewardModal({ rewardData }: RewardProps) {
          if (timeElapsed > MAX_TIME) {
             // clear intervals and close model
             setIsVisible(false);
+            // update state
+            dispatch({
+                type: 'REDEEM_REWARD',
+                payload: rewardData
+            })
          }
     }, [timeElapsed]);
 
@@ -49,7 +57,7 @@ export default function RewardModal({ rewardData }: RewardProps) {
     return (
         <Modal
             animationType="slide"
-            transparent={true}
+            transparent={false}
             visible={isVisible}
             onRequestClose={() => setIsVisible(false)}
         >
@@ -59,18 +67,16 @@ export default function RewardModal({ rewardData }: RewardProps) {
                 </Button>
 
                 <View className='w-full flex items-center gap-6'>
-                    <H2>Store Name</H2>
+                    <H2>{storeData[rewardData.reward_types!.store_id].name}</H2>
 
-                    <Progress value={100 * timeElapsed / MAX_TIME} className='w-[200px] bg-black' />
+                    <Progress value={100 * timeElapsed / MAX_TIME} className='w-[200px] bg-black border border-black' />
 
-                    <H3>{currentTime.toLocaleTimeString()}</H3>
+                    <H3>Time remaining {MAX_TIME - timeElapsed}s</H3>
                 </View>
 
-                <View>
-                    <H1>
-                        One Free Coffee
-                    </H1>
-                </View>
+                <H1>
+                    {rewardData.reward_types!.title}
+                </H1>
             </View>
         </Modal>
     )

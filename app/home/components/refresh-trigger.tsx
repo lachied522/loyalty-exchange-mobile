@@ -25,7 +25,7 @@ export default function RefreshTrigger() {
                 disabled={isLoading}
                 className={cn('w-full h-full')}
             >
-                <RefreshCw size={30} color='rgb(15 23 42)' />
+                <RefreshCw size={36} color='rgb(15 23 42)' />
             </Button>
         </View>
     )

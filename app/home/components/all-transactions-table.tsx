@@ -1,6 +1,7 @@
 // https://rnr-docs.vercel.app/components/table/
-import { useMemo } from 'react';
-import { ScrollView, View, useWindowDimensions } from 'react-native';
+import { View, useWindowDimensions } from 'react-native';
+import { Link } from 'expo-router';
+
 import { FlashList } from '@shopify/flash-list';
 
 import {
@@ -28,73 +29,69 @@ function formatDate(dateString: string) {
   const date = new Date(dateString);
   const day = date.getDate().toString().padStart(2, '0');
   const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Note: January is 0 in JavaScript
-  const year = date.getFullYear().toString();
-  return `${day}/${month}/${year}`;
+  return `${day}/${month}`;
 }
 
 function formatAmount(amount: number) {
-  return USDollar.format(amount);
+  return USDollar.format(Math.abs(amount));
 }
 
 export default function AllTransactionsTable() {
-    const { userData } = useGlobalContext() as GlobalState;
+    const { userData, storeData } = useGlobalContext() as GlobalState;
     const { width } = useWindowDimensions();
 
     return (
-      <ScrollView contentContainerStyle={{ minHeight: 240 }} horizontal bounces={false} showsHorizontalScrollIndicator={true}>
-        <Card className='h-[280px] py-2' style={shadowStyles.card}>
-          <CardContent>
-            <Table aria-labelledby='transctions-table'>
-              <TableHeader>
-                <TableRow>
-                  <TableHead style={{ width: width / 5 }}>
-                    <Text className='font-display-medium'>Date</Text>
-                  </TableHead>
-                  <TableHead style={{ width: width / 5 }}>
-                    <Text className='font-display-medium'>Store</Text>
-                  </TableHead>
-                  <TableHead style={{ width: width / 5 }}>
-                    <Text className='font-display-medium'>Amount</Text>
-                  </TableHead>
-                  <TableHead style={{ width: width / 5 }}>
-                    <Text className='font-display-medium'>Points</Text>
-                  </TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                <FlashList
-                  data={userData.transactions}
-                  estimatedItemSize={45}
-                  showsVerticalScrollIndicator={true}
-                  renderItem={({ item: transaction, index }) => {
-                    return (
-                      <TableRow key={transaction.id}>
-                        <TableCell style={{ width: width / 5 }}>
-                          <Text>{formatDate(transaction.date)}</Text>
-                        </TableCell>
-                        <TableCell style={{ width: width / 5 }}>
-                          <Text>{transaction.store_id}</Text>
-                        </TableCell>
-                        <TableCell style={{ width: width / 5 }}>
+      <Card className='w-full py-2'>
+        <CardContent>
+          <Table aria-labelledby='transctions-table'>
+            <TableHeader>
+              <TableRow>
+                <TableHead style={{ width: width / 5 }}>
+                  <Text className='font-display-medium'>Date</Text>
+                </TableHead>
+                <TableHead style={{ width: width / 3 }}>
+                  <Text className='font-display-medium'>Store</Text>
+                </TableHead>
+                <TableHead style={{ width: width / 4 }}>
+                  <Text className='font-display-medium'>Amount</Text>
+                </TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              <FlashList
+                data={userData.transactions.slice(0, 10)}
+                estimatedItemSize={100}
+                showsVerticalScrollIndicator={false}
+                renderItem={({ item: transaction, index }) => {
+                  return (
+                    <TableRow key={transaction.id}>
+                      <TableCell style={{ width: width / 5 }}>
+                        <Text>{formatDate(transaction.date)}</Text>
+                      </TableCell>
+                      <TableCell style={{ width: width / 3 }}>
+                        <Link href={`../../store/${transaction.store_id}`}>
+                          <Text className='text-yellow-400 underline'>{storeData[transaction.store_id].name}</Text>
+                        </Link>
+                      </TableCell>
+                      <TableCell style={{ width: width / 4 }}>
+                        <View className='flex flex-col gap-2'>
                           <Text>{formatAmount(transaction.amount)}</Text>
-                        </TableCell>
-                        <TableCell style={{ width: width / 5 }}>
-                          <Text>{transaction.points}</Text>
-                        </TableCell>
-                      </TableRow>
-                    );
-                  }}
-                  ListEmptyComponent={() => (
-                    <View className='flex flex-col items-center justify-center gap-2 p-6'>
-                        <Large>Nothing here yet.</Large>
-                        <Text>When you shop here your recent transactions will appear here.</Text>
-                    </View>
-                )}
-                />
-              </TableBody>
-            </Table>
-          </CardContent>
-        </Card>
-      </ScrollView>
+                          <Text>+{transaction.points} points</Text>
+                        </View>
+                      </TableCell>
+                    </TableRow>
+                  );
+                }}
+                ListEmptyComponent={() => (
+                  <View className='flex flex-col items-center justify-center gap-2 p-6'>
+                      <Large>Nothing here yet.</Large>
+                      <Text>When you shop here your recent transactions will appear here.</Text>
+                  </View>
+              )}
+              />
+            </TableBody>
+          </Table>
+        </CardContent>
+      </Card>
     )
 }

@@ -3,7 +3,7 @@ import { Stack } from "expo-router";
 
 import { createBottomTabNavigator, type BottomTabBarButtonProps } from '@react-navigation/bottom-tabs';
 
-import { CircleUserRound, DollarSign, HomeIcon } from "lucide-react-native";
+import { CircleUserRound, HomeIcon } from "lucide-react-native";
 
 import { Text } from '~/components/ui/text';
 import { shadowStyles } from '~/lib/constants';

@@ -1,12 +1,13 @@
+import { View } from "react-native";
 import { Link } from "expo-router";
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "~/components/ui/card";
+import { Card, CardContent } from "~/components/ui/card";
 import { Button } from "~/components/ui/button";
-import { Large } from "~/components/ui/typography";
+import { H3, Large } from "~/components/ui/typography";
 
-import { shadowStyles } from "~/lib/constants";
-
+import { useGlobalContext, type GlobalState } from "~/app/context/GlobalContext";
 import { useMainContext, type MainState } from "../context/MainContext";
+
 import RewardTrigger from "./reward-trigger";
 
 import type { Reward } from "@/types/helpers";
@@ -16,23 +17,18 @@ interface RewardCardProps {
 }
 
 export default function RewardCard({ data }: RewardCardProps) {
+    const { storeData } = useGlobalContext() as GlobalState;
     const { setMyRewardsIsOpen } = useMainContext() as MainState;
 
     return (
-        <Card className='w-[180px]' style={shadowStyles.card}>
-            <CardHeader className='flex flex-col items-center mb-0'>
-                <CardTitle>
-                    {data.reward_types?.title}
-                </CardTitle>
-                <CardDescription>
-                    <Link href={`../../store/${data.reward_types?.store_id}`} asChild>
-                        <Button onPress={() => setMyRewardsIsOpen(false)}>
-                            <Large className='w-full text-yellow-400 font-display-semibold underline truncate'>Test Store</Large>
-                        </Button>
-                    </Link>
-                </CardDescription>
-            </CardHeader>
-            <CardContent className='flex flex-col'>
+        <Card className='w-[180px]'>
+            <CardContent className='flex flex-col items-center gap-2 p-6'>
+                <H3>{data.reward_types?.title}</H3>
+                <Link href={`../../store/${data.reward_types?.store_id}`} asChild>
+                    <Button onPress={() => setMyRewardsIsOpen(false)}>
+                        <Large className='text-yellow-400 font-display-semibold underline'>{storeData[data.reward_types!.store_id].name}</Large>
+                    </Button>
+                </Link>
                 <RewardTrigger rewardData={data} />
             </CardContent>
         </Card>

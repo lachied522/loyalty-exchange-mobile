@@ -3,6 +3,7 @@ import { Text, View } from 'react-native';
 import { TextClassContext } from '~/components/ui/text';
 import type { TextRef, ViewRef } from '~/components/primitives/types';
 import { cn } from '~/lib/utils';
+import { shadowStyles } from '~/lib/constants';
 
 const Card = React.forwardRef<ViewRef, React.ComponentPropsWithoutRef<typeof View>>(
   ({ className, ...props }, ref) => (
@@ -12,6 +13,7 @@ const Card = React.forwardRef<ViewRef, React.ComponentPropsWithoutRef<typeof Vie
         'rounded-lg border border-border bg-white shadow-sm shadow-foreground/10',
         className
       )}
+      style={shadowStyles.card}
       {...props}
     />
   )

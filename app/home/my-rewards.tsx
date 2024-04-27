@@ -5,12 +5,10 @@ import { Button } from '~/components/ui/button';
 import { H1, Large } from "~/components/ui/typography";
 import { X } from '~/components/Icons';
 
-import { shadowStyles } from "~/lib/constants";
-
 import { useMainContext, type MainState } from "./context/MainContext";
 
 import RewardsList from './components/rewards-list';
-
+import RedeemedTable from './components/redeemed-table';
 
 export default function MyRewards() {
     const { setMyRewardsIsOpen } = useMainContext() as MainState;
@@ -36,7 +34,7 @@ export default function MyRewards() {
                 </View>
 
                 <ScrollView
-                    contentContainerStyle={{ height: '100%', padding: 24, gap: 12 }}
+                    contentContainerStyle={{ paddingVertical: 20, paddingHorizontal: 16, gap: 12 }}
                     keyboardShouldPersistTaps='handled'
                 >
                     <View className='gap-4'>
@@ -48,9 +46,8 @@ export default function MyRewards() {
                     <View className='gap-4'>
                         <Large>Recently Redeemed</Large>
 
-                        <RewardsList />
+                        <RedeemedTable />
                     </View>
-
                 </ScrollView>
             </View>
         </Modal>

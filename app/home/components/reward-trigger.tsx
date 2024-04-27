@@ -30,23 +30,27 @@ export default function RewardTrigger({ rewardData }: RewardProps) {
 
     const onRedeem = async () => {
         setIsDisabled(true);
-        await redeemReward(rewardData)
+        return await redeemReward(rewardData)
         .then(() => setIsOpen(true))
         .finally(() => setIsDisabled(false));
     }
 
     const onPress = () => {
-        Alert.alert('Are you sure?', 'This reward can only be opened once. Make sure you are ready to redeem this reward now.', [
-            {
-                text: 'Cancel'
-            },
-            {
-                text: 'OK',
-                onPress: () => {
-                    onRedeem();
+        Alert.alert(
+            'Are you sure?',
+            'This reward can only be opened once. Make sure you are ready to redeem this reward now.',
+            [
+                {
+                    text: 'Cancel'
                 },
-            }
-        ])
+                {
+                    text: 'OK',
+                    onPress: () => {
+                        onRedeem();
+                    },
+                }
+            ]
+        )
     }
 
     return (

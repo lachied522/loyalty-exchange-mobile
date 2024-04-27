@@ -1,17 +1,15 @@
 import { useState, useEffect } from 'react';
-import { SafeAreaView, View } from 'react-native';
+import { View } from 'react-native';
 import { Stack, Link, useLocalSearchParams } from 'expo-router';
-
-import { ChevronLeft } from "lucide-react-native";
 
 import { Button } from "~/components/ui/button";
 import { Large } from '~/components/ui/typography';
-
-import { shadowStyles } from '~/lib/constants';
+import { ChevronLeft } from "~/components/Icons";
 
 import { fetchStoresById, type StoreData } from '@/utils/crud';
 
 import Store from './components/store';
+import NotFoundScreen from '~/app/+not-found';
 
 export default function StoreIDPage() {
     const { storeID } = useLocalSearchParams();
@@ -37,19 +35,19 @@ export default function StoreIDPage() {
     }, []);
 
     return (
-        <SafeAreaView>
+        <>
             <Stack.Screen
                 options={{
                     title: data? data.name: '',
                     headerLeft: () => (
-                        <View className='h-12 w-12 flex items-center justify-center rounded-[12] left-0' style={shadowStyles.button}>
+                        <View className='h-12 w-12 flex items-center justify-center rounded-[12] left-0'>
                             <Link href='/home/' asChild>
                                 <Button>
                                     <ChevronLeft size={30} color='rgb(15 23 42)'/>
                                 </Button>
                             </Link>
                         </View>
-                    )
+                    ),
                 }}
             />
             {isLoading ? (
@@ -59,10 +57,8 @@ export default function StoreIDPage() {
             ) : data ? (
                 <Store storeData={data} />
             ) : (
-            <View>
-                <Large>Not Found</Large>
-            </View>
+            <NotFoundScreen />
             )}
-        </SafeAreaView>
+        </>
     )
 }
