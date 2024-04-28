@@ -4,7 +4,8 @@ import type { Session } from "@supabase/supabase-js";
 
 import { MainReducer, type Action } from "./MainReducer";
 
-import { refreshUserData, setRewardRedeemed, convertToStorePoints } from "@/utils/functions";
+import { setRewardRedeemed, convertToStorePoints } from "@/utils/functions";
+import { refreshUserData } from "@/utils/fetching";
 
 import { fetchUserData, type UserData, type StoreData } from "@/utils/crud";
 import type { Reward } from "@/types/helpers";
@@ -48,8 +49,6 @@ export default function MainContextProvider({
 
     const refresh = useCallback(
         async () => {
-            // if (!session) return Promise.reject('user not logged in');
-
             return await refreshUserData()
             .then((hasNewData) => {
                 if (hasNewData) {

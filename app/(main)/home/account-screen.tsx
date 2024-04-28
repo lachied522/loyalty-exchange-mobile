@@ -11,11 +11,10 @@ import { supabase } from "@/lib/supabase";
 export default function Account() {
 
     const onLogout = () => {
-        supabase.auth.signOut();
-
-        console.log('logged out')
-
-        router.replace('/welcome/');
+        supabase.auth.signOut()
+        .then(() => {
+            router.replace('/login/');
+        });
     }
 
     return (

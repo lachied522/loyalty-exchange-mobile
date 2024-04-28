@@ -14,7 +14,7 @@ import { fetchUserData, type UserData } from '@/utils/crud';
 
 import { PortalHost } from '~/components/primitives/portal';
 
-import { NAV_THEME } from '~/lib/constants';
+import { NAV_THEME } from '~/constants/constants';
 
 import GlobalContextProvider from './context/GlobalContext';
 

@@ -21,7 +21,7 @@ export default function PointsTable({ data }: PointsTableProps) {
 
     return (
         <Card>
-            <CardContent>
+            <CardContent className='min-h-[100px] py-2'>
                 <FlashList
                     data={sortedData}
                     estimatedItemSize={45}

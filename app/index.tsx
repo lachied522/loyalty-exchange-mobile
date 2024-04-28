@@ -6,7 +6,7 @@ export default function Index() {
     const { session } = useGlobalContext() as GlobalState;
 
     if (!session) {
-        return <Redirect href='/welcome/' />
+        return <Redirect href='/login/' />
     }
 
     return <Redirect href='/home/' />

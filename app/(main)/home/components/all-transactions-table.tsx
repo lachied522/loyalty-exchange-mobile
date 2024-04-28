@@ -25,7 +25,7 @@ export default function AllTransactionsTable() {
 
     return (
       <Card>
-        <CardContent>
+        <CardContent className='min-h-[100px] py-2'>
             <FlashList
               data={userData.transactions.slice(0, 10)}
               estimatedItemSize={100}

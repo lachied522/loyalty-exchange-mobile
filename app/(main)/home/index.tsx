@@ -6,7 +6,7 @@ import { createBottomTabNavigator, type BottomTabBarButtonProps } from '@react-n
 import { CircleUserRound, HomeIcon } from "lucide-react-native";
 
 import { Text } from '~/components/ui/text';
-import { shadowStyles } from '~/lib/constants';
+import { shadowStyles } from '~/constants/constants';
 
 import { useMainContext, type MainState } from "../context/MainContext";
 

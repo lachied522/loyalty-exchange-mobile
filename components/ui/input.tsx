@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Keyboard, TextInput, TouchableWithoutFeedback } from 'react-native';
 
-import { cn } from '~/lib/utils';
+import { cn } from '~/components/utils';
 
 const Input = React.forwardRef<
   React.ElementRef<typeof TextInput>,

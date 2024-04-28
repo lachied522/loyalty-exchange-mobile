@@ -86,12 +86,7 @@ export default function Onboarding() {
                 </Button>
             </View>
 
-            <View className='w-full flex flex-row justify-between'>
-              <Link href='/welcome/' asChild>
-                <Button>
-                  <Text>Back</Text>
-                </Button>
-              </Link>
+            <View className='w-full flex flex-row justify-end'>
               <Link href='/home/' asChild>
                 <Button disabled={!clientAccessToken}>
                     <Text>Next</Text>

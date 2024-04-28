@@ -1,19 +1,10 @@
 import { useMemo } from 'react';
-import { TouchableOpacity, View, useWindowDimensions } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 import { Link } from 'expo-router';
 
 import { FlashList } from '@shopify/flash-list';
 
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from '~/components/ui/table';
 import { Card, CardContent } from '~/components/ui/card';
-import { Button } from '~/components/ui/button';
 import { Large } from '~/components/ui/typography';
 import { Text } from '~/components/ui/text';
 
@@ -30,7 +21,7 @@ export default function RedeemedTable() {
 
     return (
         <Card>
-            <CardContent>
+            <CardContent className='min-h-[100px]'>
                 <View className='w-full flex flex-row justify-between border-b border-slate-400 pb-4'>
                     <Text className='font-display-medium'>When/Where?</Text>
                     <Text className='font-display-medium'>Reward</Text>

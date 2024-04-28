@@ -17,8 +17,7 @@ import { Input } from '~/components/ui/input';
 import { Large } from '~/components/ui/typography';
 import { Text } from '~/components/ui/text';
 import { ArrowBigRightDash } from '~/components/Icons';
-
-import { cn } from '~/lib/utils';
+import { cn } from '~/components/utils';
 
 import { fetchStoresById, type StoreData } from '@/utils/crud';
 

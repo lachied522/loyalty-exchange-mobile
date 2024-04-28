@@ -9,32 +9,9 @@ import {
     type StoreData
 } from "./crud";
 
-import { fetchUserTransactions } from "./transactions";
-
 import type { Transaction } from "@/types/basiq";
 import type { TablesInsert } from "@/types/supabase";
 import type { Reward } from "@/types/helpers";
-import { BACKEND_URL } from "@env";
-import { makeAuthenticatedRequest } from "./server";
-
-export async function fetchAppData() {
-    // step 1: fetch user data
-    const userData = await fetchUserData();
-
-    // step 2: check if any recent transactions
-    const recentTransactions = await fetchUserTransactions(userData['basiq_user_id'], 10);
-
-    // step 3: filter out transactions based on time last updated
-    const lastUpdated = new Date(userData.last_updated);
-    const newTransactions = recentTransactions.filter((transaction) => new Date(transaction.postDate) > lastUpdated);
-
-    // step 4: populate store data
-
-    return {
-        ...userData,
-        newTransactions
-    };
-}
 
 export async function createTransactionRecords(
     transactions: Transaction[],
