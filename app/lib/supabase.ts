@@ -7,6 +7,8 @@ import { SUPABASE_URL, SUPABASE_ANON_KEY } from "@env";
 
 import type { Database } from '@/types/supabase';
 
+console.log(SUPABASE_ANON_KEY);
+
 export const supabase = createClient<Database>(SUPABASE_URL, SUPABASE_ANON_KEY, {
   auth: {
     storage: AsyncStorage,

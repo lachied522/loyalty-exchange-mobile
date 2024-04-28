@@ -21,7 +21,7 @@ const TableHeader = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <TablePrimitive.Header
     ref={ref}
-    className={cn('border-border [&_tr]:border-b', className)}
+    className={cn('border-slate-400 [&_tr]:border-b', className)}
     {...props}
   />
 ));
@@ -59,7 +59,7 @@ const TableRow = React.forwardRef<
   <TablePrimitive.Row
     ref={ref}
     className={cn(
-      'flex-row border-border border-b web:transition-colors web:hover:bg-muted/50 web:data-[state=selected]:bg-muted',
+      'flex-row border-slate-300 border-b web:transition-colors web:hover:bg-muted/50 web:data-[state=selected]:bg-muted',
       className
     )}
     {...props}

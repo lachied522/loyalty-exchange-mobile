@@ -5,9 +5,9 @@ import { useGlobalContext, type GlobalState } from "./context/GlobalContext";
 export default function Index() {
     const { session } = useGlobalContext() as GlobalState;
 
-    // if (!session) {
-    //     return <Redirect href='/screens/welcome' />
-    // }
+    if (!session) {
+        return <Redirect href='/welcome/' />
+    }
 
     return <Redirect href='/home/' />
 }

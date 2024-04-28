@@ -2,7 +2,7 @@ import { Stack } from "expo-router";
 
 import StartContextProvider from "./context/StartContext";
 
-export default function StartLayout({ children }: { children: React.ReactNode }) {
+export default function StartLayout() {
     return (
         <StartContextProvider>
             <Stack.Screen 

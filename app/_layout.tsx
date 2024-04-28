@@ -45,8 +45,6 @@ SplashScreen.preventAutoHideAsync();
 
 export default function Layout() {
   const [session, setSession] = useState<Session | null>(null);
-  const [userData, setUserData] = useState<UserData | null>(null);
-  const [isLoaded, setIsLoaded] = useState<boolean>(false);
 
   // load fonts
   const [fontsLoaded, fontError] = useFonts({
@@ -57,42 +55,26 @@ export default function Layout() {
 
   // get user session
   useEffect(() => {
-    let isMounted = false; // prevent useEffect from triggering twice
-
     supabase.auth.getSession().then(({ data: { session } }) => {
-        newSession(session);
+        setSession(session);
     });
 
     supabase.auth.onAuthStateChange((_event, session) => {
-        newSession(session);
-    });
-
-    async function newSession(session: Session | null) {
         setSession(session);
-        if (!isMounted) {
-          // fetch user data
-          const data = await fetchUserData();
-          // update state
-          setUserData(data);
-        }
-        // set isLoaded state to true
-        setIsLoaded(true);
-        // 5. prevent effect from running again
-        isMounted = true;
-    }
+    });
   }, []);
 
   useEffect(() => {
-    if (isLoaded && (fontsLoaded || fontError)) SplashScreen.hideAsync();
-}, [isLoaded, fontsLoaded, fontError]);
+    if (fontsLoaded || fontError) SplashScreen.hideAsync();
+}, [fontsLoaded, fontError]);
 
-  if (!(isLoaded && userData && (fontsLoaded || fontError))) return null;
+  if (!(fontsLoaded || fontError)) return null;
 
   return (
     <>
       <ThemeProvider value={LIGHT_THEME}>
-        <GlobalContextProvider session={session} initialState={userData}>
-              <Stack />
+        <GlobalContextProvider session={session}>
+            <Stack />
         </GlobalContextProvider>
       </ThemeProvider>
       <PortalHost />

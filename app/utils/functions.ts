@@ -14,7 +14,8 @@ import { fetchUserTransactions } from "./transactions";
 import type { Transaction } from "@/types/basiq";
 import type { TablesInsert } from "@/types/supabase";
 import type { Reward } from "@/types/helpers";
-
+import { BACKEND_URL } from "@env";
+import { makeAuthenticatedRequest } from "./server";
 
 export async function fetchAppData() {
     // step 1: fetch user data

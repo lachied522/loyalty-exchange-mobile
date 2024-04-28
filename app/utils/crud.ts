@@ -7,17 +7,17 @@ import type { ResolvedPromise } from "@/types/helpers";
 
 export async function fetchUserData() {
     // get user session
-    // const { data: { session } } = await supabase.auth.getSession();
+    const { data: { session } } = await supabase.auth.getSession();
 
-    // if (!session) {
-    //     throw new Error('User not logged in');
-    // }
+    if (!session) {
+        throw new Error('User not logged in');
+    }
 
     // fetch data from Supabase
     const { data, error } = await supabase
     .from('users')
     .select('*, points(*, stores(*)), rewards(*, reward_types(*)), transactions(*)')
-    .eq('id', '1e29fa1b-1c03-4099-8f2e-63bb3ef0ae2a'); // TODO: use actual user id
+    .eq('id', session.user.id);
 
     if (error) {
         console.log(error);
@@ -39,16 +39,16 @@ export async function fetchUserData() {
 
 export async function updateUserRecord(record: TablesUpdate<'users'>) {
     // get user session
-    // const { data: { session } } = await supabase.auth.getSession();
+    const { data: { session } } = await supabase.auth.getSession();
 
-    // if (!session) {
-    //     throw new Error('User not logged in');
-    // }
+    if (!session) {
+        throw new Error('User not logged in');
+    }
 
     const { data, error } = await supabase
     .from('users')
     .update(record)
-    .eq('id', '1e29fa1b-1c03-4099-8f2e-63bb3ef0ae2a') // TODO!
+    .eq('id', session.user.id)
     .select('*, points(*), rewards(*), transactions(*)'); 
     
     if (error) {
@@ -99,16 +99,16 @@ export async function insertTransactions(records: TablesInsert<'transactions'>[]
 
 export async function upsertPointsRecords(records: Omit<TablesInsert<'points'>, 'user_id'>[]) {
     // get user session
-    // const { data: { session } } = await supabase.auth.getSession();
+    const { data: { session } } = await supabase.auth.getSession();
 
-    // if (!session) {
-    //     throw new Error('User not logged in');
-    // }
+    if (!session) {
+        throw new Error('User not logged in');
+    }
 
     // add user user id to records
     const newRecords = records.map((record) => ({ 
         ...record,
-        user_id: '1e29fa1b-1c03-4099-8f2e-63bb3ef0ae2a' // TODO
+        user_id: session.user.id
     }));
 
     const { error } = await supabase

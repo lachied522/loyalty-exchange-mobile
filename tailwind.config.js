@@ -13,6 +13,7 @@ module.exports = {
         'display-semibold': 'Raleway-SemiBold'
       },
       colors: {
+        gold: '#FFD700',
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
         ring: 'hsl(var(--ring))',

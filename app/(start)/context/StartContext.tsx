@@ -23,7 +23,7 @@ export default function StartContextProvider({ children }: { children: React.Rea
     // could use reducer here but can't be bothered    
     const [session, setSession] = useState<Session | null>(null);
     const [username, setUsername] = useState('testUser');
-    const [email, setEmail] = useState('test@test.com'); // TODO: remove defaults!!!
+    const [email, setEmail] = useState('test@test.com');
     const [mobile, setMobile] = useState('0400527849');
 
     return (
