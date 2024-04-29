@@ -1,8 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Alert, View, SafeAreaView, ScrollView, TouchableOpacity } from 'react-native';
 import { Stack, Link, router } from 'expo-router';
 
-import { Button } from '~/components/ui/button';
 import { Input } from '~/components/ui/input';
 import { Text } from '~/components/ui/text';
 import { H1 } from '~/components/ui/typography';
@@ -13,19 +12,20 @@ import { supabase } from '@/lib/supabase';
 import { useStartContext, type StartState } from '../context/StartContext';
 
 export default function Signup() {
-    const { email, mobile, setEmail, setMobile } = useStartContext() as StartState;
+    const { email, mobile, setEmail, setMobile, setSession } = useStartContext() as StartState;
     const [password, setPassword] = useState<string>('');
     const [firstName, setFirstName] = useState<string>('');
     const [lastName, setLastName] = useState<string>('');
     const [formErrors, setFormErrors] = useState<{ [field: string]: string }>({});
     const [formIsValid, setFormIsValid] = useState<boolean>(true);
-    const [loading, setLoading] = useState<boolean>(false);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
   
     const signUpWithEmail = async () => {
-      setLoading(true);
+      setIsLoading(true);
       const { data, error } = await supabase.auth.signUp({
         email: email,
         password: password,
+        phone: mobile,
         options: {
           data: {
             first_name: firstName,
@@ -36,10 +36,11 @@ export default function Signup() {
   
       if (error) {
         Alert.alert(error.message);
-        setLoading(false);
+        setIsLoading(false);
         return;
       };
-      
+
+      setSession(data.session);
       // navigate to onboarding page
       router.replace('/onboarding/');
     }
@@ -131,7 +132,8 @@ export default function Signup() {
                 <Input
                   onChangeText={(text) => setMobile(text)}
                   value={mobile}
-                  autoCapitalize={'none'}
+                  autoCapitalize='none'
+                  keyboardType='phone-pad'
                   className={cn('border-black', mobile.length === 0 && !formIsValid && 'border-red-400')}
                 />
               </View>
@@ -148,12 +150,16 @@ export default function Signup() {
               </View>
 
               <View className='w-full items-center bg-yellow-400 p-4 rounded-xl'>
+                {isLoading? (
+                <Text>Please wait...</Text>
+                ) : (
                 <TouchableOpacity
-                  disabled={loading}
+                  disabled={isLoading}
                   onPress={handleSubmit}
                 >
                   <Text>Sign Up</Text>
                 </TouchableOpacity>
+                )}
               </View>
 
               <View className='w-full flex items-center'>

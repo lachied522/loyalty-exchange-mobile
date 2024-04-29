@@ -16,9 +16,16 @@ export default function RefreshTrigger() {
 
     const onPress = async () => {
         setIsLoading(true);
+
         await refresh()
         .then(() => setIsLoading(false))
-        .then(() => setIsRefreshed(true))
+        .then(() => {
+            setIsRefreshed(true);
+            // set cooldown of 30s
+            setTimeout(() => {
+                setIsRefreshed(false);
+            }, 30000);
+        })
         .catch(() => setIsLoading(false));
     }
 
@@ -27,9 +34,12 @@ export default function RefreshTrigger() {
             className="w-16 h-16 flex items-center justify-center bg-white rounded-[18]"
             style={shadowStyles.button}
         >
+            {isRefreshed ? (
+            <Check size={32} color='rgb(187 247 208)' />
+            ) : (
             <Button
                 onPress={onPress}
-                disabled={isLoading || isRefreshed}
+                disabled={isLoading}
                 className='w-full h-full'
             >
                 <View className={cn('animate-none', !isRefreshed && isLoading && 'animate-spin')}>
@@ -40,6 +50,7 @@ export default function RefreshTrigger() {
                     )}
                 </View>
             </Button>
+        )}
         </View>
     )
 }
