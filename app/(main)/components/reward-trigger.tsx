@@ -13,33 +13,33 @@ import {
 import { Button } from '~/components/ui/button';
 import { Text } from '~/components/ui/text';
 
-import type { Reward } from '@/types/helpers';
+import type { Tables } from '@/types/supabase';
 
-import { useMainContext, type MainState } from '../../context/MainContext';
+import { useMainContext, type MainState } from '../context/MainContext';
 
 import RewardModal from "./reward-modal";
 
-
 interface RewardProps {
-    rewardData: Reward
+    rewardData: Tables<'reward_types'>
 }
 
 export default function RewardTrigger({ rewardData }: RewardProps) {
     const { redeemReward } = useMainContext() as MainState;
     const [isOpen, setIsOpen] = useState<boolean>(false); // render reward modal only once use has confirmed
-    const [isDisabled, setIsDisabled] = useState<boolean>(false); // disable open button after first click
+    const [isRedeemed, setIsRedeemed] = useState<boolean>(false); // disable open button after first click
 
     const onRedeem = async () => {
-        setIsDisabled(true);
+        setIsRedeemed(true);
+        setIsOpen(true);
         return await redeemReward(rewardData)
         .then(() => setIsOpen(true))
-        .finally(() => setIsDisabled(false));
+        .catch(() => setIsRedeemed(false));
     }
 
     const onPress = () => {
         Alert.alert(
             'Are you sure?',
-            'This reward can only be opened once. Make sure you are ready to redeem this reward now.',
+            'This reward can only be opened once. Make sure you are ready to present this reward.',
             [
                 {
                     text: 'Cancel'
@@ -58,12 +58,12 @@ export default function RewardTrigger({ rewardData }: RewardProps) {
         <View style={{ alignItems: 'center', justifyContent: 'center' }}>
             {isOpen && <RewardModal rewardData={rewardData} />}
 
-            {rewardData.redeemed ? (
-                <Button disabled={isDisabled} className='bg-slate-100'>
+            {isRedeemed ? (
+                <Button disabled={isRedeemed} className='bg-slate-100'>
                     <Text>Redeemed</Text>
                 </Button>
             ) : (
-                <Button onPress={onPress} disabled={isDisabled} className='bg-yellow-400'>
+                <Button onPress={onPress} disabled={isRedeemed} className='bg-yellow-400'>
                     <Text>Redeem</Text>
                 </Button>
             )}

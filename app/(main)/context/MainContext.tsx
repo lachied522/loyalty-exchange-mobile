@@ -42,7 +42,7 @@ export default function MainContextProvider({
     const [state, dispatch] = useReducer<typeof MainReducer>(MainReducer, initialState);
     // store data for each store that user has points for
     const [storeData, setStoreData] = useState<{ [store_id: string]: StoreData }>(
-        initialState.points.reduce((acc, obj) => ({ ...acc, [obj.store_id]: obj.stores}), {})
+        initialState.points.reduce((acc, obj) => ({ ...acc, [obj.store_id]: obj.stores }), {})
     );
     const [myRewardsIsOpen, setMyRewardsIsOpen] = useState<boolean>(false); // controls whether the My Rewards modal is open
     const [pointsExchangeIsOpen, setPointsExchangeIsOpen] = useState<boolean>(false); // controls whether the Points Exchange modal is open

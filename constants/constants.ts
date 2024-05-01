@@ -55,5 +55,18 @@ export const shadowStyles = StyleSheet.create({
     elevation: 1,
     borderWidth: 1,
     borderColor: 'rgba(27, 31, 35, 0.15)',
+  },
+  dashed: {
+    shadowColor: 'rgba(0, 0, 0, 0.16)',
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.50,
+    shadowRadius: 3,
+    elevation: 1,
+    borderWidth: 1,
+    borderColor: 'rgba(27, 31, 35, 0.15)',
+    borderStyle: 'dashed',
   }
 });

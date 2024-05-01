@@ -1,6 +1,5 @@
 // https://rnr-docs.vercel.app/components/table/
-import { useMemo } from 'react';
-import { ScrollView, View, useWindowDimensions } from 'react-native';
+import { View, useWindowDimensions } from 'react-native';
 import { FlashList } from '@shopify/flash-list';
 
 import {

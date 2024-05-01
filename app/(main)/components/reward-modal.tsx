@@ -5,8 +5,9 @@ import { Button } from '~/components/ui/button';
 import { Progress } from '~/components/ui/progress';
 import { H1, H2, H3, Large } from "~/components/ui/typography";
 import { X } from '~/components/Icons';
+import { shadowStyles } from '~/constants/constants';
 
-import { useMainContext, type MainState } from '../../context/MainContext';
+import { useMainContext, type MainState } from '../context/MainContext';
 
 import type { Reward } from '@/types/helpers';
 
@@ -14,8 +15,7 @@ interface RewardProps {
     rewardData: Reward
 }
 
-const MAX_TIME = 30;
-
+const MAX_TIME = 60;
 export default function RewardModal({ rewardData }: RewardProps) {
     const { storeData, dispatch } = useMainContext() as MainState;
     const [isVisible, setIsVisible] = useState<boolean>(true); // default to open
@@ -56,26 +56,39 @@ export default function RewardModal({ rewardData }: RewardProps) {
     return (
         <Modal
             animationType="slide"
-            transparent={false}
+            transparent={true}
             visible={isVisible}
             onRequestClose={() => setIsVisible(false)}
         >
-            <View className='flex flex-1 flex-col items-center justify-center bg-yellow-400 gap-12 relative'>
-                <Button className='absolute right-0 top-12' onPress={() => setIsVisible(false)}>
-                    <X size={48} color='black' />
-                </Button>
+            <View className='flex flex-1 items-center justify-end bg-gray-400/60'>
 
-                <View className='w-full flex items-center gap-6'>
-                    <H2>{storeData[rewardData.reward_types!.store_id].name}</H2>
+                <View className='w-full flex flex-col items-center'>
+                    <View className='w-full h-[80vh] flex flex-col items-center justify-center bg-yellow-200 border-t relative' style={shadowStyles.dashed}>
+                        <View className='w-full flex-row justify-end absolute top-6 right-0'>
+                            <Button className='' onPress={() => setIsVisible(false)}>
+                                <X size={48} color='black' />
+                            </Button>
+                        </View>
 
-                    <Progress value={100 * timeElapsed / MAX_TIME} className='w-[200px] bg-black border border-black' />
+                        <View className='w-full flex items-center gap-24 mb-24'>
+                                <View className='flex flex-col items-center'>
+                                    <H3>Loyalty Exchange</H3>
+                                    <H3>x</H3>
+                                    <H3>{storeData[rewardData.store_id].name}</H3>
+                                </View>
 
-                    <H3>Time remaining {MAX_TIME - timeElapsed}s</H3>
+                            <H1>
+                                {rewardData.title}
+                            </H1>
+
+                            <View className='flex flex-col gap-6'>
+                                <H3>Time remaining {MAX_TIME - timeElapsed}s</H3>
+
+                                <Progress value={100 * timeElapsed / MAX_TIME} className='w-[200px] bg-black border border-black' />
+                            </View>
+                        </View>
+                    </View>
                 </View>
-
-                <H1>
-                    {rewardData.reward_types!.title}
-                </H1>
             </View>
         </Modal>
     )

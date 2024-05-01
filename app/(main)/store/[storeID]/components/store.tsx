@@ -5,7 +5,7 @@ import { Card, CardContent } from "~/components/ui/card";
 import { H1, Large, Small } from "~/components/ui/typography";
 
 import TransactionsTable from "./transactions-table";
-import RewardProgress from "./reward-progress";
+import AvailableRewards from "./available-rewards";
 
 import type { StoreData } from "@/utils/crud";
 import { useMainContext, type MainState } from "~/app/(main)/context/MainContext";
@@ -73,7 +73,7 @@ export default function Store({ storeData }: StoreProps) {
             <View className='w-full flex flex-col gap-4'>
                 <Large>Available Rewards</Large>
 
-                <RewardProgress userPoints={userPoints} storeData={storeData} />
+                <AvailableRewards storeID={storeData.id} />
             </View>
 
             <View className='w-full flex flex-col gap-4'>

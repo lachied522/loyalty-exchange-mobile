@@ -40,7 +40,7 @@ export default function MainLayout() {
                         width: '100%',
                         display: 'flex',
                         backgroundColor: '#fffff',
-                        paddingVertical: 25,
+                        paddingBottom: 20,
                         ...shadowStyles.edge,
                     }
                 }}
@@ -75,8 +75,7 @@ export default function MainLayout() {
                     options={{
                         tabBarButton: (props: BottomTabBarButtonProps) => (
                             <TouchableOpacity onPress={props.onPress}>
-                                <View className='flex flex-row items-center justify-center bg-gold p-6 rounded-xl top-[-50]'>
-                                    {/* <DollarSign size={28} color='black' /> */}
+                                <View className='flex flex-row items-center justify-center bg-gold p-6 rounded-xl top-[-10]'>
                                     <Text className='h-[24px] text-xl font-display-semibold'>
                                         My Rewards
                                     </Text>

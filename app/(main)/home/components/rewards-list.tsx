@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { View } from 'react-native';
 
 import { FlashList } from '@shopify/flash-list';
@@ -10,9 +11,21 @@ import { useMainContext, type MainState } from '../../context/MainContext';
 import RewardCard from './reward-card';
 
 export default function RewardsList() {
-    const { userData } = useMainContext() as MainState;
+    const { userData, storeData } = useMainContext() as MainState;
 
-    const rewards = userData.rewards.filter((reward) => !reward.redeemed);
+    const rewards = useMemo(() => {
+        const hasEnoughPoints = [];
+
+        for (const pointBalance of userData.points) {
+            const store = storeData[pointBalance.store_id];
+
+            if (store) {
+                hasEnoughPoints.push(...store.reward_types.filter((obj) => obj.cost < pointBalance.balance));
+            }
+        }
+
+        return hasEnoughPoints;
+    },  [userData.points]);
 
     return (
         <View className='h-[240px] w-full'>
