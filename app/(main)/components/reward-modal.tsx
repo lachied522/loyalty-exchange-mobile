@@ -1,13 +1,16 @@
 import { useState, useEffect } from 'react';
-import { Modal, View } from "react-native";
+import { Modal, View, Pressable, Alert } from "react-native";
 
-import { Button } from '~/components/ui/button';
 import { Progress } from '~/components/ui/progress';
-import { H1, H2, H3, Large } from "~/components/ui/typography";
-import { X } from '~/components/Icons';
-import { shadowStyles } from '~/constants/constants';
+import { H1, H2, H3, Large, Small } from "~/components/ui/typography";
+import { X, Icon } from "~/components/Icons";
+
+import Logo from '~/components/Logo';
 
 import { useMainContext, type MainState } from '../context/MainContext';
+
+import Coupon from './coupon';
+import StoreLogo from './store-logo';
 
 import type { Reward } from '@/types/helpers';
 
@@ -53,43 +56,57 @@ export default function RewardModal({ rewardData }: RewardProps) {
         };
     }, [isVisible]);
 
+    const onPress = () => {
+        Alert.alert(
+            'Would you like to close this reward?',
+            'You will not be able to open it again.',
+            [
+                {
+                    text: 'Cancel'
+                },
+                {
+                    text: 'OK',
+                    onPress: () => {
+                        setIsVisible(false);
+                    },
+                }
+            ]
+        )
+    }
+
     return (
         <Modal
-            animationType="slide"
+            animationType="none"
             transparent={true}
             visible={isVisible}
             onRequestClose={() => setIsVisible(false)}
         >
-            <View className='flex flex-1 items-center justify-end bg-gray-400/60'>
+                <Pressable onPress={onPress} className='flex flex-1 items-center justify-center bg-neutral-200/80'>
+                        <Coupon>
+                            <Pressable onPress={(e) => e.stopPropagation()} className='w-full flex flex-col items-center'>
+                                <View className='w-full flex items-center gap-20'>
+                                    <View className='flex flex-col items-center'>
+                                        <Logo />
+                                        <X size={20} color='black' />
+                                        <StoreLogo />
+                                    </View>
 
-                <View className='w-full flex flex-col items-center'>
-                    <View className='w-full h-[80vh] flex flex-col items-center justify-center bg-yellow-200 border-t relative' style={shadowStyles.dashed}>
-                        <View className='w-full flex-row justify-end absolute top-6 right-0'>
-                            <Button className='' onPress={() => setIsVisible(false)}>
-                                <X size={48} color='black' />
-                            </Button>
-                        </View>
+                                    <View className='flex flex-col items-center gap-2'>
+                                        <H1>{rewardData.title}</H1>
+                                        <Icon name='Coffee' size={48} color='black' />
+                                    </View>
 
-                        <View className='w-full flex items-center gap-24 mb-24'>
-                                <View className='flex flex-col items-center'>
-                                    <H3>Loyalty Exchange</H3>
-                                    <H3>x</H3>
-                                    <H3>{storeData[rewardData.store_id].name}</H3>
+                                    <View className='flex flex-col items-center gap-6'>
+                                        <H3>Time remaining {MAX_TIME - timeElapsed}s</H3>
+
+                                        <Progress value={100 * timeElapsed / MAX_TIME} className='w-[200px] bg-black border border-black' />
+
+                                        <Small>Tap outside to close</Small>
+                                    </View>
                                 </View>
-
-                            <H1>
-                                {rewardData.title}
-                            </H1>
-
-                            <View className='flex flex-col gap-6'>
-                                <H3>Time remaining {MAX_TIME - timeElapsed}s</H3>
-
-                                <Progress value={100 * timeElapsed / MAX_TIME} className='w-[200px] bg-black border border-black' />
-                            </View>
-                        </View>
-                    </View>
-                </View>
-            </View>
+                            </Pressable>
+                        </Coupon>
+                </Pressable>
         </Modal>
     )
 }

@@ -1,11 +1,13 @@
 import { useState } from 'react';
-import { Alert, View, SafeAreaView, ScrollView, TouchableOpacity } from 'react-native';
+import { Alert, View, SafeAreaView, ScrollView, TouchableOpacity, KeyboardAvoidingView, Platform } from 'react-native';
 import { Stack, Link, router } from 'expo-router';
 
 import { Input } from '~/components/ui/input';
 import { Text } from '~/components/ui/text';
 import { H1 } from '~/components/ui/typography';
 import { cn } from '~/components/utils';
+
+import { shadowStyles } from '~/constants/constants';
 
 import { supabase } from '@/lib/supabase';
 
@@ -82,91 +84,101 @@ export default function Signup() {
     }
   
     return (
-        <SafeAreaView>
+        <>
           <Stack.Screen
               options={{
                   headerShown: false
               }}
           />
-          <ScrollView
-            contentContainerStyle={{ height: '100%', alignItems: 'center', justifyContent: 'flex-start', padding: 24, gap: 32 }}
-            keyboardShouldPersistTaps='handled'
-            scrollEnabled={false}
-          >
-            <H1>Welcome!</H1>
-
-            <View className='w-full flex flex-col gap-6'>
-              <View>
-                <Text>First Name</Text>
-                <Input
-                  onChangeText={(text) => setFirstName(text)}
-                  value={firstName}
-                  autoCapitalize='none'
-                  className={cn('border-black', firstName.length === 0 && !formIsValid && 'border-red-400')}
-                />
+          <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+            <ScrollView
+              contentContainerStyle={{ height: '100%' }}
+              keyboardShouldPersistTaps='handled'
+              scrollEnabled={false}
+            >
+              <View className='w-full h-[50%] flex items-center justify-start'>
+                <SafeAreaView>
+                  <H1 className='p-12'>Welcome!</H1>
+                </SafeAreaView>
               </View>
+              
+              <View className='w-full h-[50%] flex flex-col justify-end'>
+                <View className='w-full h-full items-center justify-center bg-yellow-300 p-12 rounded-t-xl relative'>
+                  <View className='w-full bg-white flex flex-col p-6 gap-6 rounded-xl top-[-50%] absolute' style={shadowStyles.edge}>
+                    <View>
+                      <Text>First Name</Text>
+                      <Input
+                        onChangeText={(text) => setFirstName(text)}
+                        value={firstName}
+                        autoCapitalize='none'
+                        className={cn('border-black', firstName.length === 0 && !formIsValid && 'border-red-400')}
+                      />
+                    </View>
 
-              <View>
-                <Text>Last Name</Text>
-                <Input
-                  onChangeText={(text) => setLastName(text)}
-                  value={lastName}
-                  autoCapitalize='none'
-                  className={cn('border-black', lastName.length === 0 && !formIsValid && 'border-red-400')}
-                />
-              </View>
+                    <View>
+                      <Text>Last Name</Text>
+                      <Input
+                        onChangeText={(text) => setLastName(text)}
+                        value={lastName}
+                        autoCapitalize='none'
+                        className={cn('border-black', lastName.length === 0 && !formIsValid && 'border-red-400')}
+                      />
+                    </View>
 
-              <View>
-                <Text>Email</Text>
-                <Input
-                  onChangeText={(text) => setEmail(text)}
-                  value={email}
-                  autoCapitalize='none'
-                  keyboardType='email-address'
-                  className={cn('border-black', email.length === 0 && !formIsValid && 'border-red-400')}
-                />
-              </View>
+                    <View>
+                      <Text>Email</Text>
+                      <Input
+                        onChangeText={(text) => setEmail(text)}
+                        value={email}
+                        autoCapitalize='none'
+                        keyboardType='email-address'
+                        className={cn('border-black', email.length === 0 && !formIsValid && 'border-red-400')}
+                      />
+                    </View>
 
-              <View>
-                <Text>Mobile</Text>
-                <Input
-                  onChangeText={(text) => setMobile(text)}
-                  value={mobile}
-                  autoCapitalize='none'
-                  keyboardType='phone-pad'
-                  className={cn('border-black', mobile.length === 0 && !formIsValid && 'border-red-400')}
-                />
-              </View>
+                    <View>
+                      <Text>Mobile</Text>
+                      <Input
+                        onChangeText={(text) => setMobile(text)}
+                        value={mobile}
+                        autoCapitalize='none'
+                        keyboardType='phone-pad'
+                        className={cn('border-black', mobile.length === 0 && !formIsValid && 'border-red-400')}
+                      />
+                    </View>
 
-              <View>
-                <Text>Password</Text>
-                <Input
-                  onChangeText={(text) => setPassword(text)}
-                  value={password}
-                  secureTextEntry={true}
-                  autoCapitalize='none'
-                  className={cn('border-black', password.length === 0 && !formIsValid && 'border-red-400')}
-                />
-              </View>
+                    <View>
+                      <Text>Password</Text>
+                      <Input
+                        onChangeText={(text) => setPassword(text)}
+                        value={password}
+                        secureTextEntry={true}
+                        autoCapitalize='none'
+                        className={cn('border-black', password.length === 0 && !formIsValid && 'border-red-400')}
+                      />
+                    </View>
 
-              <View className='w-full items-center bg-yellow-400 p-4 rounded-xl'>
-                {isLoading? (
-                <Text>Please wait...</Text>
-                ) : (
-                <TouchableOpacity
-                  disabled={isLoading}
-                  onPress={handleSubmit}
-                >
-                  <Text>Sign Up</Text>
-                </TouchableOpacity>
-                )}
-              </View>
+                    <View className='w-full items-center bg-yellow-400 p-4 rounded-xl'>
+                      {isLoading? (
+                      <Text>Please wait...</Text>
+                      ) : (
+                      <TouchableOpacity
+                        disabled={isLoading}
+                        onPress={handleSubmit}
+                      >
+                        <Text>Sign Up</Text>
+                      </TouchableOpacity>
+                      )}
+                    </View>
 
-              <View className='w-full flex items-center'>
-                <Text>Already have an account? <Link href='/login/' className='text-blue-400 underline'>Login</Link></Text>
+                    <View className='w-full flex items-center'>
+                      <Text>Already have an account? <Link href='/login/' className='text-blue-400 underline'>Login</Link></Text>
+                    </View>
+                  </View>
+                </View>
               </View>
-            </View>
-          </ScrollView>
-      </SafeAreaView>
+            </ScrollView>
+          </KeyboardAvoidingView>
+      </>
     )
 }

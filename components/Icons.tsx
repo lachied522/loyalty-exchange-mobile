@@ -1,5 +1,6 @@
 // https://rnr-docs.vercel.app/getting-started/initial-setup/
 import {
+  icons,
   AlertCircle,
   CheckCircle,
   UserRound,
@@ -31,6 +32,14 @@ function interopIcon(icon: LucideIcon) {
   });
 }
 
+const Icon = ({ name, color, size } : { name: keyof typeof icons, color: string, size: number }) => {
+  const LucideIcon = icons[name];
+
+  interopIcon(LucideIcon);
+
+  return <LucideIcon color={color} size={size} />;
+};
+
 interopIcon(AlertCircle);
 interopIcon(CheckCircle);
 interopIcon(UserRound);
@@ -47,6 +56,7 @@ interopIcon(ExternalLink);
 interopIcon(LogOut);
 
 export {
+  Icon,
   AlertCircle,
   CheckCircle,
   UserRound,

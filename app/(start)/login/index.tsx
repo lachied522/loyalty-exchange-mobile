@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Alert, View, ScrollView, TouchableOpacity, Image } from 'react-native';
+import { Alert, View, ScrollView, TouchableOpacity, KeyboardAvoidingView, Platform } from 'react-native';
 import { Stack, Link, router } from 'expo-router';
 
 import { supabase } from '@/lib/supabase';
@@ -7,6 +7,10 @@ import { supabase } from '@/lib/supabase';
 import { Input } from '~/components/ui/input';
 import { Text } from '~/components/ui/text';
 import { cn } from '~/components/utils';
+
+import { shadowStyles } from '~/constants/constants';
+
+import Logo from '~/components/Logo';
 
 export default function Login() {
     const [email, setEmail] = useState('');
@@ -61,57 +65,64 @@ export default function Login() {
                   headerShown: false
               }}
           />
-          <ScrollView 
-            contentContainerStyle={{ height: '100%', alignItems: 'center', justifyContent: 'flex-end' }}
-            keyboardShouldPersistTaps='handled'
-            scrollEnabled={false}
-          >
-            <View className='w-full h-[40%] flex flex-col items-center bg-yellow-300 p-12 rounded-t-xl gap-2 relative'>
-              <View className='bg-white rounded-xl p-6 gap-6 top-[-60%] absolute'>
-                <View className='gap-1'>
-                  <Text>Email</Text>
-                  <Input
-                    onChangeText={(text) => setEmail(text)}
-                    value={email}
-                    autoCapitalize='none'
-                    keyboardType='email-address'
-                    className={cn('border-black', email.length === 0 && !formIsValid && 'border-red-400')}
-                  />
-                </View>
+          <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+            <ScrollView 
+              contentContainerStyle={{ height: '100%' }}
+              keyboardShouldPersistTaps='handled'
+              scrollEnabled={false}
+            >
+              <View className='w-full h-[40%] flex items-center justify-center'>
+                <Logo />
+              </View>
+              <View className='w-full h-[60%] flex flex-col justify-end'>
+                <View className='w-full h-[60%] flex items-center justify-center bg-yellow-300 p-12 rounded-t-xl relative'>
+                  <View className='w-full bg-white rounded-xl p-6 gap-6 top-[-60%] absolute'  style={shadowStyles.edge}>
+                    <View className='gap-1'>
+                      <Text>Email</Text>
+                      <Input
+                        onChangeText={(text) => setEmail(text)}
+                        value={email}
+                        autoCapitalize='none'
+                        keyboardType='email-address'
+                        className={cn('border-black', email.length === 0 && !formIsValid && 'border-red-400')}
+                      />
+                    </View>
 
-                <View className='flex flex-col gap-1'>
-                  <Text>Password</Text>
-                  <Input
-                    onChangeText={(text) => setPassword(text)}
-                    value={password}
-                    secureTextEntry={true}
-                    autoCapitalize='none'
-                    className={cn('border-black', password.length === 0 && !formIsValid && 'border-red-400')}
-                  />
-                  <View className='w-full flex items-end'>
-                    <Link href='/forgot-password/' className='text-blue-400 underline'>Forgot Password?</Link>
+                    <View className='flex flex-col gap-1'>
+                      <Text>Password</Text>
+                      <Input
+                        onChangeText={(text) => setPassword(text)}
+                        value={password}
+                        secureTextEntry={true}
+                        autoCapitalize='none'
+                        className={cn('border-black', password.length === 0 && !formIsValid && 'border-red-400')}
+                      />
+                      <View className='w-full flex items-end'>
+                        <Link href='/forgot-password/' className='text-blue-400 underline'>Forgot Password?</Link>
+                      </View>
+                    </View>
+
+                    <View className='w-full items-center bg-yellow-400 p-4 rounded-xl'>
+                      {isLoading? (
+                      <Text>Please wait...</Text>
+                      ) : (
+                      <TouchableOpacity
+                          disabled={isLoading} 
+                          onPress={handleSubmit}
+                          className='w-full'
+                      >
+                          <Text>Login</Text>
+                      </TouchableOpacity>
+                      )}
+                    </View>
+                    <View className='w-full flex items-center'>
+                      <Text>Don't have an account? <Link href='/signup/' className='text-blue-400 underline'>Create an account</Link></Text>
+                    </View>
                   </View>
                 </View>
-
-                <View className='w-full items-center bg-yellow-400 p-4 rounded-xl'>
-                  {isLoading? (
-                  <Text>Please wait...</Text>
-                  ) : (
-                  <TouchableOpacity
-                      disabled={isLoading} 
-                      onPress={handleSubmit}
-                      className='w-full'
-                  >
-                      <Text>Login</Text>
-                  </TouchableOpacity>
-                  )}
-                </View>
-                <View className='w-full flex items-center'>
-                  <Text>Don't have an account? <Link href='/signup/' className='text-blue-400 underline'>Create an account</Link></Text>
-                </View>
               </View>
-            </View>
-          </ScrollView>
+            </ScrollView>
+          </KeyboardAvoidingView>
       </>
     )
 }

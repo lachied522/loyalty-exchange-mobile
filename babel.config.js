@@ -14,7 +14,7 @@ module.exports = function (api) {
       [
         require.resolve('babel-plugin-module-resolver'),
         {
-          root: ["./app"],
+          root: ["."],
           alias: {
             "@/context": "./app/context",
             "@/constants": "./app/constants",

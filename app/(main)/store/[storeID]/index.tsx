@@ -8,7 +8,7 @@ import { ChevronLeft } from "~/components/Icons";
 
 import { fetchStoresById, type StoreData } from '@/utils/crud';
 
-import Store from './components/store';
+import Store from './components/store-screen';
 import NotFoundScreen from '~/app/+not-found';
 
 export default function StoreIDPage() {

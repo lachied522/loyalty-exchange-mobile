@@ -45,7 +45,7 @@ export default function MainLayout() {
                     }
                 }}
                 sceneContainerStyle={{
-                    backgroundColor: 'rgb(241 245 249)'
+                    backgroundColor: 'rgb(245 245 245)'
                 }}
             >
                 <Tab.Screen

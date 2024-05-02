@@ -22,7 +22,7 @@ export default function MyRewards() {
             visible={true}
             onRequestClose={() => setMyRewardsIsOpen(false)}
         >
-            <View className='h-full flex flex-col bg-slate-100'>
+            <View className='h-full flex flex-col bg-neutral-100'>
                 <View className='h-[120px] w-full flex flex-row items-center justify-between bg-white px-6 pb-6' style={{ paddingTop: insets.top }}>
                     <H1>My Rewards</H1>
 
