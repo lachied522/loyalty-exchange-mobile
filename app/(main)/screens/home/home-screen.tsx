@@ -3,13 +3,14 @@ import { Stack } from "expo-router";
 
 import { Large } from "~/components/ui/typography";
 
-import { useMainContext, type MainState } from "../context/MainContext";
+import { useMainContext, type MainState } from "../../context/MainContext";
 
 import PointsTable from "./components/points-table";
 import RefreshTrigger from "./components/refresh-trigger";
 import AllTransactionsTable from "./components/all-transactions-table";
+import StoresList from "./components/stores-list";
 
-export default function Home() {
+export default function HomeScreen() {
     const { userData } = useMainContext() as MainState;
 
     return (
@@ -20,17 +21,17 @@ export default function Home() {
                 }}
             />
             <ScrollView
-                contentContainerStyle={{ paddingVertical: 20, paddingHorizontal: 16, gap: 12 }}
+                contentContainerStyle={{ padding: 12 }}
                 keyboardShouldPersistTaps='handled'
             >
-                <View className='flex flew-col gap-4'>
+                <View className='flex flew-col gap-4 mb-4'>
                     <View className='w-full flex flex-row items-end justify-between'>
                         <Large>My Stores</Large>
 
                         <RefreshTrigger />
                     </View>
 
-                    <PointsTable data={userData.points} />
+                    <StoresList />
                 </View>
 
                 <View className='flex flex-col gap-4'>

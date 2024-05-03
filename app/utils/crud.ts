@@ -16,7 +16,7 @@ export async function fetchUserData() {
     // fetch data from Supabase
     const { data, error } = await supabase
     .from('users')
-    .select('*, points(*, stores(*, reward_types(*))), rewards(*), transactions(*)')
+    .select('*, points(*, stores(*, reward_types(*))), rewards(*, reward_types(*)), transactions(*)')
     .eq('id', session.user.id);
 
     if (error) {

@@ -5,12 +5,12 @@ import { Button } from '~/components/ui/button';
 import { H1, Large } from "~/components/ui/typography";
 import { X } from '~/components/Icons';
 
-import { useMainContext, type MainState } from "../context/MainContext";
+import { useMainContext, type MainState } from "../../context/MainContext";
 
 import RewardsList from './components/rewards-list';
 import RedeemedTable from './components/redeemed-table';
 
-export default function MyRewards() {
+export default function RewardsScreen() {
     const { setMyRewardsIsOpen } = useMainContext() as MainState;
 
     const insets = useSafeAreaInsets();

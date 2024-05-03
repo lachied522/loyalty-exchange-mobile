@@ -39,7 +39,7 @@ export default function Account() {
                     <View className='flex flex-row items-center gap-2'>
                         <UserRound size={24} color='black' />
 
-                        <Large>{session!.user.user_metadata['first_name'] + session!.user.user_metadata['last_name'] || 'Username'}</Large>
+                        <Large>{session!.user.user_metadata['first_name']+ ' ' + session!.user.user_metadata['last_name'] || 'Username'}</Large>
                     </View>
                 </View>
                 <View className='w-full flex gap-2'>

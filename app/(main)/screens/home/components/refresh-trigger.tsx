@@ -7,7 +7,7 @@ import { cn } from "~/components/utils";
 
 import { shadowStyles } from "~/constants/constants";
 
-import { useMainContext, type MainState } from "../../context/MainContext";
+import { useMainContext, type MainState } from "../../../context/MainContext";
 
 export default function RefreshTrigger() {
     const { refresh } = useMainContext() as MainState;
@@ -31,11 +31,11 @@ export default function RefreshTrigger() {
 
     return (
         <View 
-            className="w-16 h-16 flex items-center justify-center bg-white rounded-[18]"
+            className="w-14 h-14 flex items-center justify-center bg-white rounded-[18]"
             style={shadowStyles.button}
         >
             {isRefreshed ? (
-            <Check size={32} color='rgb(187 247 208)' />
+            <Check size={25} color='rgb(187 247 208)' />
             ) : (
             <Button
                 onPress={onPress}
@@ -44,9 +44,9 @@ export default function RefreshTrigger() {
             >
                 <View className={cn('animate-none', !isRefreshed && isLoading && 'animate-spin')}>
                     {isRefreshed? (
-                    <Check size={32} color='rgb(187 247 208)' />
+                    <Check size={25} color='rgb(187 247 208)' />
                     ) : (
-                    <RefreshCw size={36} color='rgb(15 23 42)' />
+                    <RefreshCw size={30} color='rgb(15 23 42)' />
                     )}
                 </View>
             </Button>

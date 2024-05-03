@@ -7,7 +7,7 @@ import { Card, CardContent } from '~/components/ui/card';
 import { Text } from '~/components/ui/text';
 import { Large } from '~/components/ui/typography';
 
-import { useMainContext, type MainState } from '../../context/MainContext';
+import { useMainContext, type MainState } from '../../../context/MainContext';
 
 import { formatDate } from '@/utils/formatting';
 

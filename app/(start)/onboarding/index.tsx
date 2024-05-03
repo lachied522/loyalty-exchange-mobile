@@ -42,38 +42,6 @@ export default function Onboarding() {
 
           isMounted = true;
         }
-
-    //     getBasiqServerAccessToken().then((accessToken) => createUser(accessToken)).then((userID) => getClientTokenBoundToUser(userID)).then((token) => setClientAccessToken(token)).then(() => setIsReady(true));
-
-    //     // create Basiq user
-    //     async function createUser(accessToken: string) {
-    //       return fetch('https://au-api.basiq.io/users', {
-    //           method: 'POST',
-    //           headers: {
-    //               'Authorization': `Bearer ${accessToken}`,
-    //               'Content-Type': 'application/json', 
-    //               'Accept': 'application/json'
-    //           },
-    //           body: JSON.stringify({ email, mobile }),
-    //       })
-    //       .then((res) => res.json())
-    //       .then((res) => res['id']);
-    //     }
-
-    //     // step 3: get unique client access token
-    //     async function getClientTokenBoundToUser(userId: string) {
-    //         return fetch('https://au-api.basiq.io/token', {
-    //             method: 'POST',
-    //             headers: {
-    //                 'Authorization': `Basic ${BASIQ_API_KEY}`, 
-    //                 'Content-Type': 'application/x-www-form-urlencoded', 
-    //                 'basiq-version': '3.0'
-    //             },
-    //             body: JSON.stringify({ scope: 'CLIENT_ACCESS', userId }),
-    //         })
-    //         .then((res) => res.json())
-    //         .then((res) => res['access_token']);
-    //       }
     }, []);
 
     const handleWebBrowser = useCallback(
@@ -108,7 +76,7 @@ export default function Onboarding() {
                     <Text>Connect Card</Text>
                 </Button>
             </View>
-            <Link href='/home/' asChild>
+            <Link href='/(main)/' asChild>
               <View className='w-full items-center bg-yellow-400 p-2 rounded-xl'>
                   <Button disabled={!isComplete}>
                       <Text>Next</Text>

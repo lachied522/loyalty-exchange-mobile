@@ -3,12 +3,15 @@ import { ScrollView, View } from "react-native";
 
 import { Card, CardContent } from "~/components/ui/card";
 import { H1, Large, Small } from "~/components/ui/typography";
+import { shadowStyles } from "~/constants/constants";
 
 import TransactionsTable from "./transactions-table";
 import AvailableRewards from "./available-rewards";
 
-import type { StoreData } from "@/utils/crud";
 import { useMainContext, type MainState } from "~/app/(main)/context/MainContext";
+import StoreImage from "~/app/(main)/components/store-image";
+
+import type { StoreData } from "@/utils/crud";
 
 interface StoreProps {
     storeData: StoreData
@@ -17,8 +20,7 @@ interface StoreProps {
 function formatAddress(storeData: StoreData) {
     if (!storeData.address_line_1) return 'Address not available';
 
-    return `${storeData.address_line_1},
-${storeData.city} ${storeData.state} ${storeData.postcode}`;
+    return `${storeData.address_line_1}, ${storeData.city} ${storeData.state} ${storeData.postcode}`;
 }
 
 function formatRate(rate: number) {
@@ -39,47 +41,45 @@ export default function Store({ storeData }: StoreProps) {
 
     return (
         <ScrollView
-            contentContainerStyle={{ paddingVertical: 20, paddingHorizontal: 16, gap: 24, backgroundColor: 'rgb(241 245 249)' }}
+            contentContainerStyle={{ backgroundColor: 'rgb(241 245 249)' }}
             keyboardShouldPersistTaps='handled'
         >
-            <View>
-                <Card>
-                    <CardContent className='flex items-center gap-2 p-6'>
-                        <View className='w-full flex flex-row items-center justify-between'>
-                            <View className='min-w-[120px] flex items-start justify-center rounded-xl border border-yellow-400 p-2'>
-                                <Small>Points</Small>
+            <View className='relative'>
+                <View className='z-[10] w-full h-full flex items-center justify-center bg-gray-800/20 p-12 absolute'>
+                    <H1 className='text-center text-white'>{storeData.name}</H1>
+                </View>
+                <StoreImage storeID='' width='100%' height={240} rounded={false} />
+            </View>
+            <View className='flex items-center p-6 bg-white mb-3' style={shadowStyles.card}>
+                <View className='w-full flex flex-row items-center justify-between'>
+                    <View className='min-w-[120px] flex items-start justify-center rounded-xl border border-yellow-400 p-2'>
+                        <Small>Points</Small>
 
-                                <H1 className='font-semibold'>{Math.round(userPoints).toLocaleString()}</H1>
-                            </View>
+                        <H1 className='font-semibold'>{Math.round(userPoints).toLocaleString()}</H1>
+                    </View>
 
-                            <Large className='max-w-[50%] font-display'>{formatRate(storeData.points_rate)}</Large>
-                        </View>
-                    </CardContent>
-                </Card>
+                    <Large className='max-w-[50%] font-display'>{formatRate(storeData.points_rate)}</Large>
+                </View>
+
+                <View className='w-full flex flex-col items-center justify-center p-6 gap-2'>
+                    <Large>{'Location(s)'}</Large>
+
+                    <Large className='font-display'>{formatAddress(storeData)}</Large>
+                </View>
             </View>
 
-            <View>
-                <Card>
-                    <CardContent className='flex items-center gap-2 p-6'>
-                        <View className='w-full flex flex-row items-center justify-between'>
-                            <Large>{'Location(s)'}</Large>
+            <View className='flex flex-col items-center p-3 gap-3'>
+                <View className='w-full flex flex-col gap-4'>
+                    <Large>Available Rewards</Large>
 
-                            <Large className='max-w-[50%] font-display'>{formatAddress(storeData)}</Large>
-                        </View>
-                    </CardContent>
-                </Card>
-            </View>
+                    <AvailableRewards storeID={storeData.id} />
+                </View>
 
-            <View className='w-full flex flex-col gap-4'>
-                <Large>Available Rewards</Large>
+                <View className='w-full flex flex-col gap-4'>
+                    <Large>Recent Transactions</Large>
 
-                <AvailableRewards storeID={storeData.id} />
-            </View>
-
-            <View className='w-full flex flex-col gap-4'>
-                <Large>Recent Transactions</Large>
-
-                <TransactionsTable data={storeTransactions} />
+                    <TransactionsTable data={storeTransactions} />
+                </View>
             </View>
         </ScrollView>
     )

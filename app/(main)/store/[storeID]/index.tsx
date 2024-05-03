@@ -41,7 +41,7 @@ export default function StoreIDPage() {
                     title: data? data.name: '',
                     headerLeft: () => (
                         <View className='h-12 w-12 flex items-center justify-center rounded-[12] left-0'>
-                            <Link href='/home/' asChild>
+                            <Link href='/(main)/' asChild>
                                 <Button>
                                     <ChevronLeft size={30} color='rgb(15 23 42)'/>
                                 </Button>
@@ -51,7 +51,7 @@ export default function StoreIDPage() {
                 }}
             />
             {isLoading ? (
-            <View>
+            <View className='flex-1 items-center justify-center'>
                 <Large>Loading...</Large>
             </View>
             ) : data ? (

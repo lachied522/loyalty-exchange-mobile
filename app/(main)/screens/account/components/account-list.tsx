@@ -7,10 +7,13 @@ import { fetchUserAccounts } from "@/utils/fetching";
 import { Large } from "~/components/ui/typography";
 import { Text } from "~/components/ui/text";
 
-import type { Account } from "@/types/basiq";
 import { Skeleton } from "~/components/ui/skeleton";
 import { Card, CardContent } from "~/components/ui/card";
+
 import ManageAccounts from "./manage-accounts";
+
+import type { Account } from "@/types/basiq";
+
 
 function maskAccountNumber(accountNo: string) {
     const length = accountNo.length;

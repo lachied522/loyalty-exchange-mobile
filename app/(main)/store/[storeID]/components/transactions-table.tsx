@@ -14,19 +14,14 @@ import { Card, CardContent } from '~/components/ui/card';
 import { Text } from '~/components/ui/text';
 import { Large } from '~/components/ui/typography';
 
+import { formatDate } from '@/utils/formatting';
+
 import type { MainState } from '~/app/(main)/context/MainContext';
 
 const USDollar = new Intl.NumberFormat("en-US", {
   style: "currency",
   currency: "USD",
 });
-
-function formatDate(dateString: string) {
-  const date = new Date(dateString);
-  const day = date.getDate().toString().padStart(2, '0');
-  const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Note: January is 0 in JavaScript
-  return `${day}/${month}`;
-}
 
 function formatAmount(amount: number) {
   return USDollar.format(Math.abs(amount));
@@ -40,7 +35,7 @@ export default function TransactionsTable({ data }: TransactionsTableProps) {
     const { width } = useWindowDimensions();
 
     return (
-      <Card className='w-full py-2'>
+      <Card className='min-h-[240px]'>
         <CardContent>
           <Table aria-labelledby='transctions-table'>
             <TableHeader>

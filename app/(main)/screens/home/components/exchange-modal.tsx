@@ -5,8 +5,8 @@ import { Button } from '~/components/ui/button';
 import { H1, Large } from "~/components/ui/typography";
 import { X } from '~/components/Icons';
 
-import { useMainContext, type MainState } from "../context/MainContext";
-import PointsTable from "./components/points-table";
+import { useMainContext, type MainState } from "../../../context/MainContext";
+import PointsTable from "./points-table";
 
 export default function ExchangeModal() {
     const { userData, setPointsExchangeIsOpen } = useMainContext() as MainState;

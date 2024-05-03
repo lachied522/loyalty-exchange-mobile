@@ -21,7 +21,7 @@ import { cn } from '~/components/utils';
 
 import { fetchStoresById, type StoreData } from '@/utils/crud';
 
-import { useMainContext, type MainState } from '../../context/MainContext';
+import { useMainContext, type MainState } from '../../../context/MainContext';
 
 function convertToStorePoints(amount: string, rate: number) {
     return parseFloat(amount) * 100 / rate;

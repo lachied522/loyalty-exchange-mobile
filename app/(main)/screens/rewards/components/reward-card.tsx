@@ -6,9 +6,9 @@ import { Button } from "~/components/ui/button";
 import { H3, Large } from "~/components/ui/typography";
 import { Text } from "~/components/ui/text";
 
-import { useMainContext, type MainState } from "../../context/MainContext";
+import { useMainContext, type MainState } from "../../../context/MainContext";
 
-import RewardTrigger from "../../components/reward-trigger";
+import RewardTrigger from "../../../components/reward-trigger";
 
 import { Tables } from "@/types/supabase";
 
