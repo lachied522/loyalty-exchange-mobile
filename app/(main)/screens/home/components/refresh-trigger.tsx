@@ -10,14 +10,14 @@ import { shadowStyles } from "~/constants/constants";
 import { useMainContext, type MainState } from "../../../context/MainContext";
 
 export default function RefreshTrigger() {
-    const { refresh } = useMainContext() as MainState;
+    const { refreshUserDataAndUpdateState } = useMainContext() as MainState;
     const [isRefreshed, setIsRefreshed] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const onPress = async () => {
         setIsLoading(true);
 
-        await refresh()
+        await refreshUserDataAndUpdateState()
         .then(() => setIsLoading(false))
         .then(() => {
             setIsRefreshed(true);
@@ -30,10 +30,7 @@ export default function RefreshTrigger() {
     }
 
     return (
-        <View 
-            className="w-14 h-14 flex items-center justify-center bg-white rounded-[18]"
-            style={shadowStyles.button}
-        >
+        <View className="w-14 h-14 flex items-center justify-center bg-white rounded-[18]">
             {isRefreshed ? (
             <Check size={25} color='rgb(187 247 208)' />
             ) : (

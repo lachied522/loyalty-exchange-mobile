@@ -5,34 +5,38 @@ import { Card, CardContent } from "~/components/ui/card";
 import { Progress } from "~/components/ui/progress";
 import { Large } from "~/components/ui/typography";
 import { Text } from "~/components/ui/text";
+import { Icon } from "~/components/Icons";
 
 import { useMainContext, type MainState } from "~/app/(main)/context/MainContext";
 import RewardTrigger from "~/app/(main)/components/reward-trigger";
 
+import type { StoreData } from "@/types/helpers";
+
 interface RewardProgressProps {
-    storeID: string
+    storeData: StoreData
 }
 
-export default function AvailableRewards({ storeID }: RewardProgressProps) {
-    const { userData, storeData } = useMainContext() as MainState;
+export default function AvailableRewards({ storeData }: RewardProgressProps) {
+    const { userData } = useMainContext() as MainState;
 
     const userPoints = useMemo(() => {
-        return  userData.points.find((obj) => obj.store_id===storeID)?.balance || 0;
-    }, [userData, storeID]);
-
-    if (!(storeID in storeData)) return null;
+        return  userData.points.find((obj) => obj.store_id===storeData.id)?.balance || 0;
+    }, [userData, storeData]);
 
     return (
         <>
-        {storeData[storeID].reward_types.length > 0? (
+        {storeData.reward_types.length > 0? (
         <View>
-            {storeData[storeID].reward_types.map((reward) => (
+            {storeData.reward_types.map((reward) => (
                 <Card key={reward.id}>
                     <CardContent className='flex items-center justify-center p-6'>
                         <View className='w-full flex flex-row items-center justify-between'>
-                            <View className='flex flex-col gap-1'>
-                                <Large>{reward.title}</Large>
-                                <Text>{reward.cost.toLocaleString()} points</Text>
+                            <View className='flex flex-row items-center gap-2'>
+                                <Icon name={reward.icon_name || 'Coffee'} size={32} />
+                                <View className='flex flex-col gap-1'>
+                                    <Large>{reward.title}</Large>
+                                    <Text>{reward.cost.toLocaleString()} points</Text>
+                                </View>
                             </View>
 
                             {userPoints > reward.cost? (

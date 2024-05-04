@@ -5,7 +5,7 @@ import * as WebBrowser from 'expo-web-browser';
 
 import { Large } from "~/components/ui/typography";
 import { Text } from "~/components/ui/text";
-import { Plus, ExternalLink } from "~/components/Icons";
+import { Plus, Pencil } from "~/components/Icons";
 
 import { useGlobalContext, type GlobalState } from "~/app/context/GlobalContext";
 
@@ -20,7 +20,7 @@ export default function ManageAccounts({ action } : { action: 'manage'|'connect'
         
         setIsLoading(true);
         
-        const { url } = await fetch(`${BACKEND_URL}/api/manage-user-connections/${session.user.id}`, {
+        const { url } = await fetch(`${BACKEND_URL}/manage-user-connections/${session.user.id}`, {
             method: 'GET',
             headers: {
                 token: session.access_token,
@@ -44,9 +44,18 @@ export default function ManageAccounts({ action } : { action: 'manage'|'connect'
             <Text>Please wait...</Text>
             ) : (
             <View className='flex flex-row items-center gap-2'>
-                {action==='connect' && <Plus size={20} color='black' />}
-                <Large>Manage</Large>
-                {action==='manage' && <ExternalLink size={20} color='black' />}
+                {action==='connect' && (
+                    <>
+                        <Plus size={20} color='black' />
+                        <Large>Add new</Large>
+                    </>
+                )}
+                {action==='manage' && (
+                    <>
+                        <Pencil size={18} color='black' />
+                        <Large>Edit</Large>
+                    </>
+                )}
             </View>
             )}
         </TouchableOpacity>

@@ -24,8 +24,10 @@ export default function StoresList() {
     }, []);
 
     return (
-        <Card>
-            <CardContent>
+        <View className='flex flew-col bg-white gap-4 p-3 pt-6'>
+            <Large>My Stores</Large>
+
+            <View className='p-3'>
                 <FlashList
                     horizontal
                     data={sortedData}
@@ -36,9 +38,9 @@ export default function StoresList() {
                         <Link key={`points-table-row-${index}`} href={`../../store/${item.store_id}`}>
                             <View className='flex flex-col items-start gap-2'>
                                 <StoreImage storeID='sample' />
-                                <View className='w-[180px] flex flex-col gap-1'>
+                                <View className='w-[180px] flex flex-col'>
                                     <Large className='font-display-semibold truncate'>{formatName(item.stores!.name)}</Large>
-                                    <Small>{item.balance.toLocaleString()} points</Small>
+                                    <Text>{item.balance.toLocaleString()} points</Text>
                                 </View>
                             </View>
                         </Link>
@@ -51,7 +53,7 @@ export default function StoresList() {
                         </View>
                     )}
                 />
-            </CardContent>
-        </Card>
+            </View>
+        </View>
     )
 }

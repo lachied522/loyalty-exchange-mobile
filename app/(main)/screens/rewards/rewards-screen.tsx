@@ -2,13 +2,13 @@ import { Modal, ScrollView, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { Button } from '~/components/ui/button';
-import { H1, Large } from "~/components/ui/typography";
+import { H1, H3, Large } from "~/components/ui/typography";
 import { X } from '~/components/Icons';
 
 import { useMainContext, type MainState } from "../../context/MainContext";
 
-import RewardsList from './components/rewards-list';
-import RedeemedTable from './components/redeemed-table';
+import AvailableRewards from './components/available-rewards';
+import RecentlyRedeemed from './components/recently-redeemed';
 
 export default function RewardsScreen() {
     const { setMyRewardsIsOpen } = useMainContext() as MainState;
@@ -23,8 +23,8 @@ export default function RewardsScreen() {
             onRequestClose={() => setMyRewardsIsOpen(false)}
         >
             <View className='h-full flex flex-col bg-neutral-100'>
-                <View className='h-[120px] w-full flex flex-row items-center justify-between bg-white px-6 pb-6' style={{ paddingTop: insets.top }}>
-                    <H1>My Rewards</H1>
+                <View className='h-[120px] w-full flex flex-row items-center justify-between bg-white p-3' style={{ paddingTop: insets.top }}>
+                    <H3>My Rewards</H3>
 
                     <View className='w-12 h-12 flex items-center justify-center'>
                         <Button onPress={() => setMyRewardsIsOpen(false)}>
@@ -34,20 +34,12 @@ export default function RewardsScreen() {
                 </View>
 
                 <ScrollView
-                    contentContainerStyle={{ paddingVertical: 20, paddingHorizontal: 16, gap: 12 }}
+                    contentContainerStyle={{ gap: 12 }}
                     keyboardShouldPersistTaps='handled'
                 >
-                    <View className='gap-4'>
-                        <Large>Available Rewards</Large>
+                    <AvailableRewards />
 
-                        <RewardsList />
-                    </View>
-
-                    <View className='gap-4'>
-                        <Large>Recently Redeemed</Large>
-
-                        <RedeemedTable />
-                    </View>
+                    <RecentlyRedeemed />
                 </ScrollView>
             </View>
         </Modal>

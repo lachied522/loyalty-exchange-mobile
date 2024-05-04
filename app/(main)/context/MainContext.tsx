@@ -1,14 +1,11 @@
-import { useState, useEffect, createContext, useContext, useCallback, useReducer } from "react";
-
-import type { Session } from "@supabase/supabase-js";
+import { useState, createContext, useContext, useCallback, useReducer } from "react";
 
 import { MainReducer, type Action } from "./MainReducer";
 
-import { setRewardRedeemed, convertToStorePoints } from "@/utils/functions";
-import { refreshUserData } from "@/utils/fetching";
+import { fetchUserData, refreshUserData, redeemReward } from "@/utils/functions";
 
-import { fetchUserData, type UserData, type StoreData } from "@/utils/crud";
-import type { Reward } from "@/types/helpers";
+import type { Session } from "@supabase/supabase-js";
+import type { UserData, StoreData, Reward } from "@/types/helpers";
 
 const MainContext = createContext<any>(null);
 
@@ -21,13 +18,11 @@ export type MainState = {
     userData: UserData
     storeData: { [store_id: string]: StoreData }
     myRewardsIsOpen: boolean,
-    pointsExchangeIsOpen: boolean,
     dispatch: React.Dispatch<Action>
-    refresh: () => Promise<void>
-    redeemReward: (reward: Reward) => Promise<void>
-    convertPoints: (amount: number, rate: number, store_id: string) => Promise<void>
+    refreshUserDataAndUpdateState: () => Promise<void>
+    redeemRewardAndUpdateState: (reward: Reward) => Promise<void>
+    setStoreData: React.Dispatch<{ [store_id: string]: StoreData }>
     setMyRewardsIsOpen: React.Dispatch<React.SetStateAction<boolean>>
-    setPointsExchangeIsOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 interface MainContextProps {
@@ -40,14 +35,12 @@ export default function MainContextProvider({
     children
 }: MainContextProps) {
     const [state, dispatch] = useReducer<typeof MainReducer>(MainReducer, initialState);
-    // store data for each store that user has points for
     const [storeData, setStoreData] = useState<{ [store_id: string]: StoreData }>(
         initialState.points.reduce((acc, obj) => ({ ...acc, [obj.store_id]: obj.stores }), {})
     );
     const [myRewardsIsOpen, setMyRewardsIsOpen] = useState<boolean>(false); // controls whether the My Rewards modal is open
-    const [pointsExchangeIsOpen, setPointsExchangeIsOpen] = useState<boolean>(false); // controls whether the Points Exchange modal is open
 
-    const refresh = useCallback(
+    const refreshUserDataAndUpdateState = useCallback(
         async () => {
             return await refreshUserData()
             .then((hasNewData) => {
@@ -66,59 +59,57 @@ export default function MainContextProvider({
         [state]
     );
 
-    const redeemReward = useCallback(
+    const redeemRewardAndUpdateState = useCallback(
         async (reward: Reward) => {
-            // if (!session) return Promise.reject('user not logged in');
+            // ensure user has enough points
+            const points = state.points.find((obj) => obj.store_id === reward.store_id)?.balance || 0;
 
-            return await setRewardRedeemed(reward, state);
+            if (points < reward.cost) {
+                throw new Error('Not enough points');
+            };
+
+            const isRedeemed = await redeemReward(reward);
+
+            if (!isRedeemed) {
+                throw new Error('Error redeeming reward');
+            }
+            
+            // update store points
+            dispatch({
+                type: 'SET_STORE_POINTS',
+                payload: {
+                    store_id: reward.store_id,
+                    value: points - reward.cost,
+                }
+            });
+
+            // add reward to state
+            dispatch({
+                type: 'INSERT_REWARD',
+                payload: {
+                    id: '',
+                    redeemed_at: new Date().toISOString(),
+                    reward_id: reward.id,
+                    user_id: state.id,
+                    reward_types: reward,
+                }
+            });
+
+            return true;
         },
         [state]
     );
-
-    const convertPoints = useCallback(
-        async (amount: number, rate: number, store_id: string) => {
-            const newPointsBalance = state.points_balance - amount;
-            const storePointsBalance = state.points.find((obj) => obj.store_id===store_id)?.balance || 0;
-
-            const newStorePointsBalance = amount * rate + storePointsBalance;
-
-            return await convertToStorePoints(newPointsBalance, newStorePointsBalance, store_id)
-            .then((success) => {
-                if (success) {
-                    // update state
-                    dispatch({
-                        type: 'SET_STORE_POINTS',
-                        payload: {
-                            value: storePointsBalance,
-                            store_id,
-                        }
-                    });
-
-                    dispatch({
-                        type: 'SET_EXCHANGE_POINTS',
-                        payload: {
-                            value: newPointsBalance,
-                        }
-                    });
-                }
-            });
-        },
-        []
-    )
-
 
     return (
         <MainContext.Provider value={{
             userData: state,
             storeData,
             myRewardsIsOpen,
-            pointsExchangeIsOpen,
             dispatch,
-            refresh,
-            redeemReward,
-            convertPoints,
+            refreshUserDataAndUpdateState,
+            redeemRewardAndUpdateState,
+            setStoreData,
             setMyRewardsIsOpen,
-            setPointsExchangeIsOpen,
         }}>
             {children}
         </MainContext.Provider>

@@ -70,3 +70,9 @@ export const shadowStyles = StyleSheet.create({
     borderStyle: 'dashed',
   }
 });
+
+export const colors = StyleSheet.create({
+  background: {
+    backgroundColor: 'rgb(241 245 249)'
+  }
+})

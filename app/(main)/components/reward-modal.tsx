@@ -16,24 +16,23 @@ import type { Reward } from '@/types/helpers';
 
 interface RewardProps {
     rewardData: Reward
+    onClose: () => void // close modal
+    maxTime?: number
 }
 
-const MAX_TIME = 60;
-export default function RewardModal({ rewardData }: RewardProps) {
+export default function RewardModal({
+    rewardData,
+    onClose,
+    maxTime = 60
+}: RewardProps) {
     const { storeData, dispatch } = useMainContext() as MainState;
-    const [isVisible, setIsVisible] = useState<boolean>(true); // default to open
     const [timeElapsed, setTimeElapsed] = useState<number>(0);
     const [currentTime, setCurrentTime] = useState<Date>(new Date());
 
     useEffect(() => {
-         if (timeElapsed > MAX_TIME) {
+         if (timeElapsed > maxTime) {
             // clear intervals and close model
-            setIsVisible(false);
-            // update state
-            dispatch({
-                type: 'REDEEM_REWARD',
-                payload: rewardData
-            })
+            onClose();
          }
     }, [timeElapsed]);
 
@@ -44,17 +43,16 @@ export default function RewardModal({ rewardData }: RewardProps) {
         return () => {
             clearTimeout(countdownID);
         }
-    }, [isVisible, setTimeElapsed]);
+    }, [setTimeElapsed]);
 
     useEffect(() => {
-        if (!isVisible) return;
         // update current time
         const timerID = setInterval(() => setCurrentTime(new Date()), 1000);
 
         return () => {
           clearInterval(timerID);
         };
-    }, [isVisible]);
+    }, []);
 
     const onPress = () => {
         Alert.alert(
@@ -67,7 +65,7 @@ export default function RewardModal({ rewardData }: RewardProps) {
                 {
                     text: 'OK',
                     onPress: () => {
-                        setIsVisible(false);
+                        onClose();
                     },
                 }
             ]
@@ -78,13 +76,13 @@ export default function RewardModal({ rewardData }: RewardProps) {
         <Modal
             animationType="none"
             transparent={true}
-            visible={isVisible}
-            onRequestClose={() => setIsVisible(false)}
+            visible={true}
+            onRequestClose={onClose}
         >
                 <Pressable onPress={onPress} className='flex flex-1 items-center justify-center bg-neutral-200/80'>
                         <Coupon>
                             <Pressable onPress={(e) => e.stopPropagation()} className='w-full flex flex-col items-center'>
-                                <View className='w-full flex items-center gap-20'>
+                                <View className='h-full flex-col items-center justify-between py-16'>
                                     <View className='flex flex-col items-center'>
                                         <Logo />
                                         <X size={20} color='black' />
@@ -92,14 +90,14 @@ export default function RewardModal({ rewardData }: RewardProps) {
                                     </View>
 
                                     <View className='flex flex-col items-center gap-2'>
+                                        <Icon name='Coffee' size={56} color='black' />
                                         <H1>{rewardData.title}</H1>
-                                        <Icon name='Coffee' size={48} color='black' />
                                     </View>
 
                                     <View className='flex flex-col items-center gap-6'>
-                                        <H3>Time remaining {MAX_TIME - timeElapsed}s</H3>
+                                        <H3>Time remaining {maxTime - timeElapsed}s</H3>
 
-                                        <Progress value={100 * timeElapsed / MAX_TIME} className='w-[200px] bg-black border border-black' />
+                                        <Progress value={100 * timeElapsed / maxTime} className='w-[200px] bg-black border border-black' />
 
                                         <Small>Tap outside to close</Small>
                                     </View>

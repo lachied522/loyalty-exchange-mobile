@@ -1,15 +1,13 @@
 import { useEffect, useState } from 'react';
 import { Stack } from "expo-router";
 
-import { fetchUserData, type UserData } from '@/utils/crud';
-
-import { useGlobalContext, type GlobalState } from '@/context/GlobalContext';
+import { fetchUserData } from '~/app/utils/functions';
+import type { UserData } from '@/types/helpers';
 
 import LoadingScreen from './loading-screen';
 import MainContextProvider from "./context/MainContext";
 
 export default function MainLayout() {
-    const { session } = useGlobalContext() as GlobalState;
     const [userData, setUserData] = useState<UserData | null>(null);
     const [isLoaded, setIsLoaded] = useState<boolean>(false);
 
@@ -21,9 +19,10 @@ export default function MainLayout() {
         async function loadData() {
             if (!isMounted) {
               // fetch user data
-              const data = await fetchUserData();
+              const data = await fetchUserData()
+              .catch((e) => console.log(e));
               // update state
-              setUserData(data);
+              if (data) setUserData(data);
             }
             // prevent effect from running again
             isMounted = true;

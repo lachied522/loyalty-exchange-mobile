@@ -12,35 +12,37 @@ import { useMainContext, type MainState } from "../../../context/MainContext";
 
 import { formatDate } from '@/utils/formatting';
 
-export default function RedeemedTable() {
+export default function RecentlyRedeemed() {
     const { userData, storeData, setMyRewardsIsOpen } = useMainContext() as MainState;
 
-    const filteredData = useMemo(() => {
-        return userData.rewards.filter((obj) => obj.redeemed).slice(0, 10);
-    }, [userData]);
+    const sortedData = useMemo(() => {
+        return userData.rewards.sort((a, b) => new Date(b.redeemed_at).getTime() - new Date(a.redeemed_at).getTime());
+    }, [userData.rewards]);
 
     return (
-        <Card>
-            <CardContent className='min-h-[100px]'>
+        <View className='flex flex-col bg-white gap-4 p-3 pt-6'>
+            <Large>Recently Redeemed</Large>
+
+            <View className='min-h-[100px] p-3'>
                 <View className='w-full flex flex-row justify-between border-b border-slate-400 pb-4'>
                     <Text className='font-display-medium'>When/Where?</Text>
                     <Text className='font-display-medium'>Reward</Text>
                 </View>
                 <FlashList
-                    data={filteredData}
+                    data={sortedData.slice(0, 5)}
                     estimatedItemSize={100}
                     showsVerticalScrollIndicator={false}
                     ItemSeparatorComponent={() => <View className='w-full border-b border-slate-300'/>}
                     renderItem={({ item: reward, index }) => (
                             <View className='w-full py-4'>
-                                <Link key={reward.id} href={`../../store/${reward.reward_types!.store_id}`} asChild>
+                                <Link key={reward.id} href={`../../store/${reward.reward_types.store_id}`} asChild>
                                     <TouchableOpacity onPress={() => setMyRewardsIsOpen(false)}>
                                         <View className='w-full flex flex-row items-center justify-between'>
                                             <View className='max-w-[75%]'>
                                                 <Text>{formatDate(reward.redeemed_at!)}</Text>
-                                                <Text className='font-display-semibold truncate'>{storeData[reward.reward_types!.store_id].name}</Text>
+                                                <Text className='font-display-semibold truncate'>{storeData[reward.reward_types.store_id].name}</Text>
                                             </View>
-                                            <Large>{reward.reward_types!.title}</Large>
+                                            <Large>{reward.reward_types.title}</Large>
                                         </View>
                                     </TouchableOpacity>
                                 </Link>
@@ -54,7 +56,7 @@ export default function RedeemedTable() {
                         </View>
                     )}
                 />
-            </CardContent>
-        </Card>
+            </View>
+        </View>
     )
 }

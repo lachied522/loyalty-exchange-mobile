@@ -6,8 +6,8 @@ export type Action = {
     type: 'SET_DATA',
     payload: MainState['userData']
 } | {
-    type: 'REDEEM_REWARD',
-    payload: Reward
+    type: 'INSERT_REWARD',
+    payload: MainState['userData']['rewards'][number]
 } | {
     type: 'SET_STORE_POINTS',
     payload: {
@@ -27,20 +27,13 @@ export function MainReducer(state: MainState['userData'], action: Action) {
             return action.payload;
         }
 
-        case 'REDEEM_REWARD': {
+        case 'INSERT_REWARD': {
             return {
                 ...state,
-                rewards: state.rewards.map((reward) => {
-                    if (reward.id===action.payload.id) {
-                        return {
-                            ...reward,
-                            redeemed: true,
-                            redeemed_at: new Date().toISOString()
-                        }
-                    }
-
-                    return reward;
-                })
+                rewards: [
+                    action.payload,
+                    ...state.rewards,
+                ]
             }
         }
 

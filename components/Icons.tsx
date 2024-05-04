@@ -32,7 +32,15 @@ function interopIcon(icon: LucideIcon) {
   });
 }
 
-const Icon = ({ name, color, size } : { name: keyof typeof icons, color: string, size: number }) => {
+const Icon = ({
+  name,
+  color = 'black',
+  size = 24
+} : {
+  name: keyof typeof icons,
+  color?: string,
+  size?: number
+}) => {
   const LucideIcon = icons[name];
 
   interopIcon(LucideIcon);

@@ -2,13 +2,11 @@ import { useEffect, useState } from "react";
 import { View } from "react-native";
 import { FlashList } from "@shopify/flash-list";
 
-import { fetchUserAccounts } from "@/utils/fetching";
+import { fetchUserAccounts } from "~/app/utils/functions";
 
-import { Large } from "~/components/ui/typography";
-import { Text } from "~/components/ui/text";
+import { H3, Large } from "~/components/ui/typography";
 
 import { Skeleton } from "~/components/ui/skeleton";
-import { Card, CardContent } from "~/components/ui/card";
 
 import ManageAccounts from "./manage-accounts";
 
@@ -28,11 +26,8 @@ export default function AccountList() {
     useEffect(() => {
         async function fetchData() {
             if (!accounts) {
-                const data = await fetchUserAccounts();
-
-                console.log('data', data);
-
-                setAccounts(data);
+                await fetchUserAccounts()
+                .then((accounts) => setAccounts(accounts));
             }
         }
 
@@ -45,8 +40,17 @@ export default function AccountList() {
     }, []);
 
     return (
-        <Card>
-            <CardContent className='min-h-[100px] py-1'>
+        <View className='w-full flex bg-white gap-2 p-3'>
+            <View className='w-full flex flex-row items-center justify-between'>
+                <H3>My Linked Cards</H3>
+
+                <View className='flex flex-row items-center justify-center gap-4'>
+                    <ManageAccounts action='connect' />
+                    <ManageAccounts action='manage' />
+                </View>
+            </View>
+
+            <View className='min-h-[100px]'>
                 {isLoading? (
                     <View className='w-full flex flex-col gap-4 py-2'>
                         <Skeleton className='h-14 w-full rounded-xl bg-slate-4 bg-slate-100' />
@@ -57,9 +61,8 @@ export default function AccountList() {
                         data={accounts?.slice(0, 2) || []}
                         estimatedItemSize={45}
                         showsVerticalScrollIndicator={false}
-                        ItemSeparatorComponent={() => <View className='w-full border-b border-slate-300'/>}
                         renderItem={({ item: account, index }) => (
-                            <View key={`accounts-${index}`} className='w-full flex flex-row justify-between py-6'>
+                            <View key={`accounts-${index}`} className='w-full flex flex-row justify-between p-6'>
                                 <Large className='font-display-semibold truncate'>{account.name}</Large>
                                 <Large>{maskAccountNumber(account.accountNo)}</Large>
                             </View>
@@ -73,7 +76,7 @@ export default function AccountList() {
                         )}
                     />
                 )}
-            </CardContent>
-        </Card>
+            </View>
+        </View>
     )
 }

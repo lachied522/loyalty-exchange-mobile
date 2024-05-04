@@ -10,7 +10,6 @@ import { ThemeProvider, type Theme } from '@react-navigation/native';
 import type { Session } from '@supabase/supabase-js';
 
 import { supabase } from "@/lib/supabase";
-import { fetchUserData, type UserData } from '@/utils/crud';
 
 import { PortalHost } from '~/components/primitives/portal';
 

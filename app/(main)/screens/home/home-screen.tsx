@@ -1,45 +1,26 @@
-import { SafeAreaView, View, ScrollView } from "react-native";
+import { ScrollView } from "react-native";
 import { Stack } from "expo-router";
 
-import { Large } from "~/components/ui/typography";
-
-import { useMainContext, type MainState } from "../../context/MainContext";
-
-import PointsTable from "./components/points-table";
-import RefreshTrigger from "./components/refresh-trigger";
-import AllTransactionsTable from "./components/all-transactions-table";
+import RecentTransactions from "./components/recent-transactions";
 import StoresList from "./components/stores-list";
+import HomeHeader from "./components/home-header";
 
 export default function HomeScreen() {
-    const { userData } = useMainContext() as MainState;
-
     return (
-        <SafeAreaView style={{ flex: 1, marginBottom: 36 }}>
+        <>
             <Stack.Screen
                 options={{
-                    title: 'Home',
+                    header: HomeHeader
                 }}
             />
             <ScrollView
-                contentContainerStyle={{ padding: 12 }}
+                contentContainerStyle={{ gap: 12 }}
                 keyboardShouldPersistTaps='handled'
             >
-                <View className='flex flew-col gap-4 mb-4'>
-                    <View className='w-full flex flex-row items-end justify-between'>
-                        <Large>My Stores</Large>
+                <StoresList />
 
-                        <RefreshTrigger />
-                    </View>
-
-                    <StoresList />
-                </View>
-
-                <View className='flex flex-col gap-4'>
-                    <Large>Recent Purchases</Large>
-
-                    <AllTransactionsTable />
-                </View>
+                <RecentTransactions />
             </ScrollView>
-        </SafeAreaView>
+        </>
     )
 }

@@ -69,18 +69,21 @@ export type Database = {
       reward_types: {
         Row: {
           cost: number
+          icon_name: string | null
           id: string
           store_id: string
           title: string
         }
         Insert: {
           cost?: number
+          icon_name?: string | null
           id?: string
           store_id: string
           title: string
         }
         Update: {
           cost?: number
+          icon_name?: string | null
           id?: string
           store_id?: string
           title?: string
@@ -97,25 +100,19 @@ export type Database = {
       }
       rewards: {
         Row: {
-          earned_at: string
           id: string
-          redeemed: boolean
-          redeemed_at: string | null
+          redeemed_at: string
           reward_id: string
           user_id: string | null
         }
         Insert: {
-          earned_at?: string
           id?: string
-          redeemed?: boolean
           redeemed_at?: string | null
           reward_id: string
           user_id?: string | null
         }
         Update: {
-          earned_at?: string
           id?: string
-          redeemed?: boolean
           redeemed_at?: string | null
           reward_id?: string
           user_id?: string | null
@@ -144,6 +141,7 @@ export type Database = {
           client_id: string
           created_at: string
           id: string
+          image_urls: string[] | null
           name: string
           points_rate: number
           postcode: string | null
@@ -156,6 +154,7 @@ export type Database = {
           client_id: string
           created_at?: string
           id?: string
+          image_urls?: string[] | null
           name: string
           points_rate?: number
           postcode?: string | null
@@ -168,6 +167,7 @@ export type Database = {
           client_id?: string
           created_at?: string
           id?: string
+          image_urls?: string[] | null
           name?: string
           points_rate?: number
           postcode?: string | null
@@ -229,28 +229,19 @@ export type Database = {
       users: {
         Row: {
           basiq_user_id: string | null
-          first_name: string
           id: string
-          joined: string
-          last_name: string
           last_updated: string
           points_balance: number
         }
         Insert: {
           basiq_user_id?: string | null
-          first_name: string
           id: string
-          joined?: string
-          last_name?: string | null
           last_updated?: string
-          points_balance: number
+          points_balance?: number
         }
         Update: {
           basiq_user_id?: string | null
-          first_name?: string
           id?: string
-          joined?: string
-          last_name?: string | null
           last_updated?: string
           points_balance?: number
         }
@@ -269,7 +260,20 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      deduct_store_balance: {
+        Args: {
+          user_id: string
+          store_id: string
+          amount: number
+        }
+        Returns: undefined
+      }
+      redeem_reward: {
+        Args: {
+          reward_id: string
+        }
+        Returns: undefined
+      }
     }
     Enums: {
       [_ in never]: never

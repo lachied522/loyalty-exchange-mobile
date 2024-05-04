@@ -13,27 +13,28 @@ import {
 import { Button } from '~/components/ui/button';
 import { Text } from '~/components/ui/text';
 
-import type { Tables } from '@/types/supabase';
+import type { Reward } from '@/types/helpers';
 
 import { useMainContext, type MainState } from '../context/MainContext';
 
 import RewardModal from "./reward-modal";
 
 interface RewardProps {
-    rewardData: Tables<'reward_types'>
+    rewardData: Reward
 }
 
 export default function RewardTrigger({ rewardData }: RewardProps) {
-    const { redeemReward } = useMainContext() as MainState;
+    const { redeemRewardAndUpdateState } = useMainContext() as MainState;
     const [isOpen, setIsOpen] = useState<boolean>(false); // render reward modal only once use has confirmed
-    const [isRedeemed, setIsRedeemed] = useState<boolean>(false); // disable open button after first click
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [isRedeemed, setIsRedeemed] = useState<boolean>(false);
 
     const onRedeem = async () => {
-        setIsRedeemed(true);
-        setIsOpen(true);
-        return await redeemReward(rewardData)
+        setIsLoading(true);
+        return await redeemRewardAndUpdateState(rewardData)
         .then(() => setIsOpen(true))
-        .catch(() => setIsRedeemed(false));
+        .catch(() => setIsRedeemed(false))
+        .finally(() => setIsLoading(false));
     }
 
     const onPress = () => {
@@ -56,9 +57,13 @@ export default function RewardTrigger({ rewardData }: RewardProps) {
 
     return (
         <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-            {isOpen && <RewardModal rewardData={rewardData} />}
+            {isOpen && <RewardModal rewardData={rewardData} onClose={() => setIsOpen(false)} />}
 
-            {isRedeemed ? (
+            {isLoading ? (
+                <Button disabled={true} className='bg-slate-100'>
+                    <Text>Pease wait...</Text>
+                </Button>
+            ) : isRedeemed ? (
                 <Button disabled={isRedeemed} className='bg-slate-100'>
                     <Text>Redeemed</Text>
                 </Button>

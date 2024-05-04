@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { View } from 'react-native';
 import { Link } from 'expo-router';
 
@@ -20,14 +21,20 @@ function formatAmount(amount: number) {
   return USDollar.format(Math.abs(amount));
 }
 
-export default function AllTransactionsTable() {
+export default function RecentTransactions() {
     const { userData, storeData } = useMainContext() as MainState;
 
+    const sortedData = useMemo(() => {
+      return userData.transactions.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+    }, [userData.transactions]);
+
     return (
-      <Card>
-        <CardContent className='min-h-[100px] py-2'>
+      <View className='flex flex-col bg-white gap-4 p-3 pt-6'>
+        <Large>Recent Purchases</Large>
+
+        <View className='min-h-[100px] p-3'>
             <FlashList
-              data={userData.transactions.slice(0, 10)}
+              data={sortedData.slice(0, 10)}
               estimatedItemSize={100}
               showsVerticalScrollIndicator={false}
               ItemSeparatorComponent={() => <View className='w-full border-b border-slate-300'/>}
@@ -56,7 +63,7 @@ export default function AllTransactionsTable() {
                 </View>
             )}
             />
-        </CardContent>
-      </Card>
+        </View>
+      </View>
     )
 }

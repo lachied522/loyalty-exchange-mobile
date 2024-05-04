@@ -10,10 +10,17 @@ import { useMainContext, type MainState } from "../../../context/MainContext";
 
 import RewardTrigger from "../../../components/reward-trigger";
 
-import { Tables } from "@/types/supabase";
+import { Icon } from "~/components/Icons";
+
+import type { Reward } from "@/types/helpers";
+
+function formatStoreName(text: string) {
+    // tailwind doesn't seem to truncate text, even with set width
+    return text.length > 16? text.slice(0, 16) + '...': text;
+}
 
 interface RewardCardProps {
-    data: Tables<'reward_types'>
+    data: Reward
 }
 
 export default function RewardCard({ data }: RewardCardProps) {
@@ -25,9 +32,12 @@ export default function RewardCard({ data }: RewardCardProps) {
                 <View className='flex flex-col items-center'>
                     <Link href={`../../store/${data.store_id}`} asChild>
                         <Button onPress={() => setMyRewardsIsOpen(false)}>
-                            <Text className=''>{storeData[data.store_id].name}</Text>
+                            <Text className=''>
+                                {formatStoreName(storeData[data.store_id].name)}
+                            </Text>
                         </Button>
                     </Link>
+                    <Icon name={data.icon_name || 'Coffee'} size={24} color='black' />
                     <Large>{data.title}</Large>
                 </View>
                 <RewardTrigger rewardData={data} />
