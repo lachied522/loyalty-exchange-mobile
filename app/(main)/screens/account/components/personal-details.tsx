@@ -31,6 +31,7 @@ export default function PersonalDetails() {
             data: {
                 first_name: firstName,
                 last_name: lastName,
+                mobile,
             }
         })
 
