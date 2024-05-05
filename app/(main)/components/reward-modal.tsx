@@ -79,32 +79,31 @@ export default function RewardModal({
             visible={true}
             onRequestClose={onClose}
         >
-                <Pressable onPress={onPress} className='flex flex-1 items-center justify-center bg-neutral-200/80'>
-                        <Coupon>
-                            <Pressable onPress={(e) => e.stopPropagation()} className='w-full flex flex-col items-center'>
-                                <View className='h-full flex-col items-center justify-between py-16'>
-                                    <View className='flex flex-col items-center'>
-                                        <Logo />
-                                        <X size={20} color='black' />
-                                        <StoreLogo />
-                                    </View>
+            <Pressable onPress={onPress} className='flex flex-1 items-center justify-center bg-neutral-200/80'>
+                <Coupon>
+                    <Pressable onPress={(e) => e.stopPropagation()} className='w-full flex flex-col items-center'>
+                        <View className='h-full flex-col items-center justify-between py-16'>
+                            <View className='flex flex-col items-center'>
+                                <Logo />
+                                <StoreLogo />
+                            </View>
 
-                                    <View className='flex flex-col items-center gap-2'>
-                                        <Icon name='Coffee' size={56} color='black' />
-                                        <H1>{rewardData.title}</H1>
-                                    </View>
+                            <View className='flex flex-col items-center gap-2 mb-12'>
+                                <Icon name='Coffee' size={56} color='black' />
+                                <H1>{rewardData.title}</H1>
+                            </View>
 
-                                    <View className='flex flex-col items-center gap-6'>
-                                        <H3>Time remaining {maxTime - timeElapsed}s</H3>
+                            <View className='flex flex-col items-center gap-6'>
+                                <H3>Time remaining {maxTime - timeElapsed}s</H3>
 
-                                        <Progress value={100 * timeElapsed / maxTime} className='w-[200px] bg-black border border-black' />
+                                <Progress value={100 * timeElapsed / maxTime} className='w-[200px] bg-black border border-black' />
 
-                                        <Small>Tap outside to close</Small>
-                                    </View>
-                                </View>
-                            </Pressable>
-                        </Coupon>
-                </Pressable>
+                                <Small>Tap outside to close</Small>
+                            </View>
+                        </View>
+                    </Pressable>
+                </Coupon>
+            </Pressable>
         </Modal>
     )
 }

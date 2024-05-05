@@ -8,8 +8,6 @@ import { BACKEND_URL } from "@env";
 export async function fetchUserData(): Promise<UserData> {
     const { data: { session } } = await supabase.auth.getSession();
 
-    console.log(BACKEND_URL);
-
     if (!session) {
         console.log('user not logged in')
         throw new Error('User not logged in');
@@ -24,8 +22,7 @@ export async function fetchUserData(): Promise<UserData> {
             }
         }
     )
-    .then((res) => res.json())
-    .catch((e) => console.log(e));
+    .then((res) => res.json());
 }
 
 export async function refreshUserData(): Promise<boolean> {

@@ -11,24 +11,24 @@ export type Database = {
     Tables: {
       clients: {
         Row: {
-          client_name: string | null
           created_at: string
           email: string | null
           id: string
+          name: string | null
           stripe_customer_id: string | null
         }
         Insert: {
-          client_name?: string | null
           created_at?: string
           email?: string | null
           id?: string
+          name?: string | null
           stripe_customer_id?: string | null
         }
         Update: {
-          client_name?: string | null
           created_at?: string
           email?: string | null
           id?: string
+          name?: string | null
           stripe_customer_id?: string | null
         }
         Relationships: []
@@ -40,7 +40,7 @@ export type Database = {
           user_id: string
         }
         Insert: {
-          balance: number
+          balance?: number
           store_id: string
           user_id: string
         }
@@ -51,14 +51,14 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "public_points_store_id_fkey"
+            foreignKeyName: "points_store_id_fkey"
             columns: ["store_id"]
             isOneToOne: false
             referencedRelation: "stores"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "public_points_user_id_fkey"
+            foreignKeyName: "points_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "users"
@@ -90,7 +90,7 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "public_reward_types_store_id_fkey"
+            foreignKeyName: "reward_types_store_id_fkey"
             columns: ["store_id"]
             isOneToOne: false
             referencedRelation: "stores"
@@ -102,31 +102,31 @@ export type Database = {
         Row: {
           id: string
           redeemed_at: string
-          reward_id: string
-          user_id: string | null
+          reward_type_id: string
+          user_id: string
         }
         Insert: {
           id?: string
-          redeemed_at?: string | null
-          reward_id: string
-          user_id?: string | null
+          redeemed_at?: string
+          reward_type_id: string
+          user_id: string
         }
         Update: {
           id?: string
-          redeemed_at?: string | null
-          reward_id?: string
-          user_id?: string | null
+          redeemed_at?: string
+          reward_type_id?: string
+          user_id?: string
         }
         Relationships: [
           {
-            foreignKeyName: "public_rewards_reward_id_fkey"
-            columns: ["reward_id"]
+            foreignKeyName: "rewards_reward_type_id_fkey"
+            columns: ["reward_type_id"]
             isOneToOne: false
             referencedRelation: "reward_types"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "public_rewards_user_id_fkey"
+            foreignKeyName: "rewards_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "users"
@@ -141,7 +141,7 @@ export type Database = {
           client_id: string
           created_at: string
           id: string
-          image_urls: string[] | null
+          image_urls: string[]
           name: string
           points_rate: number
           postcode: string | null
@@ -154,8 +154,8 @@ export type Database = {
           client_id: string
           created_at?: string
           id?: string
-          image_urls?: string[] | null
-          name: string
+          image_urls?: string[]
+          name?: string | null
           points_rate?: number
           postcode?: string | null
           state?: string | null
@@ -167,8 +167,8 @@ export type Database = {
           client_id?: string
           created_at?: string
           id?: string
-          image_urls?: string[] | null
-          name?: string
+          image_urls?: string[]
+          name?: string | null
           points_rate?: number
           postcode?: string | null
           state?: string | null
@@ -176,7 +176,7 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "public_stores_client_id_fkey"
+            foreignKeyName: "stores_client_id_fkey"
             columns: ["client_id"]
             isOneToOne: false
             referencedRelation: "clients"
@@ -195,7 +195,7 @@ export type Database = {
         }
         Insert: {
           amount?: number
-          date?: string
+          date: string
           id?: string
           points?: number
           store_id: string
@@ -211,14 +211,14 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "public_transactions_store_id_fkey"
+            foreignKeyName: "transactions_store_id_fkey"
             columns: ["store_id"]
             isOneToOne: false
             referencedRelation: "stores"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "public_transactions_user_id_fkey"
+            foreignKeyName: "transactions_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "users"
@@ -230,24 +230,24 @@ export type Database = {
         Row: {
           basiq_user_id: string | null
           id: string
-          last_updated: string
+          last_updated: string | null
           points_balance: number
         }
         Insert: {
           basiq_user_id?: string | null
           id: string
-          last_updated?: string
+          last_updated?: string | null
           points_balance?: number
         }
         Update: {
           basiq_user_id?: string | null
           id?: string
-          last_updated?: string
+          last_updated?: string | null
           points_balance?: number
         }
         Relationships: [
           {
-            foreignKeyName: "public_users_id_fkey"
+            foreignKeyName: "users_id_fkey"
             columns: ["id"]
             isOneToOne: true
             referencedRelation: "users"
@@ -260,20 +260,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      deduct_store_balance: {
-        Args: {
-          user_id: string
-          store_id: string
-          amount: number
-        }
-        Returns: undefined
-      }
-      redeem_reward: {
-        Args: {
-          reward_id: string
-        }
-        Returns: undefined
-      }
+      [_ in never]: never
     }
     Enums: {
       [_ in never]: never

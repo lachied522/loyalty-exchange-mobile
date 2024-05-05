@@ -8,8 +8,8 @@ import { colors, shadowStyles } from "~/constants/constants";
 import { useMainContext, type MainState } from "~/app/(main)/context/MainContext";
 import StoreImage from "~/app/(main)/components/store-image";
 
-import TransactionsTable from "./transactions-table";
 import AvailableRewards from "./available-rewards";
+import RecentTransactions from "./recent-transactions";
 
 import type { StoreData } from "@/types/helpers";
 import StoreHeader from "./store-header";
@@ -53,7 +53,7 @@ export default function Store({ storeData }: StoreProps) {
                     </View>
                     <StoreImage storeID='' width='100%' height={240} rounded={false} />
                 </View>
-                <View className='flex items-center p-6 bg-white mb-3' style={shadowStyles.card}>
+                <View className='flex items-center p-6 bg-white mb-3'>
                     <View className='w-full flex flex-col items-center justify-center p-3 gap-2'>
                         <Large>{'Location(s)'}</Large>
 
@@ -61,18 +61,10 @@ export default function Store({ storeData }: StoreProps) {
                     </View>
                 </View>
 
-                <View className='flex flex-col items-center p-3 gap-3'>
-                    <View className='w-full flex flex-col gap-4'>
-                        <Large>Available Rewards</Large>
-
-                        <AvailableRewards storeData={storeData} />
-                    </View>
-
-                    <View className='w-full flex flex-col gap-4'>
-                        <Large>Recent Transactions</Large>
-
-                        <TransactionsTable data={storeTransactions} />
-                    </View>
+                <View className='flex flex-col gap-3'>
+                    <AvailableRewards storeData={storeData} />
+                            
+                    <RecentTransactions data={storeTransactions} />
                 </View>
             </ScrollView>
         </>

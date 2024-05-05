@@ -34,7 +34,7 @@ export default function StoreIDPage() {
             } else {
                 fetchStoresById([storeID])
                 .then((res) => {
-                    if (res) setData(res[0]);
+                    if (res) setData(res[0] as StoreData);
                 })
                 .finally(() => setIsLoading(false));
             }

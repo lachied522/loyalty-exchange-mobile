@@ -1,6 +1,10 @@
 import { useState } from 'react';
 import { Alert, View, SafeAreaView, ScrollView, TouchableOpacity, KeyboardAvoidingView, Platform } from 'react-native';
 import { Stack, Link, router } from 'expo-router';
+import { makeRedirectUri } from "expo-auth-session";
+import * as QueryParams from "expo-auth-session/build/QueryParams";
+import * as WebBrowser from "expo-web-browser";
+import * as Linking from "expo-linking";
 
 import { Input } from '~/components/ui/input';
 import { Text } from '~/components/ui/text';
@@ -13,6 +17,26 @@ import { supabase } from '@/lib/supabase';
 
 import { useStartContext, type StartState } from '../context/StartContext';
 
+
+// docs @ https://supabase.com/docs/guides/auth/native-mobile-deep-linking
+const redirectTo = makeRedirectUri();
+
+const createSessionFromUrl = async (url: string) => {
+  const { params, errorCode } = QueryParams.getQueryParams(url);
+
+  if (errorCode) throw new Error(errorCode);
+  const { access_token, refresh_token } = params;
+
+  if (!access_token) return;
+
+  const { data, error } = await supabase.auth.setSession({
+    access_token,
+    refresh_token,
+  });
+  if (error) throw error;
+  return data.session;
+};
+
 export default function Signup() {
     const { email, mobile, setEmail, setMobile, setSession } = useStartContext() as StartState;
     const [password, setPassword] = useState<string>('');
@@ -24,25 +48,28 @@ export default function Signup() {
   
     const signUpWithEmail = async () => {
       setIsLoading(true);
-      const { data, error } = await supabase.auth.signUp({
+
+      const { data:  { session }, error } = await supabase.auth.signUp({
         email: email,
         password: password,
         phone: mobile,
         options: {
+          // emailRedirectTo: redirectTo,
           data: {
             first_name: firstName,
             last_name: lastName,
+            mobile,
           }
         }
       });
   
       if (error) {
-        Alert.alert(error.message);
+        console.log(error);
         setIsLoading(false);
         return;
       };
 
-      setSession(data.session);
+      setSession(session);
       // navigate to onboarding page
       router.replace('/onboarding/');
     }
@@ -82,6 +109,9 @@ export default function Signup() {
         const isValid = validateForm();
         if (isValid) signUpWithEmail();
     }
+
+    // const url = Linking.useURL();
+    // if (url) createSessionFromUrl(url);
   
     return (
         <>

@@ -24,40 +24,41 @@ export default function AvailableRewards({ storeData }: RewardProgressProps) {
     }, [userData, storeData]);
 
     return (
-        <>
-        {storeData.reward_types.length > 0? (
-        <View>
-            {storeData.reward_types.map((reward) => (
-                <Card key={reward.id}>
-                    <CardContent className='flex items-center justify-center p-6'>
-                        <View className='w-full flex flex-row items-center justify-between'>
-                            <View className='flex flex-row items-center gap-2'>
-                                <Icon name={reward.icon_name || 'Coffee'} size={32} />
-                                <View className='flex flex-col gap-1'>
-                                    <Large>{reward.title}</Large>
-                                    <Text>{reward.cost.toLocaleString()} points</Text>
+        <View className='w-full flex flex-col bg-white gap-4 p-3 pt-6'>
+            <Large>Available Rewards</Large>
+            {storeData.reward_types.length > 0? (
+            <View className='p-3'>
+                {storeData.reward_types.map((reward) => (
+                    <Card key={reward.id}>
+                        <CardContent className='flex items-center justify-center p-6'>
+                            <View className='w-full flex flex-row items-center justify-between'>
+                                <View className='flex flex-row items-center gap-2'>
+                                    <Icon name={reward.icon_name || 'Coffee'} size={32} />
+                                    <View className='flex flex-col gap-1'>
+                                        <Large>{reward.title}</Large>
+                                        <Text>{reward.cost.toLocaleString()} points</Text>
+                                    </View>
                                 </View>
-                            </View>
 
-                            {userPoints > reward.cost? (
-                            <RewardTrigger rewardData={reward} />
-                            ) : (
-                            <View className='flex flex-col items-end gap-2'>
-                                <Progress value={100 * (Math.max(userPoints - reward.cost, 0)) / reward.cost} className='w-[160px] border border-slate-100' />
+                                {userPoints > reward.cost? (
+                                <RewardTrigger rewardData={reward} />
+                                ) : (
+                                <View className='flex flex-col items-end gap-2'>
+                                    <Progress value={100 * (Math.max(userPoints - reward.cost, 0)) / reward.cost} className='w-[160px] border border-slate-100' />
 
-                                <Text>{Math.max(reward.cost - userPoints, 0)} points to go!</Text>
+                                    <Text>{Math.max(reward.cost - userPoints, 0)} points to go!</Text>
+                                </View>
+                                )}
                             </View>
-                            )}
-                        </View>
-                    </CardContent>
-                </Card>
-            ))}
-        </View>
-        ) : (
-            <View className='w-full flex items-center'>
+                        </CardContent>
+                    </Card>
+                ))}
+            </View>
+            ) : (
+            <View className='w-full flex items-center p-12'>
                 <Text>This store doesn't have any rewards available yet.</Text>
             </View>
-        )}
-        </>
+            )}
+        </View>
     )
 }

@@ -41,14 +41,7 @@ export default function AccountList() {
 
     return (
         <View className='w-full flex bg-white gap-2 p-3'>
-            <View className='w-full flex flex-row items-center justify-between'>
-                <H3>My Linked Cards</H3>
-
-                <View className='flex flex-row items-center justify-center gap-4'>
-                    <ManageAccounts action='connect' />
-                    <ManageAccounts action='manage' />
-                </View>
-            </View>
+            <H3>My Linked Cards</H3>
 
             <View className='min-h-[100px]'>
                 {isLoading? (
@@ -71,7 +64,12 @@ export default function AccountList() {
                         ListEmptyComponent={() => (
                             <View className='h-[180px] flex flex-col items-center justify-center gap-2 py-6'>
                                 <Large>You don't have any linked accounts</Large>
-                                <ManageAccounts action='connect' />
+                            </View>
+                        )}
+                        ListFooterComponent={() => (
+                            <View className='flex flex-row items-center justify-end'>
+                                <ManageAccounts action='connect' isLoading setIsLoading={setIsLoading} />
+                                <ManageAccounts action='manage' isLoading setIsLoading={setIsLoading} />
                             </View>
                         )}
                     />

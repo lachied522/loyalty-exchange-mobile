@@ -6,16 +6,16 @@ import { SplashScreen, Stack, Tabs } from "expo-router";
 import { useFonts } from 'expo-font';
 
 import { ThemeProvider, type Theme } from '@react-navigation/native';
+import { ToastProvider } from 'react-native-toast-notifications'
 
 import type { Session } from '@supabase/supabase-js';
-
 import { supabase } from "@/lib/supabase";
 
 import { PortalHost } from '~/components/primitives/portal';
-
 import { NAV_THEME } from '~/constants/constants';
 
 import GlobalContextProvider from './context/GlobalContext';
+import CustomToast from './custom-toast';
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -72,9 +72,15 @@ export default function Layout() {
   return (
     <>
       <ThemeProvider value={LIGHT_THEME}>
-        <GlobalContextProvider session={session}>
-            <Stack />
-        </GlobalContextProvider>
+        <ToastProvider
+          offsetTop={80}
+          swipeEnabled={true}
+          renderToast={CustomToast}
+        >
+          <GlobalContextProvider session={session}>
+              <Stack />
+          </GlobalContextProvider>
+        </ToastProvider>
       </ThemeProvider>
       <PortalHost />
     </>

@@ -89,7 +89,7 @@ export default function MainContextProvider({
                 payload: {
                     id: '',
                     redeemed_at: new Date().toISOString(),
-                    reward_id: reward.id,
+                    reward_type_id: reward.id,
                     user_id: state.id,
                     reward_types: reward,
                 }

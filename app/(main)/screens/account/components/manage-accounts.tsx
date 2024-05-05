@@ -1,5 +1,5 @@
-import { useCallback, useState } from "react";
-import { TouchableOpacity, View } from "react-native";
+import { View } from "react-native";
+import { useToast } from "react-native-toast-notifications";
 
 import * as WebBrowser from 'expo-web-browser';
 
@@ -10,10 +10,19 @@ import { Plus, Pencil } from "~/components/Icons";
 import { useGlobalContext, type GlobalState } from "~/app/context/GlobalContext";
 
 import { BACKEND_URL } from '@env';
+import { Button } from "~/components/ui/button";
 
-export default function ManageAccounts({ action } : { action: 'manage'|'connect' }) {
+export default function ManageAccounts({
+    action,
+    isLoading,
+    setIsLoading,
+} : {
+    action: 'manage'|'connect',
+    isLoading: boolean,
+    setIsLoading : React.Dispatch<boolean>,
+}) {
     const { session } = useGlobalContext() as GlobalState;
-    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const toast = useToast();
 
     const onPress = async () => {
         if (!session) return;
@@ -32,17 +41,20 @@ export default function ManageAccounts({ action } : { action: 'manage'|'connect'
         if (url) {
             await WebBrowser.openBrowserAsync(url);
         } else {
-            // TO DO: handle error
+            toast.show(
+                'Something went wrong. Please try again later.',
+                {
+                    placement: 'top',
+                    duration: 5000
+                }
+            )
         }
 
         setIsLoading(false);
     }
 
     return (
-        <TouchableOpacity onPress={onPress} disabled={isLoading} className='items-center justify-center'>
-            {isLoading? (
-            <Text>Please wait...</Text>
-            ) : (
+        <Button onPress={onPress} disabled={isLoading} className='items-center justify-center'>
             <View className='flex flex-row items-center gap-2'>
                 {action==='connect' && (
                     <>
@@ -57,7 +69,6 @@ export default function ManageAccounts({ action } : { action: 'manage'|'connect'
                     </>
                 )}
             </View>
-            )}
-        </TouchableOpacity>
+        </Button>
     )
 }

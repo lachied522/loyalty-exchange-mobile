@@ -1,25 +1,25 @@
-import { View, SafeAreaView, TouchableOpacity, ScrollView } from "react-native";
+import { View } from "react-native";
 import { Stack } from "expo-router";
-import { RefreshCw } from "~/components/Icons";
+
+import { Loader } from "~/components/Icons";
+import Logo from "~/components/Logo";
 
 export default function LoadingScreen() {
+
     return (
-        <SafeAreaView>
+        <>
             <Stack.Screen
                 options={{
                     headerShown: false,
                 }}
                 
             />
-            <ScrollView 
-                contentContainerStyle={{ height: '100%', alignItems: 'center', justifyContent: 'center', padding: 24 }}
-                keyboardShouldPersistTaps='handled'
-                scrollEnabled={false}
-            >
+            <View className='h-full flex flex-col items-center justify-center gap-12 bg-gray'>
+                <Logo />
                 <View className='animate-spin'>
-                    {/* <RefreshCw strokeWidth={1} size={64} color='rgb(203 213 225)' /> */}
+                    <Loader size={24} color='black' />
                 </View>
-            </ScrollView>
-        </SafeAreaView>
+            </View>
+        </>
     )
 }

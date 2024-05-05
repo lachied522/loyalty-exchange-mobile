@@ -7,6 +7,7 @@ import {
   LucideIcon,
   XCircle,
   RefreshCw,
+  Loader,
   X,
   Info,
   ArrowRightLeft,
@@ -53,6 +54,7 @@ interopIcon(CheckCircle);
 interopIcon(UserRound);
 interopIcon(XCircle);
 interopIcon(RefreshCw);
+interopIcon(Loader);
 interopIcon(Info);
 interopIcon(ArrowRightLeft);
 interopIcon(ArrowBigRightDash);
@@ -70,6 +72,7 @@ export {
   UserRound,
   XCircle,
   RefreshCw,
+  Loader,
   X,
   Info,
   ArrowRightLeft,

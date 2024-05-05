@@ -17,12 +17,44 @@ export default function PersonalDetails() {
     const { session } = useGlobalContext() as GlobalState;
     const [firstName, setFirstName] = useState<string>(session?.user.user_metadata['first_name']);
     const [lastName, setLastName] = useState<string>(session?.user.user_metadata['last_name']);
-    const [mobile, setMobile] = useState<string>(session?.user.phone || '');
+    const [mobile, setMobile] = useState<string>(session?.user.user_metadata['mobile']);
     const [email, setEmail] = useState<string>(session?.user.email || '');
-
     const [isEditting, setIsEditting] = useState<'firstName'|'lastName'|'mobile'|'email'|null>(null);
+    const [formErrors, setFormErrors] = useState<{ [field: string]: string }>({});
+    const [formIsValid, setFormIsValid] = useState<boolean>(true);
+
+    const validateForm = () => {
+        const errors: { [field: string]: string } = {};
+  
+        if (email.length === 0) {
+          errors['email'] = 'Enter a valid email';
+        }
+  
+        if (mobile.length === 0) {
+          errors['mobile'] = 'Enter a valid mobile';
+        }
+  
+        if (firstName.length === 0) {
+          errors['firstName'] = 'Please provide your first name';
+        }
+  
+        if (lastName.length === 0) {
+          errors['lastName'] = 'Please provide your last name';
+        }
+  
+        setFormErrors(errors);
+        
+        const isValid = Object.keys(errors).length === 0;
+        setFormIsValid(isValid);
+        
+        return isValid;
+      }
 
     const onSave = async () => {
+        // check if data is valid
+        // const isValid = validateForm();
+        // if (!isValid) return;
+
         setIsEditting(null);
 
         const { error } = await supabase.auth.updateUser({
@@ -31,6 +63,7 @@ export default function PersonalDetails() {
             data: {
                 first_name: firstName,
                 last_name: lastName,
+                mobile,
             }
         })
 
@@ -52,7 +85,11 @@ export default function PersonalDetails() {
                                 value={firstName}
                                 editable={isEditting==='firstName'}
                                 autoCapitalize='none'
-                                className={cn('w-[240px] border-white', isEditting==='firstName' && 'border-slate-400')}
+                                className={cn(
+                                    'w-[240px] border-white',
+                                    isEditting==='firstName' && 'border-slate-400',
+                                    firstName.length === 0 && !formIsValid && 'border-red-400'
+                                )}
                             />
                         </View>
 
@@ -78,7 +115,11 @@ export default function PersonalDetails() {
                                 value={lastName}
                                 editable={isEditting==='lastName'}
                                 autoCapitalize='none'
-                                className={cn('w-[240px] border-white', isEditting==='lastName' && 'border-slate-400')}
+                                className={cn(
+                                    'w-[240px] border-white',
+                                    isEditting==='lastName' && 'border-slate-400',
+                                    lastName.length === 0 && !formIsValid && 'border-red-400'
+                                )}
                             />
                         </View>
 
@@ -105,7 +146,11 @@ export default function PersonalDetails() {
                                 editable={isEditting==='email'}
                                 autoCapitalize='none'
                                 keyboardType='email-address'
-                                className={cn('w-[240px] border-white', isEditting==='email' && 'border-slate-400')}
+                                className={cn(
+                                    'w-[240px] border-white',
+                                    isEditting==='email' && 'border-slate-400',
+                                    lastName.length === 0 && !formIsValid && 'border-red-400'
+                                )}
                             />
                         </View>
 
@@ -132,7 +177,11 @@ export default function PersonalDetails() {
                                 editable={isEditting==='mobile'}
                                 autoCapitalize='none'
                                 keyboardType='phone-pad'
-                                className={cn('w-[240px] border-white', isEditting==='mobile' && 'border-slate-400')}
+                                className={cn(
+                                    'w-[240px] border-white',
+                                    isEditting==='mobile' && 'border-slate-400',
+                                    lastName.length === 0 && !formIsValid && 'border-red-400'
+                                )}
                             />
                         </View>
 

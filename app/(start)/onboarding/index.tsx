@@ -4,7 +4,7 @@ import { Stack, Link } from 'expo-router';
 
 import * as WebBrowser from 'expo-web-browser';
 
-import { getBasiqServerAccessToken } from '@/lib/basiq';
+import { useToast } from "react-native-toast-notifications";
 
 import { Button } from '~/components/ui/button';
 import { Input } from '~/components/ui/input';
@@ -13,14 +13,14 @@ import { H1, Large, P } from '~/components/ui/typography';
 
 import { useStartContext, type StartState } from '../context/StartContext';
 
-import { BACKEND_URL, BASIQ_API_KEY } from '@env';
+import { BACKEND_URL } from '@env';
 
 export default function Onboarding() {
-    const { session, email, mobile } = useStartContext() as StartState;
-    const [clientAccessToken, setClientAccessToken] = useState('');
+    const { session } = useStartContext() as StartState;
     const [consentUrl, setConsentUrl] = useState<string | null>(); // url to consent UI
     const [isReady, setIsReady] = useState<boolean>(false); // true when consent UI is ready
     const [isComplete, setIsComplete] = useState<boolean>(false); // true when user has completed consent
+    const toast = useToast();
 
     useEffect(() => {
         let isMounted = false; // prevent effect from executing twice
@@ -36,13 +36,14 @@ export default function Onboarding() {
           .then(({ url }) => {
             setConsentUrl(url);
             setIsReady(true);
-            console.log(url);
           })
-          .catch((e) => console.log(e));
+          .catch((e) => {
+            toast.show("Something went wrong. Please try again later.");
+          });
 
           isMounted = true;
         }
-    }, []);
+    }, [session]);
 
     const handleWebBrowser = useCallback(
       async () => {
@@ -50,6 +51,7 @@ export default function Onboarding() {
 
           // open browser
           await WebBrowser.openBrowserAsync(consentUrl);
+          setIsComplete(true);
       },
       [consentUrl]
     );
@@ -66,16 +68,19 @@ export default function Onboarding() {
             keyboardShouldPersistTaps='handled'
             scrollEnabled={false}
           >
-            <View className='w-full flex flex-col gap-2'>
-                <Large>Connect your credit/debit card to automatically start accruing points</Large>
-                <Button
-                  size='lg'
-                  onPress={handleWebBrowser}
-                  disabled={!isReady}
-                >
-                    <Text>Connect Card</Text>
-                </Button>
-            </View>
+            <Large>Connect your credit/debit card to automatically start accruing points</Large>
+            
+            <Button
+              size='lg'
+              onPress={handleWebBrowser}
+              disabled={!isReady}
+            >
+              {!isReady? (
+              <Text>Please wait...</Text>
+              ) : (
+              <Text>Connect Card</Text>
+              )}
+            </Button>
             <Link href='/(main)/' asChild>
               <View className='w-full items-center bg-yellow-400 p-2 rounded-xl'>
                   <Button disabled={!isComplete}>
