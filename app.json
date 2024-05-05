@@ -34,12 +34,22 @@
       [
         "expo-font",
         {
-          "fonts": ["./assets/fonts/Raleway/Raleway-VariableFont_wght.ttf"]
+          "fonts": [
+            "./assets/fonts/Raleway/Raleway-VariableFont_wght.ttf"
+          ]
         }
       ]
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "a6cff8d6-c198-44e8-b7b5-1f309ca03763"
+      }
     }
   }
 }

@@ -45,7 +45,7 @@ export default function Signup() {
     const [formErrors, setFormErrors] = useState<{ [field: string]: string }>({});
     const [formIsValid, setFormIsValid] = useState<boolean>(true);
     const [isLoading, setIsLoading] = useState<boolean>(false);
-  
+
     const signUpWithEmail = async () => {
       setIsLoading(true);
 
@@ -62,9 +62,9 @@ export default function Signup() {
           }
         }
       });
-  
+
       if (error) {
-        console.log(error);
+        Alert.alert(error.message);
         setIsLoading(false);
         return;
       };
@@ -98,10 +98,10 @@ export default function Signup() {
       }
 
       setFormErrors(errors);
-      
+
       const isValid = Object.keys(errors).length === 0;
       setFormIsValid(isValid);
-      
+
       return isValid;
     }
 
@@ -131,7 +131,7 @@ export default function Signup() {
                   <H1 className='p-12'>Welcome!</H1>
                 </SafeAreaView>
               </View>
-              
+
               <View className='w-full h-[50%] flex flex-col justify-end'>
                 <View className='w-full h-full items-center justify-center bg-yellow-300 p-12 rounded-t-xl relative'>
                   <View className='w-full bg-white flex flex-col p-6 gap-6 rounded-xl top-[-50%] absolute' style={shadowStyles.edge}>
