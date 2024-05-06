@@ -11,6 +11,7 @@ import AccountList from "./components/account-list";
 import PersonalDetails from "./components/personal-details";
 import LogoutButton from "./components/logout-button";
 import AccountHeader from "./components/account-header";
+import DeleteAccountButton from "./components/delete-account-button";
 
 export default function Account() {
 
@@ -29,7 +30,7 @@ export default function Account() {
                 
                 <PersonalDetails />
 
-                <View className='w-full flex flex-col items-center justify-center bg-white p-6 gap-6'>
+                <View className='w-full flex flex-col items-center justify-center bg-white gap-10 p-6 pb-12'>
                     <View className='w-full flex gap-2'>                    
                         <Button className='bg-yellow-400' onPress={() => Linking.openURL('mailto:info@loyaltyexchange.com.au?subject=Enquiry')}>
                             <Text>Contact Us</Text>
@@ -37,6 +38,8 @@ export default function Account() {
                     </View>
                     
                     <LogoutButton />
+
+                    <DeleteAccountButton />
                 </View>
             </ScrollView>
         </>

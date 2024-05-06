@@ -17,13 +17,11 @@ export default function LogoutButton() {
     }
 
     return (
-        <View className='w-full flex items-center pb-12'>
-            <Button onPress={onLogout}>
-                <View className='flex flex-row items-center gap-2'>
-                    <Large className=''>Log out</Large>
-                    <LogOut size={24} color='black' />
-                </View>
-            </Button>
-        </View>
+        <Button onPress={onLogout}>
+            <View className='flex flex-row items-center gap-2'>
+                <Large className=''>Log out</Large>
+                <LogOut size={24} color='black' />
+            </View>
+        </Button>
     )
 }
