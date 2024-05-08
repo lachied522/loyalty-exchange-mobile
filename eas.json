@@ -10,7 +10,11 @@
     "preview": {
       "distribution": "internal"
     },
-    "production": {}
+    "production": {
+      "env": {
+        "EXPO_PUBLIC_BACKEND_URL": "https://www.loyaltyexchange.com.au/api"
+      }
+    }
   },
   "submit": {
     "production": {}

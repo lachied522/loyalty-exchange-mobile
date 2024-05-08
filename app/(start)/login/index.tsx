@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import { Alert, View, ScrollView, TouchableOpacity, KeyboardAvoidingView, Platform } from 'react-native';
+import { View, ScrollView, TouchableOpacity, KeyboardAvoidingView, Platform } from 'react-native';
 import { Stack, Link, router } from 'expo-router';
+import { useToast } from 'react-native-toast-notifications';
 
 import { supabase } from '@/lib/supabase';
 
@@ -12,12 +13,41 @@ import { shadowStyles } from '~/constants/constants';
 
 import Logo from '~/components/Logo';
 
+function handleLoginError(error: Error, toast: ReturnType<typeof useToast>) {
+  if (error.message === 'Network request failed') {
+    toast.show(
+      'Internet access is required.',
+      {
+          placement: 'top',
+          duration: 5000
+      }
+    )
+  } else if (error.message === 'Invalid login credentials') {
+    toast.show(
+      'Username or password incorrect.',
+      {
+          placement: 'top',
+          duration: 5000
+      }
+    )
+  } else {
+    toast.show(
+      'Something went wrong. Please try again later.',
+      {
+          placement: 'top',
+          duration: 5000
+      }
+    )
+  }
+}
+
 export default function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [formErrors, setFormErrors] = useState<{ [field: string]: string }>({});
     const [formIsValid, setFormIsValid] = useState<boolean>(true);
+    const toast = useToast();
   
     const signInWithEmail = async () => {
       setIsLoading(true);
@@ -27,7 +57,8 @@ export default function Login() {
       });
   
       if (error) {
-        Alert.alert(error.message);
+        handleLoginError(error, toast);
+        
         setIsLoading(false);
       } else {
         // navigate to home page
@@ -111,10 +142,11 @@ export default function Login() {
                           onPress={handleSubmit}
                           className='w-full'
                       >
-                          <Text>Login</Text>
+                        <Text>Login</Text>
                       </TouchableOpacity>
                       )}
                     </View>
+                    
                     <View className='w-full flex items-center'>
                       <Text>Don't have an account? <Link href='/signup/' className='text-blue-400 underline'>Create an account</Link></Text>
                     </View>

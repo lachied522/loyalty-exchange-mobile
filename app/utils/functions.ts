@@ -4,27 +4,39 @@ import type { Session } from "@supabase/supabase-js";
 import type { UserData, Reward } from "@/types/helpers";
 import type { Account } from "@/types/basiq";
 
-import { BACKEND_URL } from "@env";
+async function makeAuthenticatedGetRequest(
+    path: string,
+    slug: string,
+    session: Session
+) {
 
-function makeAuthenticatedGetRequest(path: string, session: Session) {
-    return fetch(`${BACKEND_URL}/${path}/${session.user.id}`, {
-        method: 'GET',
-        headers: {
-            token: session.access_token,
+    const url = `${process.env.EXPO_PUBLIC_BACKEND_URL}/${path}` + (
+        slug.length? `/${slug}`: ''
+    );
+
+    return await fetch(
+        url,
+        {
+            method: 'GET',
+            headers: {
+                token: session.access_token,
+            }
         }
-    }) 
+    )
+    .then((res) => res.json());
 }
 
 export async function fetchUserData(): Promise<UserData> {
     const { data: { session } } = await supabase.auth.getSession();
+
+    console.log(process.env.EXPO_PUBLIC_BACKEND_URL);
 
     if (!session) {
         console.log('user not logged in')
         throw new Error('User not logged in');
     }
 
-    return await makeAuthenticatedGetRequest('get-user', session)
-    .then((res) => res.json());
+    return await makeAuthenticatedGetRequest('get-user', session.user.id, session);
 }
 
 export async function refreshUserData(): Promise<boolean> {
@@ -35,8 +47,7 @@ export async function refreshUserData(): Promise<boolean> {
         throw new Error('User not logged in');
     }
 
-    return await makeAuthenticatedGetRequest('refresh-user', session)
-    .then((res) => res.json())
+    return await makeAuthenticatedGetRequest('refresh-user', session.user.id, session)
     .then(({ hasNewData }) => hasNewData);
 }
 
@@ -47,8 +58,7 @@ export async function fetchUserAccounts(): Promise<Account[]> {
         throw new Error('User not logged in');
     }
 
-    return await makeAuthenticatedGetRequest('get-user-accounts', session)
-    .then((res) => res.json())
+    return await makeAuthenticatedGetRequest('get-user-accounts', session.user.id, session)
     .then(({ data }) => data);
 }
 
@@ -59,12 +69,7 @@ export async function redeemReward(reward: Reward): Promise<boolean> {
         throw new Error('User not logged in');
     }
 
-    return await makeAuthenticatedGetRequest('redeem-reward', session)
-    .then((res) => res.status === 200)
-    .catch((e) => {
-        console.log(e);
-        return false;
-    });
+    return await makeAuthenticatedGetRequest('redeem-reward', reward.id, session);
 }
 
 export async function deleteUserAccount() {
@@ -74,8 +79,7 @@ export async function deleteUserAccount() {
         throw new Error('User not logged in');
     }
 
-    const { data } = await makeAuthenticatedGetRequest('delete-user', session)
-    .then((res) => res.json());
+    const res = await makeAuthenticatedGetRequest('delete-user', session.user.id, session);
 
     // log user out
     supabase.auth.signOut();

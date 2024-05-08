@@ -11,7 +11,7 @@ export default function StoreLogo({
     return (
         <View style={{ width, height }}>
             <Image
-                source={require('assets/images/sample-logo.png')}
+                source={require('assets/images/sample-store-logo.png')}
                 alt='Store logo'
                 style={{
                     width: '100%',

@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { View, Alert } from 'react-native';
+import { useToast } from 'react-native-toast-notifications';
+
 import {
     Dialog,
     DialogClose,
@@ -29,12 +31,25 @@ export default function RewardTrigger({ rewardData }: RewardProps) {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [isRedeemed, setIsRedeemed] = useState<boolean>(false);
 
+    const toast = useToast();
+
     const onRedeem = async () => {
         setIsLoading(true);
-        return await redeemRewardAndUpdateState(rewardData)
+        
+        await redeemRewardAndUpdateState(rewardData)
         .then(() => setIsOpen(true))
-        .catch(() => setIsRedeemed(false))
-        .finally(() => setIsLoading(false));
+        .catch(() => {
+            toast.show(
+                "Something went wrong. Please try again later.",
+                {
+                  placement: 'top',
+                  duration: 5000
+                }
+            );
+            setIsRedeemed(false);
+        })
+        
+        setIsLoading(false);
     }
 
     const onPress = () => {

@@ -9,7 +9,6 @@ import { Plus, Pencil } from "~/components/Icons";
 
 import { useGlobalContext, type GlobalState } from "~/app/context/GlobalContext";
 
-import { BACKEND_URL } from '@env';
 import { Button } from "~/components/ui/button";
 
 export default function ManageAccounts({
@@ -29,13 +28,16 @@ export default function ManageAccounts({
         
         setIsLoading(true);
         
-        const { url } = await fetch(`${BACKEND_URL}/manage-user-connections/${session.user.id}`, {
-            method: 'GET',
-            headers: {
-                token: session.access_token,
-                action,
+        const { url } = await fetch(
+            `${process.env.EXPO_PUBLIC_BACKEND_URL}/manage-user-connections/${session.user.id}`,
+            {
+                method: 'GET',
+                headers: {
+                    token: session.access_token,
+                    action,
+                }
             }
-        })
+        )
         .then((res) => res.json());
 
         if (url) {
