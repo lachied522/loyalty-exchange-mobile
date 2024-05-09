@@ -1,4 +1,4 @@
-import { View, TouchableOpacity, ImageBackground } from 'react-native';
+import { View, TouchableOpacity } from 'react-native';
 import { Stack } from "expo-router";
 
 import { createBottomTabNavigator, type BottomTabBarButtonProps } from '@react-navigation/bottom-tabs';
@@ -8,6 +8,7 @@ import { shadowStyles } from '~/constants/constants';
 import { Icon } from '~/components/Icons';
 
 import { useMainContext, type MainState } from "./context/MainContext";
+
 import HomeScreen from "./screens/home/home-screen";
 import RewardsScreen from "./screens/rewards/rewards-screen";
 import Account from "./screens/account/account-screen";
@@ -29,11 +30,10 @@ export default function MainLayout() {
 
             <Tab.Navigator
                 screenOptions={{
-                    tabBarShowLabel: false,
+                    tabBarLabelPosition: 'below-icon',
                     tabBarStyle: {
                         height: 100,
                         width: '100%',
-                        display: 'flex',
                         backgroundColor: '#fffff',
                         paddingBottom: 20,
                         ...shadowStyles.edge,
@@ -48,12 +48,12 @@ export default function MainLayout() {
                     component={HomeScreen}
                     options={{
                         tabBarIcon: ({ focused }) => (
-                            <View className='flex flex-col items-center justify-center gap-1'>
-                                <Icon name='Home' size={24} color={focused ? 'rgb(250 204 21)' : '#222'} />
-                                <Text className='font-display-semibold' style={{ color: focused ? 'rgb(250 204 21)' : '#222' }}>
-                                    Home
-                                </Text>
-                            </View>
+                            <Icon name='Home' size={32} color={focused ? 'rgb(250 204 21)' : '#222'} />
+                        ),
+                        tabBarLabel: ({ focused }) => (
+                            <Text className='font-display-semibold' style={{ color: focused ? 'rgb(250 204 21)' : '#222' }}>
+                                Home
+                            </Text>
                         )
                     }}
                 />
@@ -70,7 +70,7 @@ export default function MainLayout() {
                     options={{
                         tabBarButton: (props: BottomTabBarButtonProps) => (
                             <TouchableOpacity onPress={props.onPress}>
-                                <View className='flex flex-row items-center justify-center bg-gold p-5 rounded-xl top-[-12]'>
+                                <View className='flex flex-row items-center justify-center bg-gold px-6 py-5 rounded-xl top-[-12]'>
                                     <Text className='h-[24px] text-xl font-display-semibold'>
                                         Rewards
                                     </Text>
@@ -84,12 +84,12 @@ export default function MainLayout() {
                     component={Account}
                     options={{
                         tabBarIcon: ({ focused }) => (
-                            <View className='flex flex-col items-center justify-center gap-1'>
-                                <Icon name='CircleUserRound' size={24} color={focused ? 'rgb(250 204 21)' : '#222'} />
-                                <Text className='font-display-semibold' style={{ color: focused ? 'rgb(250 204 21)' : '#222' }}>
-                                    Account
-                                </Text>
-                            </View>
+                            <Icon name='CircleUserRound' size={32} color={focused ? 'rgb(250 204 21)' : '#222'} />
+                        ),
+                        tabBarLabel: ({ focused }) => (
+                            <Text className='font-display-semibold' style={{ color: focused ? 'rgb(250 204 21)' : '#222' }}>
+                                Account
+                            </Text>
                         )
                     }}
                 />

@@ -1,10 +1,17 @@
 import { useMemo } from 'react';
-import { View } from 'react-native';
+import { View, useWindowDimensions } from 'react-native';
 import { Link } from 'expo-router';
 
 import { FlashList } from '@shopify/flash-list';
 
-import { Card, CardContent } from '~/components/ui/card';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '~/components/ui/table';
 import { Text } from '~/components/ui/text';
 import { Large } from '~/components/ui/typography';
 
@@ -23,47 +30,53 @@ function formatAmount(amount: number) {
 
 export default function RecentTransactions() {
     const { userData, storeData } = useMainContext() as MainState;
+    const { width } = useWindowDimensions();
 
     const sortedData = useMemo(() => {
       return userData.transactions.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
     }, [userData.transactions]);
 
     return (
-      <View className='flex flex-col bg-white gap-4 p-3 pt-6'>
+      <View className='min-h-[100px] flex flex-col bg-white gap-4 p-3 pt-6'>
         <Large>Recent Purchases</Large>
 
-        <View className='min-h-[100px] p-3'>
-            <FlashList
-              data={sortedData.slice(0, 10)}
-              estimatedItemSize={100}
-              showsVerticalScrollIndicator={false}
-              ItemSeparatorComponent={() => <View className='w-full border-b border-slate-300'/>}
-              renderItem={({ item: transaction, index }) => {
-                return (
-                  <View key={transaction.id} className='w-full py-4'>
-                    <Link href={`../../store/${transaction.store_id}`}>
-                      <View className='w-full flex flex-row justify-between'>
-                        <View className='max-w-[75%] flex flex-col gap-1'>
-                          <Text>{formatDate(transaction.date)}</Text>
-                          <Text className='font-display-semibold'>{storeData[transaction.store_id].name}</Text>
-                        </View>
-                        <View className='flex flex-col gap-1'>
-                          <Text>{formatAmount(transaction.amount)}</Text>
-                          <Text className='font-display-semibold'>+{Math.round(transaction.points).toLocaleString()} points</Text>
-                        </View>
-                      </View>
-                    </Link>
+        <Table aria-labelledby='transctions-table'>
+          <TableBody>
+              <FlashList
+                data={sortedData.slice(0, 10)}
+                estimatedItemSize={100}
+                showsVerticalScrollIndicator={false}
+                ItemSeparatorComponent={() => <View className='w-full border-b border-slate-300'/>}
+                renderItem={({ item: transaction, index }) => {
+                  return (
+                    <TableRow key={transaction.id}>
+                        <TableCell style={{ width: 3 * width / 4 }}>
+                          <Link href={`../../store/${transaction.store_id}`}>
+                            <View  className='flex flex-col gap-1'>
+                              <Text>{formatDate(transaction.date)}</Text>
+                              <Text className='font-display-semibold'>{storeData[transaction.store_id].name}</Text>
+                            </View>
+                          </Link>
+                        
+                        </TableCell>
+                        <TableCell style={{ width: width / 4 }}>
+                          <View className='flex flex-col gap-1'>
+                            <Text>{formatAmount(transaction.amount)}</Text>
+                            <Text className='font-display-semibold'>+{Math.round(transaction.points).toLocaleString()} points</Text>
+                          </View>
+                        </TableCell>
+                    </TableRow>
+                  );
+                }}
+                ListEmptyComponent={() => (
+                  <View className='flex flex-col items-center justify-center gap-2 p-6'>
+                      <Large>Nothing here yet.</Large>
+                      <Text>When you shop here your recent transactions will appear here.</Text>
                   </View>
-                );
-              }}
-              ListEmptyComponent={() => (
-                <View className='flex flex-col items-center justify-center gap-2 p-6'>
-                    <Large>Nothing here yet.</Large>
-                    <Text>When you shop here your recent transactions will appear here.</Text>
-                </View>
-            )}
-            />
-        </View>
+              )}
+              />
+            </TableBody>
+        </Table>
       </View>
     )
 }

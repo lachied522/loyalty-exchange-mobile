@@ -10,7 +10,6 @@ import {
     TableHeader,
     TableRow,
 } from '~/components/ui/table';
-import { Card, CardContent } from '~/components/ui/card';
 import { Text } from '~/components/ui/text';
 import { Large } from '~/components/ui/typography';
 
