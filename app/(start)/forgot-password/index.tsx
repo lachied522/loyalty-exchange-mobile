@@ -37,11 +37,11 @@ export default function ForgotPassword() {
                 
             />
             <ScrollView 
-                contentContainerStyle={{ height: '100%', justifyContent: 'center', padding: 24 }}
+                contentContainerStyle={{ height: '100%', alignItems:'center', justifyContent: 'center', padding: 24 }}
                 keyboardShouldPersistTaps='handled'
                 scrollEnabled={false}
             >
-                <View className='flex flex-col gap-6'>
+                <View className='max-w-[360px] flex flex-col gap-6'>
                     <View className='gap-2'>
                         <Large>Reset Password</Large>
                         <Text>Send an email to reset your password</Text>

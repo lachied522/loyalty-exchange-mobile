@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "Loyalty Platform",
-    "slug": "loyalty-platform",
-    "version": "1.0.0",
+    "name": "Loyalty Exchange",
+    "slug": "loyalty-exchange",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "com.loyaltyexchange",
@@ -16,13 +16,16 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.loyaltyexchange",
+      "buildNumber": "2"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.loyaltyexchange"
     },
     "web": {
       "bundler": "metro",
@@ -48,7 +51,7 @@
         "origin": false
       },
       "eas": {
-        "projectId": "a6cff8d6-c198-44e8-b7b5-1f309ca03763"
+        "projectId": "88c45b52-2449-4b14-b066-e582ec208c56"
       }
     }
   }

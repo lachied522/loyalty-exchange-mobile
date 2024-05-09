@@ -37,7 +37,7 @@ export default function RewardCard({ data }: RewardCardProps) {
                             </Text>
                         </Button>
                     </Link>
-                    <Icon name={data.icon_name || 'Coffee'} size={24} color='black' />
+                    <Icon name={data.icon_name || 'Coffee'} size={32} color='black' />
                     <Large>{data.title}</Large>
                 </View>
                 <RewardTrigger rewardData={data} />

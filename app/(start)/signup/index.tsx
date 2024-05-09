@@ -134,7 +134,7 @@ export default function Signup() {
 
               <View className='w-full h-[50%] flex flex-col justify-end'>
                 <View className='w-full h-full items-center justify-center bg-yellow-300 p-12 rounded-t-xl relative'>
-                  <View className='w-full bg-white flex flex-col p-6 gap-6 rounded-xl top-[-50%] absolute' style={shadowStyles.edge}>
+                  <View className='w-full max-w-[360px] bg-white flex flex-col p-6 gap-6 rounded-xl top-[-50%] absolute' style={shadowStyles.edge}>
                     <View>
                       <Text>First Name</Text>
                       <Input

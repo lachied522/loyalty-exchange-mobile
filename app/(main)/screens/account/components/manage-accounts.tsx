@@ -4,7 +4,6 @@ import { useToast } from "react-native-toast-notifications";
 import * as WebBrowser from 'expo-web-browser';
 
 import { Large } from "~/components/ui/typography";
-import { Text } from "~/components/ui/text";
 import { Plus, Pencil } from "~/components/Icons";
 
 import { useGlobalContext, type GlobalState } from "~/app/context/GlobalContext";

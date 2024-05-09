@@ -46,11 +46,10 @@ export default function RecentTransactions() {
                 data={sortedData.slice(0, 10)}
                 estimatedItemSize={100}
                 showsVerticalScrollIndicator={false}
-                ItemSeparatorComponent={() => <View className='w-full border-b border-slate-300'/>}
                 renderItem={({ item: transaction, index }) => {
                   return (
                     <TableRow key={transaction.id}>
-                        <TableCell style={{ width: 3 * width / 4 }}>
+                        <TableCell style={{ width: 2.75 * width / 4 }}>
                           <Link href={`../../store/${transaction.store_id}`}>
                             <View  className='flex flex-col gap-1'>
                               <Text>{formatDate(transaction.date)}</Text>
@@ -59,7 +58,7 @@ export default function RecentTransactions() {
                           </Link>
                         
                         </TableCell>
-                        <TableCell style={{ width: width / 4 }}>
+                        <TableCell style={{ width: 1.25 * width / 4 }}>
                           <View className='flex flex-col gap-1'>
                             <Text>{formatAmount(transaction.amount)}</Text>
                             <Text className='font-display-semibold'>+{Math.round(transaction.points).toLocaleString()} points</Text>
