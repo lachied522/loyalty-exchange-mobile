@@ -8,6 +8,26 @@ import { fetchUserData } from '@/utils/functions';
 import LoadingScreen from './loading-screen';
 import MainContextProvider from "./context/MainContext";
 
+function handleError(error: Error, toast: ReturnType<typeof useToast>) {
+    if (error.name === 'TypeError' && error.message === 'Network request timed out') {
+      toast.show(
+        'Internet access is required.',
+        {
+            placement: 'top',
+            duration: 5000
+        }
+      )
+    } else {
+      toast.show(
+        'Something went wrong. Please try again later.',
+        {
+            placement: 'top',
+            duration: 5000
+        }
+      )
+    }
+}
+
 export default function MainLayout() {
     const [userData, setUserData] = useState<UserData | null>(null);
     const [isLoaded, setIsLoaded] = useState<boolean>(false);
@@ -17,35 +37,22 @@ export default function MainLayout() {
     useEffect(() => {
         let isMounted = false;
 
-        loadData()
-        .then(() => setIsLoaded(true))
-        .catch((e: Error) => {
-            if (e.name === 'TypeError' && e.message === 'Network request timed out') {
-                toast.show(
-                    'Internet access is required.',
-                    {
-                        placement: 'top',
-                        duration: 50000
-                    }
-                )
-            } else {
-                toast.show(
-                    'Something went wrong. Please try again later.',
-                    {
-                        placement: 'top',
-                        duration: 50000
-                    }
-                )
-            }
-        });
+        loadData();
 
         async function loadData() {
             if (!isMounted) {
               // fetch user data
-              const data = await fetchUserData();
+              const data = await fetchUserData()
+              .catch((e) => {
+                handleError(e, toast);
+              });
               // update state
-              if (data) setUserData(data);
+              if (!!data) {
+                setUserData(data);
+                setIsLoaded(true);
+              };
             }
+            
             // prevent effect from running again
             isMounted = true;
         }

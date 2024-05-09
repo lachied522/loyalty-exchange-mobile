@@ -14,7 +14,7 @@ async function makeAuthenticatedGetRequest(
         slug.length? `/${slug}`: ''
     );
 
-    return await fetch(
+    const res = await fetch(
         url,
         {
             method: 'GET',
@@ -22,17 +22,19 @@ async function makeAuthenticatedGetRequest(
                 token: session.access_token,
             }
         }
-    )
-    .then((res) => res.json());
+    );
+
+    if (!res.ok) {
+        throw new Error(`HTTP Error. Status: ${res.status}`);
+    }
+
+    return await res.json();
 }
 
 export async function fetchUserData(): Promise<UserData> {
     const { data: { session } } = await supabase.auth.getSession();
 
-    console.log(process.env.EXPO_PUBLIC_BACKEND_URL);
-
     if (!session) {
-        console.log('user not logged in')
         throw new Error('User not logged in');
     }
 

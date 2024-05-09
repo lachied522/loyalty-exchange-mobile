@@ -30,6 +30,14 @@ function handleLoginError(error: Error, toast: ReturnType<typeof useToast>) {
           duration: 5000
       }
     )
+  } else if (error.message === 'User belongs to a client') {
+    toast.show(
+      `This login belongs to a store and can't be used.`,
+      {
+          placement: 'top',
+          duration: 5000
+      }
+    )
   } else {
     toast.show(
       'Something went wrong. Please try again later.',
@@ -51,7 +59,7 @@ export default function Login() {
   
     const signInWithEmail = async () => {
       setIsLoading(true);
-      const { error } = await supabase.auth.signInWithPassword({
+      const { data: { user }, error } = await supabase.auth.signInWithPassword({
         email: email,
         password: password,
       });
@@ -61,6 +69,13 @@ export default function Login() {
         
         setIsLoading(false);
       } else {
+        // check user role
+        if (user && user.user_metadata['role'] === 'client') {
+            // user belongs to a client
+            handleLoginError(new Error('User belongs to a client'), toast);
+            return;
+        }
+
         // navigate to home page
         router.replace('/');
       }
@@ -107,7 +122,7 @@ export default function Login() {
               </View>
               <View className='w-full h-[60%] flex flex-col justify-end'>
                 <View className='w-full h-[60%] flex items-center justify-center bg-yellow-300 p-12 rounded-t-xl relative'>
-                  <View className='w-full bg-white rounded-xl p-6 gap-6 top-[-60%] absolute'  style={shadowStyles.edge}>
+                  <View className='w-full max-w-[360px] bg-white rounded-xl p-6 gap-6 top-[-60%] absolute'  style={shadowStyles.edge}>
                     <View className='gap-1'>
                       <Text>Email</Text>
                       <Input
