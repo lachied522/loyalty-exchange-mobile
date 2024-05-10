@@ -22,7 +22,7 @@ export default function MainLayout() {
         <>
             <Stack.Screen
                 options={{
-                    headerShown: false
+                    headerShown: false,
                 }}
             />
 
@@ -34,13 +34,17 @@ export default function MainLayout() {
                     tabBarStyle: {
                         height: 100,
                         width: '100%',
-                        backgroundColor: '#fffff',
+                        display: 'flex',
+                        flexDirection: 'row',
+                        alignItems: 'flex-start',
+                        backgroundColor: 'white',
+                        paddingTop: 12,
                         paddingBottom: 20,
                         ...shadowStyles.edge,
                     }
                 }}
                 sceneContainerStyle={{
-                    backgroundColor: 'rgb(245 245 245)'
+                    backgroundColor: 'white'
                 }}
             >
                 <Tab.Screen
@@ -48,13 +52,13 @@ export default function MainLayout() {
                     component={HomeScreen}
                     options={{
                         tabBarIcon: ({ focused }) => (
-                            <Icon name='Home' size={32} color={focused ? 'rgb(250 204 21)' : '#222'} />
+                            <Icon name='Home' size={30} color={focused ? 'rgb(250 204 21)' : '#222'} />
                         ),
                         tabBarLabel: ({ focused }) => (
                             <Text className='font-display-semibold' style={{ color: focused ? 'rgb(250 204 21)' : '#222' }}>
                                 Home
                             </Text>
-                        )
+                        ),
                     }}
                 />
                 <Tab.Screen
@@ -70,7 +74,7 @@ export default function MainLayout() {
                     options={{
                         tabBarButton: (props: BottomTabBarButtonProps) => (
                             <TouchableOpacity onPress={props.onPress}>
-                                <View className='flex flex-row items-center justify-center bg-gold px-6 py-5 rounded-xl top-[-12]'>
+                                <View className='flex flex-row items-center justify-center bg-gold px-5 py-4 rounded-xl top-[-4]' style={shadowStyles.button}>
                                     <Text className='h-[24px] text-xl font-display-semibold'>
                                         Rewards
                                     </Text>
@@ -84,7 +88,7 @@ export default function MainLayout() {
                     component={Account}
                     options={{
                         tabBarIcon: ({ focused }) => (
-                            <Icon name='CircleUserRound' size={32} color={focused ? 'rgb(250 204 21)' : '#222'} />
+                            <Icon name='CircleUserRound' size={30} color={focused ? 'rgb(250 204 21)' : '#222'} />
                         ),
                         tabBarLabel: ({ focused }) => (
                             <Text className='font-display-semibold' style={{ color: focused ? 'rgb(250 204 21)' : '#222' }}>

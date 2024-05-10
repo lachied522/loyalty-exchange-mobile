@@ -6,15 +6,18 @@
   "build": {
     "development": {
       "developmentClient": true,
-      "distribution": "internal"
+      "distribution": "internal",
+      "channel": "development"
     },
     "preview": {
-      "distribution": "internal"
+      "distribution": "internal",
+      "channel": "preview"
     },
     "production": {
       "env": {
         "EXPO_PUBLIC_BACKEND_URL": "https://www.loyaltyexchange.com.au/api"
-      }
+      },
+      "channel": "production"
     }
   },
   "submit": {

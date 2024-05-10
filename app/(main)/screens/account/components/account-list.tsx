@@ -5,7 +5,6 @@ import { FlashList } from "@shopify/flash-list";
 import { fetchUserAccounts } from "~/app/utils/functions";
 
 import { H3, Large, Small } from "~/components/ui/typography";
-
 import { Skeleton } from "~/components/ui/skeleton";
 
 import ManageAccounts from "./manage-accounts";
@@ -47,8 +46,8 @@ export default function AccountList() {
             <View className='min-h-[100px] p-3'>
                 {isLoading? (
                     <View className='w-full flex flex-col gap-4 py-2'>
-                        <Skeleton className='h-14 w-full rounded-xl bg-slate-4 bg-slate-100' />
-                        <Skeleton className='h-14 w-full rounded-xl bg-slate-100' />
+                        <Skeleton className='h-14 w-full rounded-xl bg-neutral-400' />
+                        <Skeleton className='h-14 w-full rounded-xl bg-neutral-400' />
                     </View>
                 ) : (
                     <>

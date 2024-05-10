@@ -17,6 +17,7 @@ export default function Logo({
                     height: '100%'
                 }}
                 contentFit="cover"
+                priority="high"
             />
         </View>
     )

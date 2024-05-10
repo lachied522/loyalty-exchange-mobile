@@ -22,7 +22,7 @@ export default function RewardsScreen() {
             visible={true}
             onRequestClose={() => setMyRewardsIsOpen(false)}
         >
-            <View className='h-full flex flex-col bg-neutral-100'>
+            <View className='h-full flex flex-col bg-white'>
                 <View className='h-[120px] w-full flex flex-row items-center justify-between bg-white p-3' style={{ paddingTop: insets.top }}>
                     <H3>My Rewards</H3>
 
@@ -34,7 +34,7 @@ export default function RewardsScreen() {
                 </View>
 
                 <ScrollView
-                    contentContainerStyle={{ gap: 12 }}
+                    contentContainerStyle={{ gap: 12, backgroundColor: 'rgb(245 245 245)' }}
                     keyboardShouldPersistTaps='handled'
                 >
                     <AvailableRewards />

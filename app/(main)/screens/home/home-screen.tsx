@@ -10,11 +10,11 @@ export default function HomeScreen() {
         <>
             <Stack.Screen
                 options={{
-                    header: HomeHeader
+                    header: HomeHeader,
                 }}
             />
             <ScrollView
-                contentContainerStyle={{ gap: 12 }}
+                contentContainerStyle={{ gap: 12, backgroundColor: 'rgb(245 245 245)' }}
                 keyboardShouldPersistTaps='handled'
             >
                 <StoresList />

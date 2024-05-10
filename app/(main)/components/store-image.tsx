@@ -5,7 +5,7 @@ import { Image } from "expo-image";
 import { useMainContext, type MainState } from "../context/MainContext";
 import { Skeleton } from "~/components/ui/skeleton";
 
-const SAMPLE_IMAGE_URL = 'https://emasoilvmhkkursjyqnk.supabase.co/storage/v1/object/sign/stores/storefront-example.jpg?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJzdG9yZXMvc3RvcmVmcm9udC1leGFtcGxlLmpwZyIsImlhdCI6MTcxNDczNjM5NCwiZXhwIjoxNzQ2MjcyMzk0fQ.XeVyIv8QZm_FJbtM5cvBjNkIj7288e-D8H9FN00OGdU&t=2024-05-03T11%3A39%3A54.628Z'
+const SAMPLE_IMAGE_URL = 'https://fxeakctvzbmidqxxpnfc.supabase.co/storage/v1/object/public/stores/artem-gavrysh-F6-U5fGAOik-unsplash-1.jpg';
 
 const ASPECT_RATIO = 1.0; // width / height
 

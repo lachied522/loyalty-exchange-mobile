@@ -14,7 +14,7 @@ import StoreImage from '~/app/(main)/components/store-image';
 
 function formatName(text: string) {
     // tailwind doesn't seem to truncate text, even with set width
-    return text.length > 18? text.slice(0, 18) + '...': text;
+    return text.length > 16? text.slice(0, 16) + '...': text;
 }
 
 export default function StoresList() {
@@ -35,10 +35,10 @@ export default function StoresList() {
                     showsVerticalScrollIndicator={false}
                     ItemSeparatorComponent={() => <View className='h-full mx-4'/>}
                     renderItem={({ item, index }) => (
-                        <Link key={`points-table-row-${index}`} href={`../../store/${item.store_id}`}>
-                            <View className='flex flex-col items-start gap-2'>
-                                <StoreImage storeID='sample' />
-                                <View className='w-[180px] flex flex-col'>
+                        <Link key={`store-list-item-${index}`} href={`../../store/${item.store_id}`}>
+                            <View className='max-w-[180px] flex flex-col items-start gap-2'>
+                                <StoreImage storeID='sample' width={180} />
+                                <View className='flex flex-col justify-start'>
                                     <Large className='font-display-semibold truncate'>{formatName(item.stores!.name)}</Large>
                                     <Text>{item.balance.toLocaleString()} points</Text>
                                 </View>

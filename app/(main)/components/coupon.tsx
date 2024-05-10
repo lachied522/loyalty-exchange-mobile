@@ -9,6 +9,8 @@ import {
 
 const ASPECT_RATIO = 0.60; // width / height
 
+const URI = Image.resolveAssetSource(require('assets/images/coupon-background.png')).uri;
+
 export default function Coupon({
     children
 } : { children: React.ReactNode } ) {
@@ -25,20 +27,21 @@ export default function Coupon({
         ];
     }, [screenHeight, screenWidth]);
 
+    console.log(URI);
 
     return (
         <View>
             <ImageBackground
-                    src={Image.resolveAssetSource(require('assets/images/coupon-background.png')).uri}
-                    style={{
-                        width,
-                        height,
-                        ...styles.container,
-                    }}
-                    resizeMode='cover'
-                >
-                    {children}
-                </ImageBackground>
+                src={URI}
+                style={{
+                    width,
+                    height,
+                    ...styles.container,
+                }}
+                resizeMode='cover'
+            >
+                {children}
+            </ImageBackground>
         </View>
     )
 }

@@ -150,14 +150,14 @@ export default function Login() {
 
                     <View className='w-full items-center bg-yellow-400 p-4 rounded-xl'>
                       {isLoading? (
-                      <Text>Please wait...</Text>
+                      <Text className='font-display-medium text-lg'>Please wait...</Text>
                       ) : (
                       <TouchableOpacity
                           disabled={isLoading} 
                           onPress={handleSubmit}
                           className='w-full'
                       >
-                        <Text>Login</Text>
+                        <Text className='font-display-medium text-lg'>Login</Text>
                       </TouchableOpacity>
                       )}
                     </View>

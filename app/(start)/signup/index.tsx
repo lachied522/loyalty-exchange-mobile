@@ -190,13 +190,13 @@ export default function Signup() {
 
                     <View className='w-full items-center bg-yellow-400 p-4 rounded-xl'>
                       {isLoading? (
-                      <Text>Please wait...</Text>
+                      <Text className='font-display-medium text-lg'>Please wait...</Text>
                       ) : (
                       <TouchableOpacity
                         disabled={isLoading}
                         onPress={handleSubmit}
                       >
-                        <Text>Sign Up</Text>
+                        <Text className='font-display-medium text-lg'>Sign Up</Text>
                       </TouchableOpacity>
                       )}
                     </View>

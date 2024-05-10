@@ -37,7 +37,7 @@ export default function RecentTransactions() {
     }, [userData.transactions]);
 
     return (
-      <View className='min-h-[100px] flex flex-col bg-white gap-4 p-3 pt-6'>
+      <View className='min-h-[50vh] flex flex-col bg-white gap-4 p-3 pt-6'>
         <Large>Recent Purchases</Large>
 
         <Table aria-labelledby='transctions-table'>
@@ -48,7 +48,7 @@ export default function RecentTransactions() {
                 showsVerticalScrollIndicator={false}
                 renderItem={({ item: transaction, index }) => {
                   return (
-                    <TableRow key={transaction.id}>
+                    <TableRow key={transaction.id} className='border-0'>
                         <TableCell style={{ width: 2.75 * width / 4 }}>
                           <Link href={`../../store/${transaction.store_id}`}>
                             <View  className='flex flex-col gap-1'>
