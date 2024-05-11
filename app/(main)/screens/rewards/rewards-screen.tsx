@@ -2,7 +2,7 @@ import { Modal, ScrollView, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { Button } from '~/components/ui/button';
-import { H1, H3, Large } from "~/components/ui/typography";
+import { H3 } from "~/components/ui/typography";
 import { X } from '~/components/Icons';
 
 import { useMainContext, type MainState } from "../../context/MainContext";

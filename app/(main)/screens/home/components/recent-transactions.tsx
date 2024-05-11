@@ -8,8 +8,6 @@ import {
   Table,
   TableBody,
   TableCell,
-  TableHead,
-  TableHeader,
   TableRow,
 } from '~/components/ui/table';
 import { Text } from '~/components/ui/text';

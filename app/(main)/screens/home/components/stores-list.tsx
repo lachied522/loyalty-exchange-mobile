@@ -4,9 +4,8 @@ import { Link } from 'expo-router';
 
 import { FlashList } from '@shopify/flash-list';
 
-import { Card, CardContent } from '~/components/ui/card';
 import { Text } from '~/components/ui/text';
-import { Large, Small } from '~/components/ui/typography';
+import { Large } from '~/components/ui/typography';
 
 import { useMainContext, type MainState } from '~/app/(main)/context/MainContext';
 import StoreImage from '~/app/(main)/components/store-image';

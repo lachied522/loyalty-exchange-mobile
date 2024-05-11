@@ -73,6 +73,6 @@ export const shadowStyles = StyleSheet.create({
 
 export const colors = StyleSheet.create({
   background: {
-    backgroundColor: 'rgb(241 245 249)'
+    backgroundColor: 'rgb(245 245 245)'
   }
 })

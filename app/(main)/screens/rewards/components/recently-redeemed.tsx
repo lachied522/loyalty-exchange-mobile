@@ -4,7 +4,6 @@ import { Link } from 'expo-router';
 
 import { FlashList } from '@shopify/flash-list';
 
-import { Card, CardContent } from '~/components/ui/card';
 import { Large } from '~/components/ui/typography';
 import { Text } from '~/components/ui/text';
 

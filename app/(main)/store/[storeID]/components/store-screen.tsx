@@ -2,8 +2,8 @@ import { useMemo } from "react";
 import { ScrollView, View } from "react-native";
 import { Stack } from "expo-router";
 
-import { H1, Large, Small } from "~/components/ui/typography";
-import { colors, shadowStyles } from "~/constants/constants";
+import { H1, Large } from "~/components/ui/typography";
+import { colors } from "~/constants/constants";
 
 import { useMainContext, type MainState } from "~/app/(main)/context/MainContext";
 import StoreImage from "~/app/(main)/components/store-image";

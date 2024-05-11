@@ -2,7 +2,7 @@ import { View } from "react-native"
 import { Image } from "expo-image";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import { H1, H2, H3, Large, Small } from "~/components/ui/typography";
+import { Large, Small } from "~/components/ui/typography";
 
 import { useGlobalContext, type GlobalState } from "@/context/GlobalContext";
 

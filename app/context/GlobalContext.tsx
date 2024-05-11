@@ -1,4 +1,4 @@
-import { useState, createContext, useContext } from "react";
+import { createContext, useContext } from "react";
 
 import type { Session } from "@supabase/supabase-js";
 
@@ -10,12 +10,6 @@ export const useGlobalContext = () => {
 
 export type GlobalState = {
     session: Session | null
-    username: string
-    email: string
-    mobile: string
-    setUsername: React.Dispatch<React.SetStateAction<string>>
-    setEmail: React.Dispatch<React.SetStateAction<string>>
-    setMobile: React.Dispatch<React.SetStateAction<string>>
 }
 
 interface GlobalContextProps {
@@ -27,19 +21,10 @@ export default function GlobalContextProvider({
     session,
     children,
 }: GlobalContextProps) {
-    const [username, setUsername] = useState('testUser');
-    const [email, setEmail] = useState('test@test.com'); // TODO: remove defaults!!!
-    const [mobile, setMobile] = useState('0400527849');
 
     return (
         <GlobalContext.Provider value={{
-            session,
-            username,
-            email,
-            mobile,
-            setUsername,
-            setEmail,
-            setMobile,
+            session
         }}>
             {children}
         </GlobalContext.Provider>

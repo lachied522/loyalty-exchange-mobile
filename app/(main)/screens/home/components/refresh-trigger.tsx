@@ -1,11 +1,9 @@
-import { useState, useCallback } from "react";
+import { useState } from "react";
 import { View } from "react-native";
 
 import { Button } from "~/components/ui/button";
 import { RefreshCw, Check } from "~/components/Icons";
 import { cn } from "~/components/utils";
-
-import { shadowStyles } from "~/constants/constants";
 
 import { useMainContext, type MainState } from "../../../context/MainContext";
 
