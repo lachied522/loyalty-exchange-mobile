@@ -3,6 +3,7 @@ import { Image } from "expo-image";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { Large, Small } from "~/components/ui/typography";
+import { shadowStyles } from '~/constants/styling';
 
 import { useGlobalContext, type GlobalState } from "@/context/GlobalContext";
 
@@ -14,7 +15,7 @@ export default function HomeHeader() {
     const insets = useSafeAreaInsets();
 
     return (
-        <View className='h-[120px] flex flex-row items-center justify-between bg-white p-3' style={{ paddingTop: insets.top }}>
+        <View className='h-[120px] flex flex-row items-center justify-between bg-white p-3' style={{ paddingTop: insets.top, ...shadowStyles.edge }}>
             <View className='flex flex-row items-center justify-center gap-2'>
                 <Image
                     source={require('assets/images/logo.png')}

@@ -1,17 +1,19 @@
 // https://rnr-docs.vercel.app/components/table/
-import { View, useWindowDimensions } from 'react-native';
+import { Linking, View, useWindowDimensions } from 'react-native';
 import { FlashList } from '@shopify/flash-list';
 
 import {
     Table,
     TableBody,
     TableCell,
+    TableFooter,
     TableHead,
     TableHeader,
     TableRow,
 } from '~/components/ui/table';
 import { Text } from '~/components/ui/text';
 import { Large } from '~/components/ui/typography';
+import { Button } from '~/components/ui/button';
 
 import { formatDate } from '@/utils/formatting';
 
@@ -26,11 +28,20 @@ function formatAmount(amount: number) {
   return USDollar.format(Math.abs(amount));
 }
 
-interface TransactionsTableProps {
-    data: MainState['userData']['transactions']
+const ContactButton = ({ storeName } : { storeName: string }) => {
+  return (
+    <Button className='p-4' onPress={() => Linking.openURL(`mailto:info@loyaltyexchange.com.au?subject=Missing Purchase from ${storeName}`)}>
+        <Text className='font-display-medium text-xl text-black'>Contact Us</Text>
+    </Button>
+  )
 }
 
-export default function RecentTransactions({ data }: TransactionsTableProps) {
+interface TransactionsTableProps {
+    data: MainState['userData']['transactions']
+    storeName: string | null
+}
+
+export default function RecentTransactions({ data, storeName }: TransactionsTableProps) {
     const { width } = useWindowDimensions();
 
     return (
@@ -39,7 +50,7 @@ export default function RecentTransactions({ data }: TransactionsTableProps) {
 
         <Table aria-labelledby='transctions-table'>
           <TableHeader>
-            <TableRow>
+            <TableRow className='border-b border-neutral-200'>
               <TableHead style={{ width: width / 3 }}>
                 <Text className='font-display-medium'>Date</Text>
               </TableHead>
@@ -58,7 +69,7 @@ export default function RecentTransactions({ data }: TransactionsTableProps) {
               showsVerticalScrollIndicator={false}
               renderItem={({ item: transaction, index }) => {
                 return (
-                  <TableRow key={transaction.id}>
+                  <TableRow key={transaction.id} className='border-0'>
                     <TableCell style={{ width: width / 3 }}>
                       <Text>{formatDate(transaction.date)}</Text>
                     </TableCell>
@@ -76,7 +87,15 @@ export default function RecentTransactions({ data }: TransactionsTableProps) {
                     <Large>Nothing here yet.</Large>
                     <Text>When you shop here your recent transactions will appear here.</Text>
                 </View>
-            )}
+              )}
+              ListFooterComponent={() => (
+                <TableFooter>
+                  <View className='flex flex-col items-center p-12'>
+                    <Text>Purchases not here?</Text>
+                    <ContactButton storeName={storeName || 'Store'} />
+                  </View>
+                </TableFooter>
+              )}
             />
           </TableBody>
         </Table>

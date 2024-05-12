@@ -23,7 +23,7 @@ export default function RecentlyRedeemed() {
             <Large>Recently Redeemed</Large>
 
             <View className='min-h-[100px] p-3'>
-                <View className='w-full flex flex-row justify-between border-b border-slate-400 pb-4'>
+                <View className='w-full flex flex-row justify-between border-b border-neutral-200 pb-4'>
                     <Text className='font-display-medium'>When/Where?</Text>
                     <Text className='font-display-medium'>Reward</Text>
                 </View>
@@ -31,7 +31,7 @@ export default function RecentlyRedeemed() {
                     data={sortedData.slice(0, 5)}
                     estimatedItemSize={100}
                     showsVerticalScrollIndicator={false}
-                    ItemSeparatorComponent={() => <View className='w-full border-b border-slate-300'/>}
+                    ItemSeparatorComponent={() => <View className='w-full border-0'/>}
                     renderItem={({ item: reward, index }) => (
                             <View className='w-full py-4'>
                                 <Link key={reward.id} href={`../../store/${reward.reward_types.store_id}`} asChild>
@@ -41,7 +41,7 @@ export default function RecentlyRedeemed() {
                                                 <Text>{formatDate(reward.redeemed_at!)}</Text>
                                                 <Text className='font-display-semibold truncate'>{storeData[reward.reward_types.store_id].name}</Text>
                                             </View>
-                                            <Large>{reward.reward_types.title}</Large>
+                                            <Text>{reward.reward_types.title}</Text>
                                         </View>
                                     </TouchableOpacity>
                                 </Link>

@@ -12,7 +12,6 @@ export default function LoadingScreen() {
                 options={{
                     headerShown: false,
                 }}
-                
             />
             <View className='h-full flex flex-col items-center justify-center gap-12 bg-gray'>
                 <Logo />

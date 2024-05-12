@@ -1,3 +1,4 @@
+const defaultTheme = require('tailwindcss/defaultTheme');
 const { hairlineWidth } = require('nativewind/theme');
 
 /** @type {import('tailwindcss').Config} */
@@ -8,9 +9,9 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        'display': 'Raleway',
-        'display-medium': 'Raleway-Medium',
-        'display-semibold': 'Raleway-SemiBold'
+        'display': ['Raleway', ...defaultTheme.fontFamily.sans],
+        'display-medium': ['Raleway-Medium', ...defaultTheme.fontFamily.sans],
+        'display-semibold': ['Raleway-SemiBold', ...defaultTheme.fontFamily.sans]
       },
       colors: {
         gold: '#FFD700',

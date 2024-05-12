@@ -56,17 +56,16 @@ export default function MainLayout() {
             // prevent effect from running again
             isMounted = true;
         }
+
+        return () => {
+          isMounted = false;
+      };
     }, []);
 
     if (!(isLoaded && userData)) return <LoadingScreen />;
 
     return (
         <MainContextProvider initialState={userData}>
-            <Stack.Screen
-                options={{
-                    headerShown: false
-                }}
-            />
             <Stack />
         </MainContextProvider>
     )

@@ -32,7 +32,7 @@ export default function RewardCard({ data }: RewardCardProps) {
                 <View className='flex flex-col items-center'>
                     <Link href={`../../store/${data.store_id}`} asChild>
                         <Button onPress={() => setMyRewardsIsOpen(false)}>
-                            <Text className=''>
+                            <Text className='text-black'>
                                 {formatStoreName(storeData[data.store_id].name)}
                             </Text>
                         </Button>

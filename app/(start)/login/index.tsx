@@ -9,7 +9,7 @@ import { Input } from '~/components/ui/input';
 import { Text } from '~/components/ui/text';
 import { cn } from '~/components/utils';
 
-import { shadowStyles } from '~/constants/constants';
+import { shadowStyles } from '~/constants/styling';
 
 import Logo from '~/components/Logo';
 
@@ -56,17 +56,17 @@ export default function Login() {
     const [formErrors, setFormErrors] = useState<{ [field: string]: string }>({});
     const [formIsValid, setFormIsValid] = useState<boolean>(true);
     const toast = useToast();
-  
+
     const signInWithEmail = async () => {
       setIsLoading(true);
       const { data: { user }, error } = await supabase.auth.signInWithPassword({
         email: email,
         password: password,
       });
-  
+
       if (error) {
         handleLoginError(error, toast);
-        
+
         setIsLoading(false);
       } else {
         // check user role
@@ -103,7 +103,7 @@ export default function Login() {
       const isValid = validateForm();
       if (isValid) signInWithEmail();
     }
-  
+
     return (
       <>
           <Stack.Screen
@@ -112,7 +112,7 @@ export default function Login() {
               }}
           />
           <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-            <ScrollView 
+            <ScrollView
               contentContainerStyle={{ height: '100%' }}
               keyboardShouldPersistTaps='handled'
               scrollEnabled={false}
@@ -148,20 +148,20 @@ export default function Login() {
                       </View>
                     </View>
 
-                    <View className='w-full items-center bg-yellow-400 p-4 rounded-xl'>
-                      {isLoading? (
-                      <Text className='font-display-medium text-lg'>Please wait...</Text>
-                      ) : (
+
                       <TouchableOpacity
-                          disabled={isLoading} 
-                          onPress={handleSubmit}
-                          className='w-full'
+                        disabled={isLoading}
+                        onPress={handleSubmit}
                       >
-                        <Text className='font-display-medium text-lg'>Login</Text>
+                        <View className='w-full items-center bg-yellow-400 p-3 rounded-xl'>
+                          {isLoading? (
+                          <Text className='font-display-medium text-lg text-black'>Please wait...</Text>
+                          ) : (
+                          <Text className='font-display-medium text-lg text-black'>Login</Text>
+                          )}
+                        </View>
                       </TouchableOpacity>
-                      )}
-                    </View>
-                    
+
                     <View className='w-full flex items-center'>
                       <Text>Don't have an account? <Link href='/signup/' className='text-blue-400 underline'>Create an account</Link></Text>
                     </View>

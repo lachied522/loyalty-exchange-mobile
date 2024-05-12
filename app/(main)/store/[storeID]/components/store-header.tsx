@@ -2,9 +2,11 @@ import { View } from "react-native"
 import { Link } from "expo-router"
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import { ChevronLeft } from "~/components/Icons";
 import { H2, Small } from "~/components/ui/typography";
 import { Button } from "~/components/ui/button";
+import { ChevronLeft } from "~/components/Icons";
+import { shadowStyles } from '~/constants/styling';
+
 
 export default function StoreHeader({ points } : {
     points: number
@@ -13,7 +15,7 @@ export default function StoreHeader({ points } : {
     const insets = useSafeAreaInsets();
 
     return (
-        <View className='h-[120px] flex flex-row items-center justify-between bg-white p-6' style={{ paddingTop: insets.top }}>
+        <View className='h-[120px] flex flex-row items-center justify-between bg-white p-6' style={{ paddingTop: insets.top, ...shadowStyles.edge }}>
             <View className='h-12 w-12 flex items-center justify-center rounded-[12] left-0'>
                 <Link href='/(main)/' asChild>
                     <Button>

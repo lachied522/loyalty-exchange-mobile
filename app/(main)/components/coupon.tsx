@@ -27,8 +27,6 @@ export default function Coupon({
         ];
     }, [screenHeight, screenWidth]);
 
-    console.log(URI);
-
     return (
         <View>
             <ImageBackground

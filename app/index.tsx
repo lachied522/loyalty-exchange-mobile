@@ -1,13 +1,22 @@
-import { Redirect } from 'expo-router';
+import { Stack, router, useFocusEffect } from 'expo-router';
 
 import { useGlobalContext, type GlobalState } from "./context/GlobalContext";
 
 export default function Index() {
     const { session } = useGlobalContext() as GlobalState;
 
-    if (!session) {
-        return <Redirect href='/login/' />
-    }
+    useFocusEffect(() => {
+        // runs when route is in focus
+        if (!session) router.replace('/login/');
 
-    return <Redirect href='/(main)/' />
+        router.replace('/(main)/');
+    });
+
+    return (
+        <Stack.Screen
+            options={{
+                headerShown: false
+            }}
+        />
+    )
 }

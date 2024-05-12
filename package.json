@@ -1,7 +1,7 @@
 {
   "name": "loyalty-platform-mobile",
   "main": "expo-router/entry",
-  "version": "1.0.3",
+  "version": "1.0.5",
   "scripts": {
     "start": "expo start",
     "dev": "expo start -c --ios",

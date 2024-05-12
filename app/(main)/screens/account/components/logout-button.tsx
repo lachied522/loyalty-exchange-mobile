@@ -11,16 +11,20 @@ export default function LogoutButton() {
 
     const onLogout = () => {
         supabase.auth.signOut()
-        .then(() => {
+        .catch((e) => {
+            console.log(e);
+            // this errors when user is undefined, in which case it is safe to navigate to login page
             router.replace('/login/');
         });
+
+        router.replace('/login/');
     }
 
     return (
-        <Button onPress={onLogout}>
-            <View className='flex flex-row items-center gap-2'>
-                <Large className=''>Log out</Large>
-                <LogOut size={24} color='black' />
+        <Button onPress={onLogout} className='min-h-[48px] p-4'>
+            <View className='flex flex-row items-center justify-center gap-2'>
+                <Large className='text-black'>Log Out</Large>
+                <LogOut size={18} color='black' />
             </View>
         </Button>
     )

@@ -24,12 +24,13 @@ export const shadowStyles = StyleSheet.create({
   button: {
     shadowColor: 'rgba(27, 31, 35, 0.10)',
     shadowOffset: {
-      width: -3,
+      width: 0,
       height: 3,
     },
     shadowOpacity: 1,
     shadowRadius: 0,
     elevation: 6,
+    zIndex: 999,
     borderWidth: 1,
     borderColor: 'rgba(0, 0, 0, 0)',
   },

@@ -2,14 +2,16 @@ import { createContext, useContext } from "react";
 
 import type { Session } from "@supabase/supabase-js";
 
-const GlobalContext = createContext<any>(null);
+export type GlobalState = {
+    session: Session | null
+}
+
+const GlobalContext = createContext<GlobalState>({
+    session: null,
+});
 
 export const useGlobalContext = () => {
     return useContext(GlobalContext);
-}
-
-export type GlobalState = {
-    session: Session | null
 }
 
 interface GlobalContextProps {

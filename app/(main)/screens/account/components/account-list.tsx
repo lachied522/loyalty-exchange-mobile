@@ -40,14 +40,14 @@ export default function AccountList() {
     }, []);
 
     return (
-        <View className='w-full flex bg-white gap-2 p-3'>
+        <View className='w-full flex bg-white gap-2 p-3 pt-6'>
             <H3>My Linked Cards</H3>
 
             <View className='min-h-[100px] p-3'>
                 {isLoading? (
                     <View className='w-full flex flex-col gap-4 py-2'>
-                        <Skeleton className='h-14 w-full rounded-xl bg-neutral-400' />
-                        <Skeleton className='h-14 w-full rounded-xl bg-neutral-400' />
+                        <Skeleton className='h-14 w-full rounded-xl' />
+                        <Skeleton className='h-14 w-full rounded-xl' />
                     </View>
                 ) : (
                     <>

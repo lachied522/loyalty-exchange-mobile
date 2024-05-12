@@ -2,7 +2,7 @@ import '~/global.css';
 
 import { useEffect, useState } from 'react';
 import { AppState } from "react-native";
-import { SplashScreen, Stack, Tabs } from "expo-router";
+import { SplashScreen, Stack } from "expo-router";
 import { useFonts } from 'expo-font';
 
 import { ThemeProvider, type Theme } from '@react-navigation/native';
@@ -12,7 +12,7 @@ import type { Session } from '@supabase/supabase-js';
 import { supabase } from "@/lib/supabase";
 
 import { PortalHost } from '~/components/primitives/portal';
-import { NAV_THEME } from '~/constants/constants';
+import { NAV_THEME } from '~/constants/styling';
 
 import GlobalContextProvider from './context/GlobalContext';
 import CustomToast from './custom-toast';
@@ -32,10 +32,15 @@ const LIGHT_THEME: Theme = {
 // `onAuthStateChange` events with the `TOKEN_REFRESHED` or `SIGNED_OUT` event
 // if the user's session is terminated. This should only be registered once.
 AppState.addEventListener('change', (state) => {
-  if (state === 'active') {
-    supabase.auth.startAutoRefresh();
-  } else {
-    supabase.auth.stopAutoRefresh();
+  try {
+    if (state === 'active') {
+      supabase.auth.startAutoRefresh();
+    } else {
+      supabase.auth.stopAutoRefresh();
+    }
+  } catch (e) {
+    // likely environment variables are undefined
+    console.log(e);
   }
 });
 
@@ -54,8 +59,12 @@ export default function Layout() {
 
   // get user session
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    supabase.auth.getSession()
+    .then(({ data: { session } }) => {
         setSession(session);
+    })
+    .catch((e) => {
+      console.log(e);
     });
 
     supabase.auth.onAuthStateChange((_event, session) => {

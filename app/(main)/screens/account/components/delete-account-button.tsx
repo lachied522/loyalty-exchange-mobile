@@ -33,7 +33,7 @@ export default function DeleteAccountButton() {
     }
 
     return (
-        <Button onPress={onPress}>
+        <Button onPress={onPress} className='min-h-[48px] p-4'>
             <View className='flex flex-row items-center gap-2'>
                 <Large className=''>Delete My Account</Large>
             </View>

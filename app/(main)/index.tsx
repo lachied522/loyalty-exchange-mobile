@@ -1,10 +1,10 @@
 import { View, TouchableOpacity } from 'react-native';
 import { Stack } from "expo-router";
 
-import { createBottomTabNavigator, type BottomTabBarButtonProps } from '@react-navigation/bottom-tabs';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import { Text } from '~/components/ui/text';
-import { shadowStyles } from '~/constants/constants';
+import { shadowStyles } from '~/constants/styling';
 import { Icon } from '~/components/Icons';
 
 import { useMainContext, type MainState } from "./context/MainContext";
@@ -15,8 +15,17 @@ import Account from "./screens/account/account-screen";
 
 const Tab = createBottomTabNavigator();
 
-export default function MainLayout() {
-    const { myRewardsIsOpen, setMyRewardsIsOpen } = useMainContext() as MainState;
+const FillerComponent = () => {
+    return null
+}
+
+export default function MainIndex() {
+    const { setMyRewardsIsOpen } = useMainContext() as MainState;
+
+    const handleRewardsPress = () => {
+        // Toggle rewards modal or visibility
+        setMyRewardsIsOpen((curr) => !curr);
+    };
 
     return (
         <>
@@ -26,7 +35,7 @@ export default function MainLayout() {
                 }}
             />
 
-            {myRewardsIsOpen && <RewardsScreen />}
+            <RewardsScreen />
 
             <Tab.Navigator
                 screenOptions={{
@@ -63,17 +72,10 @@ export default function MainLayout() {
                 />
                 <Tab.Screen
                     name="My Rewards"
-                    component={HomeScreen} // this is a filler component
-                    listeners={({ navigation }) => ({
-                        tabPress: (event) => {
-                            // prevent default navigation
-                            event.preventDefault();
-                            setMyRewardsIsOpen(!myRewardsIsOpen);
-                        },
-                    })}
+                    component={FillerComponent} // this is a filler component
                     options={{
-                        tabBarButton: (props: BottomTabBarButtonProps) => (
-                            <TouchableOpacity onPress={props.onPress}>
+                        tabBarButton: () => (
+                            <TouchableOpacity onPress={handleRewardsPress}>
                                 <View className='flex flex-row items-center justify-center bg-gold px-5 py-4 rounded-xl top-[-4]' style={shadowStyles.button}>
                                     <Text className='h-[24px] text-xl font-display-semibold'>
                                         Rewards
@@ -99,6 +101,5 @@ export default function MainLayout() {
                 />
             </Tab.Navigator>
         </>
-
     )
 }

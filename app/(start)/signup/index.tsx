@@ -7,7 +7,7 @@ import { Text } from '~/components/ui/text';
 import { H1 } from '~/components/ui/typography';
 import { cn } from '~/components/utils';
 
-import { shadowStyles } from '~/constants/constants';
+import { shadowStyles } from '~/constants/styling';
 
 import { supabase } from '@/lib/supabase';
 
@@ -88,7 +88,7 @@ export default function Signup() {
 
     // const url = Linking.useURL();
     // if (url) createSessionFromUrl(url);
-  
+
     return (
         <>
           <Stack.Screen
@@ -164,18 +164,19 @@ export default function Signup() {
                       />
                     </View>
 
-                    <View className='w-full items-center bg-yellow-400 p-4 rounded-xl'>
-                      {isLoading? (
-                      <Text className='font-display-medium text-lg'>Please wait...</Text>
-                      ) : (
-                      <TouchableOpacity
-                        disabled={isLoading}
-                        onPress={handleSubmit}
-                      >
-                        <Text className='font-display-medium text-lg'>Sign Up</Text>
-                      </TouchableOpacity>
-                      )}
-                    </View>
+                    <TouchableOpacity
+                      disabled={isLoading}
+                      onPress={handleSubmit}
+                    >
+                      <View className='w-full items-center bg-yellow-400 p-3 rounded-xl'>
+                        {isLoading? (
+                        <Text className='font-display-medium text-lg'>Please wait...</Text>
+                        ) : (
+
+                          <Text className='font-display-medium text-lg'>Sign Up</Text>
+                        )}
+                      </View>
+                    </TouchableOpacity>
 
                     <View className='w-full flex items-center'>
                       <Text>Already have an account? <Link href='/login/' className='text-blue-400 underline'>Login</Link></Text>

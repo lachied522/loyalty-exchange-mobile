@@ -3,7 +3,7 @@ import { ScrollView, View } from "react-native";
 import { Stack } from "expo-router";
 
 import { H1, Large } from "~/components/ui/typography";
-import { colors } from "~/constants/constants";
+import { colors } from "~/constants/styling";
 
 import { useMainContext, type MainState } from "~/app/(main)/context/MainContext";
 import StoreImage from "~/app/(main)/components/store-image";
@@ -63,8 +63,8 @@ export default function Store({ storeData }: StoreProps) {
 
                 <View className='flex flex-col gap-3'>
                     <AvailableRewards storeData={storeData} />
-                            
-                    <RecentTransactions data={storeTransactions} />
+
+                    <RecentTransactions data={storeTransactions} storeName={storeData.name} />
                 </View>
             </ScrollView>
         </>

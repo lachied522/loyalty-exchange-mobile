@@ -75,16 +75,16 @@ export default function RewardTrigger({ rewardData }: RewardProps) {
             {isOpen && <RewardModal rewardData={rewardData} onClose={() => setIsOpen(false)} />}
 
             {isLoading ? (
-                <Button disabled={true} className='bg-slate-100'>
-                    <Text>Pease wait...</Text>
+                <Button disabled={true} className='bg-neutral-200'>
+                    <Text className='text-black'>Pease wait...</Text>
                 </Button>
             ) : isRedeemed ? (
-                <Button disabled={isRedeemed} className='bg-slate-100'>
-                    <Text>Redeemed</Text>
+                <Button disabled={isRedeemed} className='bg-neutral-200'>
+                    <Text className='text-black'>Redeemed</Text>
                 </Button>
             ) : (
                 <Button onPress={onPress} disabled={isRedeemed} className='bg-yellow-400'>
-                    <Text>Redeem</Text>
+                    <Text className='text-black'>Redeem</Text>
                 </Button>
             )}
         </View>

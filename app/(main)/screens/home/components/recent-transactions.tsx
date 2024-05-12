@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { View, useWindowDimensions } from 'react-native';
+import { Linking, View, useWindowDimensions } from 'react-native';
 import { Link } from 'expo-router';
 
 import { FlashList } from '@shopify/flash-list';
@@ -9,9 +9,11 @@ import {
   TableBody,
   TableCell,
   TableRow,
+  TableFooter,
 } from '~/components/ui/table';
 import { Text } from '~/components/ui/text';
 import { Large } from '~/components/ui/typography';
+import { Button } from '~/components/ui/button';
 
 import { useMainContext, type MainState } from '../../../context/MainContext';
 
@@ -26,6 +28,14 @@ function formatAmount(amount: number) {
   return USDollar.format(Math.abs(amount));
 }
 
+const ContactButton = () => {
+  return (
+    <Button className='p-4' onPress={() => Linking.openURL('mailto:info@loyaltyexchange.com.au?subject=Missing Purchase')}>
+        <Text className='font-display-medium text-xl text-black'>Contact Us</Text>
+    </Button>
+  )
+}
+
 export default function RecentTransactions() {
     const { userData, storeData } = useMainContext() as MainState;
     const { width } = useWindowDimensions();
@@ -35,7 +45,7 @@ export default function RecentTransactions() {
     }, [userData.transactions]);
 
     return (
-      <View className='min-h-[50vh] flex flex-col bg-white gap-4 p-3 pt-6'>
+      <View className='min-h-[360px] flex flex-col bg-white gap-4 p-3 pt-6'>
         <Large>Recent Purchases</Large>
 
         <Table aria-labelledby='transctions-table'>
@@ -70,7 +80,15 @@ export default function RecentTransactions() {
                       <Large>Nothing here yet.</Large>
                       <Text>When you shop here your recent transactions will appear here.</Text>
                   </View>
-              )}
+                )}
+                ListFooterComponent={() => (
+                  <TableFooter>
+                    <View className='flex flex-col items-center p-12'>
+                      <Text>Purchases not here?</Text>
+                      <ContactButton />
+                    </View>
+                  </TableFooter>
+                )}
               />
             </TableBody>
         </Table>
