@@ -19,7 +19,8 @@
         "EXPO_PUBLIC_SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ4ZWFrY3R2emJtaWRxeHhwbmZjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTQ4MTk5NzMsImV4cCI6MjAzMDM5NTk3M30.oz8fKGGMMVMRmY8Y79DG9vzyhWIlhB9iIU0oavlR3jo",
         "EXPO_PUBLIC_BACKEND_URL": "https://www.loyaltyexchange.com.au/api"
       },
-      "channel": "production"
+      "channel": "production",
+      "autoIncrement": true
     }
   },
   "submit": {

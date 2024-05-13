@@ -30,8 +30,11 @@ function formatAmount(amount: number) {
 
 const ContactButton = () => {
   return (
-    <Button className='p-4' onPress={() => Linking.openURL('mailto:info@loyaltyexchange.com.au?subject=Missing Purchase')}>
-        <Text className='font-display-medium text-xl text-black'>Contact Us</Text>
+    <Button
+      onPress={() => Linking.openURL('mailto:info@loyaltyexchange.com.au?subject=Missing Purchase')}
+      className='min-h-[40px]'
+    >
+      <Text className=' font-display-medium text-xl text-black'>Contact Us</Text>
     </Button>
   )
 }
@@ -76,14 +79,14 @@ export default function RecentTransactions() {
                   );
                 }}
                 ListEmptyComponent={() => (
-                  <View className='flex flex-col items-center justify-center gap-2 p-6'>
+                  <View className='min-h-[120px] flex flex-col items-center justify-center gap-2 p-6'>
                       <Large>Nothing here yet.</Large>
                       <Text>When you shop here your recent transactions will appear here.</Text>
                   </View>
                 )}
                 ListFooterComponent={() => (
                   <TableFooter>
-                    <View className='flex flex-col items-center p-12'>
+                    <View className='min-h-[120px] flex flex-col items-center p-12'>
                       <Text>Purchases not here?</Text>
                       <ContactButton />
                     </View>

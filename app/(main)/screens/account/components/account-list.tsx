@@ -28,10 +28,12 @@ export default function AccountList() {
         async function fetchData() {
             if (!accounts) {
                 await fetchUserAccounts()
-                .then((accounts) => setAccounts(accounts))
                 .catch((e) => {
                     console.log(e);
                     setError(true);
+                })
+                .then((accounts) => {
+                    setAccounts(accounts ?? []);
                 });
             }
 
@@ -44,42 +46,46 @@ export default function AccountList() {
             <H3>My Linked Cards</H3>
 
             <View className='min-h-[100px] p-3'>
-                {isLoading? (
-                    <View className='w-full flex flex-col gap-4 py-2'>
-                        <Skeleton className='h-14 w-full rounded-xl' />
-                        <Skeleton className='h-14 w-full rounded-xl' />
-                    </View>
-                ) : (
-                    <>
-                        <View className='w-full flex flex-row justify-between p-3'>
-                            <Small>Name</Small>
-                            <Small>Number</Small>
+                <View className='w-full flex flex-row justify-between p-3'>
+                    <Small>Name</Small>
+                    <Small>Number</Small>
+                </View>                   
+                <FlashList
+                    data={accounts?.slice(0, 2) || []}
+                    estimatedItemSize={45}
+                    showsVerticalScrollIndicator={false}
+                    renderItem={({ item: account, index }) => (
+                        <View key={`accounts-${index}`} className='w-full flex flex-row justify-between p-3'>
+                            <Large className='font-display-semibold truncate'>{account.name}</Large>
+                            <Large>{maskAccountNumber(account.accountNo)}</Large>
                         </View>
-                        <FlashList
-                            data={accounts?.slice(0, 2) || []}
-                            estimatedItemSize={45}
-                            showsVerticalScrollIndicator={false}
-                            renderItem={({ item: account, index }) => (
-                                <View key={`accounts-${index}`} className='w-full flex flex-row justify-between p-3'>
-                                    <Large className='font-display-semibold truncate'>{account.name}</Large>
-                                    <Large>{maskAccountNumber(account.accountNo)}</Large>
-                                </View>
-                                )
-                            }
-                            ListEmptyComponent={() => (
-                                <View className='h-[180px] flex flex-col items-center justify-center gap-2 py-6'>
-                                    <Large>You don't have any linked accounts</Large>
-                                </View>
+                        )
+                    }
+                    ListEmptyComponent={() => (
+                        <>
+                            {isLoading ? (
+                            <View className='w-full flex flex-col gap-4 py-2'>
+                                <Skeleton className='h-14 w-full rounded-xl' />
+                                <Skeleton className='h-14 w-full rounded-xl' />
+                            </View>
+                            ) : (
+                            <View className='h-[180px] flex items-center justify-center py-6'>
+                                {error ? (
+                                <Large className='text-center'>There was an error fetching your accounts. Please try again later</Large>
+                                ) : (
+                                <Large className='text-center'>You don't have any linked accounts</Large>
+                                )}
+                            </View>
                             )}
-                            ListFooterComponent={() => (
-                                <View className='flex flex-row items-center justify-end'>
-                                    <ManageAccounts action='connect' isLoading={isLoading} setIsLoading={setIsLoading} />
-                                    <ManageAccounts action='manage' isLoading={isLoading} setIsLoading={setIsLoading} />
-                                </View>
-                            )}
-                        />
-                    </>
-                )}
+                        </>
+                    )}
+                    ListFooterComponent={() => (
+                        <View className='flex flex-row items-center justify-end'>
+                            <ManageAccounts action='connect' isLoading={isLoading} setIsLoading={setIsLoading} />
+                            <ManageAccounts action='manage' isLoading={isLoading} setIsLoading={setIsLoading} />
+                        </View>
+                    )}
+                />
             </View>
         </View>
     )

@@ -9,7 +9,6 @@ async function makeAuthenticatedGetRequest(
     slug: string,
     session: Session
 ) {
-
     const url = `${process.env.EXPO_PUBLIC_BACKEND_URL}/${path}` + (
         slug.length? `/${slug}`: ''
     );

@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react';
-import { Stack } from "expo-router";
+import { Stack, router } from "expo-router";
 import { useToast } from 'react-native-toast-notifications';
 
 import type { UserData } from '@/types/helpers';
 import { fetchUserData } from '@/utils/functions';
+
+import { useGlobalContext, type GlobalState } from "@/context/GlobalContext";
 
 import LoadingScreen from './loading-screen';
 import MainContextProvider from "./context/MainContext";
@@ -29,38 +31,32 @@ function handleError(error: Error, toast: ReturnType<typeof useToast>) {
 }
 
 export default function MainLayout() {
+    const { session } = useGlobalContext() as GlobalState;
     const [userData, setUserData] = useState<UserData | null>(null);
     const [isLoaded, setIsLoaded] = useState<boolean>(false);
 
     const toast = useToast();
 
-    useEffect(() => {
-        let isMounted = false;
+    useEffect(() => {        
+        if (!session) router.replace('/login/');
 
-        loadData();
+        let isMounted = true;
 
-        async function loadData() {
-            if (!isMounted) {
-              // fetch user data
-              const data = await fetchUserData()
-              .catch((e) => {
-                handleError(e, toast);
-              });
-              // update state
-              if (!!data) {
-                setUserData(data);
-                setIsLoaded(true);
-              };
-            }
-            
-            // prevent effect from running again
-            isMounted = true;
-        }
+        fetchUserData()
+        .catch((e) => {
+          handleError(e, toast);
+        })
+        .then((data) => {
+          if (data && isMounted) {
+            setUserData(data);
+            setIsLoaded(true);
+          }
+        });
 
         return () => {
           isMounted = false;
-      };
-    }, []);
+        };
+    }, [session, setUserData, setIsLoaded]);
 
     if (!(isLoaded && userData)) return <LoadingScreen />;
 

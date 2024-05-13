@@ -29,8 +29,8 @@ export default function Account() {
 
                 <PersonalDetails />
 
-                <View className='w-full flex flex-col items-center justify-center bg-white p-6'>
-                    <Button className='w-full bg-yellow-400 p-4' onPress={() => Linking.openURL('mailto:info@loyaltyexchange.com.au?subject=Enquiry')}>
+                <View className='w-full flex flex-col items-center bg-white p-6'>
+                    <Button className='min-h-[40px] w-full bg-yellow-400' onPress={() => Linking.openURL('mailto:info@loyaltyexchange.com.au?subject=Enquiry')}>
                         <Text className='font-display-medium text-xl text-black'>Contact Us</Text>
                     </Button>
                 </View>

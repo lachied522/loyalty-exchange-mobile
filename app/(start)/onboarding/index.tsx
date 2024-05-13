@@ -63,14 +63,15 @@ export default function Onboarding() {
     );
   
     return (
-      <SafeAreaView style={{ flex: 1, marginTop: 40, padding: 24 }}>
+      <>
         <Stack.Screen
               options={{
                   headerShown: false
               }}
           />
-          <ScrollView 
-            contentContainerStyle={{ height: '100%', justifyContent: 'center', padding: 24, gap: 24 }} 
+        <SafeAreaView style={{ flex: 1, marginTop: 40, padding: 24 }}>
+          <ScrollView
+            contentContainerStyle={{ height: '100%', justifyContent: 'center', padding: 24, gap: 36 }} 
             keyboardShouldPersistTaps='handled'
             scrollEnabled={false}
           >
@@ -82,9 +83,9 @@ export default function Onboarding() {
               disabled={!isReady}
             >
               {!isReady? (
-              <Text>Please wait...</Text>
+              <Text className='text-black'>Please wait...</Text>
               ) : (
-              <Text>Connect Card</Text>
+              <Text className='text-black'>Connect Card</Text>
               )}
             </Button>
             <Link href='/(main)/' asChild>
@@ -95,6 +96,7 @@ export default function Onboarding() {
                 </View>
               </Link>
           </ScrollView>
-      </SafeAreaView>
+        </SafeAreaView>
+      </>
     )
 }
