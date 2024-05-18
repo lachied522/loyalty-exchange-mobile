@@ -16,11 +16,12 @@ function formatName(text: string) {
     return text.length > 16? text.slice(0, 16) + '...': text;
 }
 
-export default function StoresList() {
-    const { userData } = useMainContext() as MainState;
+export default function PointsList() {
+    const { userData, storeData } = useMainContext() as MainState;
+    
     const sortedData = useMemo(() => {
         return userData.points.sort((a, b) => b.balance - a.balance);
-    }, []);
+    }, [userData.points]);
 
     return (
         <View className='flex flew-col bg-white gap-4 p-3 pt-6'>
@@ -36,10 +37,14 @@ export default function StoresList() {
                     renderItem={({ item, index }) => (
                         <Link key={`store-list-item-${index}`} href={`../../store/${item.store_id}`}>
                             <View className='max-w-[180px] flex flex-col items-start gap-2'>
-                                <StoreImage storeID='sample' width={180} />
+                                <StoreImage
+                                    url={storeData[item.store_id]?.store_img_url || null}
+                                    width={180}
+                                />
+
                                 <View className='flex flex-col justify-start'>
                                     <Large className='font-display-semibold truncate'>{formatName(item.stores!.name)}</Large>
-                                    <Text>{item.balance.toLocaleString()} points</Text>
+                                    <Text>{Math.floor(Math.max(item.balance, 0)).toLocaleString()} points</Text>
                                 </View>
                             </View>
                         </Link>
@@ -48,7 +53,7 @@ export default function StoresList() {
                     ListEmptyComponent={() => (
                         <View className='h-[240px] flex flex-col items-center justify-center gap-2 py-6'>
                             <Large>Nothing here yet.</Large>
-                            <Text>Your points will automatically start accumulating here.</Text>
+                            <Text className='text-center'>Your points will automatically start accumulating here.</Text>
                         </View>
                     )}
                 />

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { View } from "react-native";
 
 import { useToast } from "react-native-toast-notifications";
@@ -28,42 +28,38 @@ function handleSubmitError(error: Error, toast: ReturnType<typeof useToast>) {
 
 export default function PersonalDetails() {
     const { session } = useGlobalContext() as GlobalState;
-    const [firstName, setFirstName] = useState<string>(session?.user.user_metadata['first_name']);
-    const [lastName, setLastName] = useState<string>(session?.user.user_metadata['last_name']);
-    const [mobile, setMobile] = useState<string>(session?.user.user_metadata['mobile']);
-    const [email, setEmail] = useState<string>(session?.user.email || '');
+    // bug with Button component - functions passed as 'onPress' are not updated with state
+    // issue is avoided by using react ref
+    const [formState, setFormState] = useState({
+        firstName: session?.user.user_metadata['first_name'] ?? '',
+        lastName: session?.user.user_metadata['last_name'] ?? '',
+        mobile: session?.user.phone ?? '',
+        email: session?.user.email ?? '',
+    });
+    const formRef = useRef<typeof formState>(formState);
     const [isEditting, setIsEditting] = useState<'firstName'|'lastName'|'mobile'|'email'|null>(null);
-    const [formErrors, setFormErrors] = useState<{ [field: string]: string }>({});
     const [formIsValid, setFormIsValid] = useState<boolean>(true);
 
     const toast = useToast();
 
+    useEffect(() => {
+        formRef.current = formState;
+    }, [formState]);
+
+    const onFieldChange = (field: string, value: string) => {
+        setFormState((curr) => ({ ...curr, [field]: value }));
+    }
+
     const validateForm = () => {
-        const errors: { [field: string]: string } = {};
-  
-        if (email.length === 0) {
-          errors['email'] = 'Enter a valid email';
+        let isValid = true;
+
+        for (const [key, value] of Object.entries(formRef.current)) {
+            if (value.length === 0) isValid = false;
         }
-  
-        if (mobile.length === 0) {
-          errors['mobile'] = 'Enter a valid mobile';
-        }
-  
-        if (firstName.length === 0) {
-          errors['firstName'] = 'Please provide your first name';
-        }
-  
-        if (lastName.length === 0) {
-          errors['lastName'] = 'Please provide your last name';
-        }
-  
-        setFormErrors(errors);
-        
-        const isValid = Object.keys(errors).length === 0;
+
         setFormIsValid(isValid);
-        
         return isValid;
-      }
+    }
 
     const onSave = async () => {
         // check if data is valid
@@ -73,14 +69,13 @@ export default function PersonalDetails() {
         setIsEditting(null);
 
         const { error } = await supabase.auth.updateUser({
-            email: email,
-            phone: mobile,
+            email: formRef.current.email,
             data: {
-                first_name: firstName,
-                last_name: lastName,
-                mobile,
+                first_name: formRef.current.firstName,
+                last_name: formRef.current.lastName,
+                mobile: formRef.current.mobile,
             }
-        })
+        });
 
         if (error) {
             handleSubmitError(error, toast);
@@ -96,14 +91,14 @@ export default function PersonalDetails() {
                         <View className='flex flex-col items-stretch'>
                             <Text className='ml-2'>First Name</Text>
                             <Input
-                                onChangeText={(text) => setFirstName(text)}
-                                value={firstName}
+                                onChangeText={(text) => onFieldChange('firstName', text)}
+                                value={formState.firstName}
                                 editable={isEditting==='firstName'}
                                 autoCapitalize='none'
                                 className={cn(
                                     'w-[240px] border-white',
                                     isEditting==='firstName' && 'border-neutral-200',
-                                    firstName.length === 0 && !formIsValid && 'border-red-400'
+                                    formState.firstName.length === 0 && !formIsValid && 'border-red-400'
                                 )}
                                 style={{ width: 240 }} // width property above doesn't seem to work on ios, set explicitly here
                             />
@@ -127,14 +122,14 @@ export default function PersonalDetails() {
                         <View className='flex flex-col items-stretch'>
                             <Text className='ml-2'>Last Name</Text>
                             <Input
-                                onChangeText={(text) => setLastName(text)}
-                                value={lastName}
+                                onChangeText={(text) => onFieldChange('lastName', text)}
+                                value={formState.lastName}
                                 editable={isEditting==='lastName'}
                                 autoCapitalize='none'
                                 className={cn(
                                     'w-[240px] border-white',
                                     isEditting==='lastName' && 'border-neutral-200',
-                                    lastName.length === 0 && !formIsValid && 'border-red-400'
+                                    formState.lastName.length === 0 && !formIsValid && 'border-red-400'
                                 )}
                                 style={{ width: 240 }}
                             />
@@ -158,15 +153,15 @@ export default function PersonalDetails() {
                         <View className='flex flex-col items-stretch'>
                             <Text className='ml-2'>Email</Text>
                             <Input
-                                onChangeText={(text) => setEmail(text)}
-                                value={email}
+                                onChangeText={(text) => onFieldChange('email', text)}
+                                value={formState.email}
                                 editable={isEditting==='email'}
                                 autoCapitalize='none'
                                 keyboardType='email-address'
                                 className={cn(
                                     'w-[240px] border-white',
                                     isEditting==='email' && 'border-neutral-200',
-                                    lastName.length === 0 && !formIsValid && 'border-red-400'
+                                    formState.lastName.length === 0 && !formIsValid && 'border-red-400'
                                 )}
                                 style={{ width: 240 }}
                             />
@@ -190,15 +185,15 @@ export default function PersonalDetails() {
                         <View className='flex flex-col items-stretch'>
                             <Text className='ml-2'>Mobile</Text>
                             <Input
-                                onChangeText={(text) => setMobile(text)}
-                                value={mobile}
+                                onChangeText={(text) => onFieldChange('mobile', text)}
+                                value={formState.mobile}
                                 editable={isEditting==='mobile'}
                                 autoCapitalize='none'
                                 keyboardType='phone-pad'
                                 className={cn(
                                     'w-[240px] border-b border-white',
                                     isEditting==='mobile' && 'border-neutral-200',
-                                    lastName.length === 0 && !formIsValid && 'border-red-400'
+                                    formState.lastName.length === 0 && !formIsValid && 'border-red-400'
                                 )}
                                 style={{ width: 240 }}
                             />

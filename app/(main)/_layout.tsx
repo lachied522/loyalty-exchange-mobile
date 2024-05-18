@@ -5,13 +5,18 @@ import { useToast } from 'react-native-toast-notifications';
 import type { UserData } from '@/types/helpers';
 import { fetchUserData } from '@/utils/functions';
 
+import { NotLoggedInError } from '@/utils/errors';
+
 import { useGlobalContext, type GlobalState } from "@/context/GlobalContext";
 
 import LoadingScreen from './loading-screen';
 import MainContextProvider from "./context/MainContext";
 
 function handleError(error: Error, toast: ReturnType<typeof useToast>) {
-    if (error.name === 'TypeError' && error.message === 'Network request timed out') {
+    if (error instanceof NotLoggedInError) {
+      // this shouldn't occur, but does sometimes
+      // if this occurs the user should be redirected to login page automatically
+    } else if (error.name === 'TypeError' && error.message === 'Network request timed out') {
       toast.show(
         'Internet access is required.',
         {

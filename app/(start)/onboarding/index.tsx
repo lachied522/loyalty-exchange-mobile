@@ -10,6 +10,8 @@ import { Button } from '~/components/ui/button';
 import { Text } from '~/components/ui/text';
 import { Large } from '~/components/ui/typography';
 
+import { createNewConnection } from '@/utils/connections';
+
 import { useStartContext, type StartState } from '../context/StartContext';
 
 export default function Onboarding() {
@@ -23,28 +25,20 @@ export default function Onboarding() {
         let isMounted = false; // prevent effect from executing twice
 
         if (session && !isMounted) {
-          fetch(
-            `${process.env.EXPO_PUBLIC_BACKEND_URL}/create-new-connection/${session.user.id}`,
-            {
-              method: 'GET',
-              headers: {
-                'token': session.access_token,
+          createNewConnection(session)
+          .then((url) => {
+              if (url) {
+                setConsentUrl(url);
+                setIsReady(true);
+              } else {
+                toast.show(
+                  "Something went wrong. Please try again later.",
+                  {
+                    placement: 'top',
+                    duration: 5000
+                  }
+                );
               }
-            }
-          )
-          .then((res) => res.json())
-          .then(({ url }) => {
-            setConsentUrl(url);
-            setIsReady(true);
-          })
-          .catch((e) => {
-            toast.show(
-              "Something went wrong. Please try again later.",
-              {
-                placement: 'top',
-                duration: 5000
-              }
-            );
           });
 
           isMounted = true;

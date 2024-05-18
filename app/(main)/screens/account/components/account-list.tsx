@@ -29,11 +29,12 @@ export default function AccountList() {
             if (!accounts) {
                 await fetchUserAccounts()
                 .catch((e) => {
-                    console.log(e);
                     setError(true);
                 })
                 .then((accounts) => {
-                    setAccounts(accounts ?? []);
+                    if (accounts) {
+                        setAccounts(accounts);
+                    }
                 });
             }
 
@@ -65,8 +66,8 @@ export default function AccountList() {
                         <>
                             {isLoading ? (
                             <View className='w-full flex flex-col gap-4 py-2'>
-                                <Skeleton className='h-14 w-full rounded-xl' />
-                                <Skeleton className='h-14 w-full rounded-xl' />
+                                <Skeleton className='h-14 w-full rounded-xl bg-neutral-200' />
+                                <Skeleton className='h-14 w-full rounded-xl bg-neutral-200' />
                             </View>
                             ) : (
                             <View className='h-[180px] flex items-center justify-center py-6'>

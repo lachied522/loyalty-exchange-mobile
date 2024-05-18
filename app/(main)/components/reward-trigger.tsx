@@ -84,7 +84,7 @@ export default function RewardTrigger({ rewardData }: RewardProps) {
                 </Button>
             ) : (
                 <Button onPress={onPress} disabled={isRedeemed} className='bg-yellow-400'>
-                    <Text className='text-black'>Redeem</Text>
+                    <Text className='text-black'>{rewardData.cost} points</Text>
                 </Button>
             )}
         </View>

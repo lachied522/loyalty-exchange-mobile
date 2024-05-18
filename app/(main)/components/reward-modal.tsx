@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react';
 import { Modal, View, Pressable, Alert } from "react-native";
 
 import { Progress } from '~/components/ui/progress';
-import { H1, H2, H3, Large, Small } from "~/components/ui/typography";
-import { X, Icon } from "~/components/Icons";
+import { H1, H3, Small } from "~/components/ui/typography";
+import { Icon } from "~/components/Icons";
 
 import Logo from '~/components/Logo';
 
@@ -83,13 +83,18 @@ export default function RewardModal({
                 <Coupon>
                     <Pressable onPress={(e) => e.stopPropagation()} className='w-full flex flex-col items-center'>
                         <View className='h-full flex-col items-center justify-between py-16'>
-                            <View className='flex flex-col items-center'>
+                            <View className='h-[100px] flex flex-col items-center gap-1'>
                                 <Logo />
-                                <StoreLogo />
+
+                                <StoreLogo
+                                    url={storeData[rewardData.store_id]?.store_logo_url ?? null}
+                                    width={120}
+                                    height='100%'
+                                />
                             </View>
 
-                            <View className='flex flex-col items-center gap-2 mb-12'>
-                                <Icon name='Coffee' size={56} color='black' />
+                            <View className='flex flex-col items-center gap-3 mb-12'>
+                                <Icon name={rewardData.icon_name || 'Coffee'} size={56} color='black' />
                                 <H1>{rewardData.title}</H1>
                             </View>
 

@@ -10,13 +10,13 @@ export type UserData = (
         points: (
             Tables<'points'> & {
                 stores: Tables<'stores'> & {
-                    reward_types: Tables<'reward_types'>
+                    rewards: Tables<'rewards'>
                 }
             }
         )[]
-        rewards: (
-            Tables<'rewards'> & {
-                reward_types: Tables<'reward_types'>
+        redeemed: (
+            Tables<'redeemed'> & {
+                rewards: Tables<'rewards'>
             }
         )[]
         transactions: Tables<'transactions'>[] // historical transactions
@@ -25,13 +25,13 @@ export type UserData = (
 )
 
 export type Reward = (
-    Omit<Tables<'reward_types'>, 'icon_name'> & {
+    Omit<Tables<'rewards'>, 'icon_name'> & {
         icon_name: keyof typeof icons | null
     }
 )
 
 export type StoreData = (
     Tables<'stores'> & {
-        reward_types: Reward[]
+        rewards: Reward[]
     }
 )

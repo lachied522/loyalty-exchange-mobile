@@ -6,8 +6,8 @@ export type Action = {
     type: 'SET_DATA',
     payload: MainState['userData']
 } | {
-    type: 'INSERT_REWARD',
-    payload: MainState['userData']['rewards'][number]
+    type: 'INSERT_REDEEMED',
+    payload: MainState['userData']['redeemed'][number]
 } | {
     type: 'SET_STORE_POINTS',
     payload: {
@@ -27,12 +27,12 @@ export function MainReducer(state: MainState['userData'], action: Action) {
             return action.payload;
         }
 
-        case 'INSERT_REWARD': {
+        case 'INSERT_REDEEMED': {
             return {
                 ...state,
-                rewards: [
+                redeemed: [
                     action.payload,
-                    ...state.rewards,
+                    ...state.redeemed,
                 ]
             }
         }

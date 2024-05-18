@@ -2,7 +2,7 @@
   "expo": {
     "name": "Loyalty Exchange",
     "slug": "loyalty-exchange",
-    "version": "1.0.7",
+    "version": "1.0.8",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "com.loyaltyexchange",
@@ -17,8 +17,7 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.loyaltyexchange",
-      "buildNumber": "1"
+      "bundleIdentifier": "com.loyaltyexchange"
     },
     "android": {
       "adaptiveIcon": {
@@ -26,11 +25,6 @@
         "backgroundColor": "#ffffff"
       },
       "package": "com.loyaltyexchange"
-    },
-    "web": {
-      "bundler": "metro",
-      "output": "static",
-      "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
       "expo-router",

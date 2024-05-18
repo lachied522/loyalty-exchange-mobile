@@ -51,8 +51,10 @@ export default function Store({ storeData }: StoreProps) {
                     <View className='z-[10] w-full h-full flex items-center justify-center bg-gray-800/20 p-12 absolute'>
                         <H1 className='text-center text-white'>{storeData.name}</H1>
                     </View>
-                    <StoreImage storeID='' width='100%' height={240} rounded={false} />
+
+                    <StoreImage url={storeData.store_img_url} width='100%' height={240} rounded={false} />
                 </View>
+                
                 <View className='flex items-center p-6 bg-white mb-3'>
                     <View className='w-full flex flex-col items-center justify-center p-3 gap-2'>
                         <Large>{'Location(s)'}</Large>

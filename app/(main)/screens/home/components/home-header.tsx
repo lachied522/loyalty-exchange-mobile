@@ -33,7 +33,7 @@ export default function HomeHeader() {
                 </View>
             </View>
 
-            <RefreshTrigger />
+            {/* <RefreshTrigger /> */}
         </View>
     )
 }

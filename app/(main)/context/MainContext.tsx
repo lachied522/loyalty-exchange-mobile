@@ -1,8 +1,8 @@
 import { useState, createContext, useContext, useCallback, useReducer } from "react";
 
-import { MainReducer, type Action } from "./MainReducer";
-
 import { fetchUserData, refreshUserData, redeemReward } from "@/utils/functions";
+
+import { MainReducer, type Action } from "./MainReducer";
 
 import type { Session } from "@supabase/supabase-js";
 import type { UserData, StoreData, Reward } from "@/types/helpers";
@@ -36,7 +36,7 @@ export default function MainContextProvider({
 }: MainContextProps) {
     const [state, dispatch] = useReducer<typeof MainReducer>(MainReducer, initialState);
     const [storeData, setStoreData] = useState<{ [store_id: string]: StoreData }>(
-        initialState.points.reduce((acc, obj) => ({ ...acc, [obj.store_id]: obj.stores }), {})
+        initialState.points?.reduce((acc, obj) => ({ ...acc, [obj.store_id]: obj.stores }), {}) || {}
     );
     const [myRewardsIsOpen, setMyRewardsIsOpen] = useState<boolean>(false); // controls whether the My Rewards modal is open
 
@@ -85,13 +85,13 @@ export default function MainContextProvider({
 
             // add reward to state
             dispatch({
-                type: 'INSERT_REWARD',
+                type: 'INSERT_REDEEMED',
                 payload: {
                     id: '',
                     redeemed_at: new Date().toISOString(),
-                    reward_type_id: reward.id,
+                    reward_id: reward.id,
                     user_id: state.id,
-                    reward_types: reward,
+                    rewards: reward,
                 }
             });
 

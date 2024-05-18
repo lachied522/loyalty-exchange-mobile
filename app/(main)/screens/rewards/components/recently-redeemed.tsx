@@ -15,8 +15,8 @@ export default function RecentlyRedeemed() {
     const { userData, storeData, setMyRewardsIsOpen } = useMainContext() as MainState;
 
     const sortedData = useMemo(() => {
-        return userData.rewards.sort((a, b) => new Date(b.redeemed_at).getTime() - new Date(a.redeemed_at).getTime());
-    }, [userData.rewards]);
+        return userData.redeemed.sort((a, b) => new Date(b.redeemed_at).getTime() - new Date(a.redeemed_at).getTime());
+    }, [userData.redeemed]);
 
     return (
         <View className='flex flex-col bg-white gap-4 p-3 pt-6'>
@@ -32,16 +32,18 @@ export default function RecentlyRedeemed() {
                     estimatedItemSize={100}
                     showsVerticalScrollIndicator={false}
                     ItemSeparatorComponent={() => <View className='w-full border-0'/>}
-                    renderItem={({ item: reward, index }) => (
+                    renderItem={({ item, index }) => (
                             <View className='w-full py-4'>
-                                <Link key={reward.id} href={`../../store/${reward.reward_types.store_id}`} asChild>
+                                <Link key={item.id} href={`../../store/${item.rewards.store_id}`} asChild>
                                     <TouchableOpacity onPress={() => setMyRewardsIsOpen(false)}>
                                         <View className='w-full flex flex-row items-center justify-between'>
                                             <View className='max-w-[75%]'>
-                                                <Text>{formatDate(reward.redeemed_at!)}</Text>
-                                                <Text className='font-display-semibold truncate'>{storeData[reward.reward_types.store_id].name}</Text>
+                                                <Text>{formatDate(item.redeemed_at)}</Text>
+                                                <Text className='font-display-semibold truncate'>
+                                                    {storeData[item.rewards.store_id]?.name || 'Store Name'}
+                                                </Text>
                                             </View>
-                                            <Text>{reward.reward_types.title}</Text>
+                                            <Text>{item.rewards.title}</Text>
                                         </View>
                                     </TouchableOpacity>
                                 </Link>
@@ -51,7 +53,7 @@ export default function RecentlyRedeemed() {
                     ListEmptyComponent={() => (
                         <View className='flex flex-col items-center justify-center gap-2 p-6'>
                             <Large>Nothing here yet.</Large>
-                            <Text>Your recently redeemed rewards will appear here.</Text>
+                            <Text className='text-center'>Your recently redeemed rewards will appear here.</Text>
                         </View>
                     )}
                 />

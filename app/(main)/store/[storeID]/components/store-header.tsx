@@ -25,7 +25,7 @@ export default function StoreHeader({ points } : {
             </View>
 
             <View className='min-w-[80px] flex items-end justify-center'>
-                <H2 className='font-semibold'>{Math.round(points).toLocaleString()}</H2>
+                <H2 className='font-semibold'>{Math.floor(Math.max(points, 0)).toLocaleString()}</H2>
                 <Small>points</Small>
             </View>
         </View>

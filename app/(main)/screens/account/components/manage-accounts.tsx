@@ -3,12 +3,15 @@ import { useToast } from "react-native-toast-notifications";
 
 import * as WebBrowser from 'expo-web-browser';
 
+import { Button } from "~/components/ui/button";
 import { Large } from "~/components/ui/typography";
 import { Plus, Pencil } from "~/components/Icons";
 
-import { useGlobalContext, type GlobalState } from "~/app/context/GlobalContext";
+import type { Session } from "@supabase/supabase-js";
 
-import { Button } from "~/components/ui/button";
+import { getConsentURL } from "@/utils/connections";
+
+import { useGlobalContext, type GlobalState } from "@/context/GlobalContext";
 
 export default function ManageAccounts({
     action,
@@ -24,20 +27,14 @@ export default function ManageAccounts({
 
     const onPress = async () => {
         if (!session) return;
+
+        const hasValidMetadata = checkUserMetadata(session);
+
+        if (!hasValidMetadata) return;
         
         setIsLoading(true);
         
-        const { url } = await fetch(
-            `${process.env.EXPO_PUBLIC_BACKEND_URL}/manage-user-connections/${session.user.id}`,
-            {
-                method: 'GET',
-                headers: {
-                    token: session.access_token,
-                    action,
-                }
-            }
-        )
-        .then((res) => res.json());
+        const url = await getConsentURL(session, action);
 
         if (url) {
             await WebBrowser.openBrowserAsync(url);
@@ -52,6 +49,24 @@ export default function ManageAccounts({
         }
 
         setIsLoading(false);
+    }
+
+    const checkUserMetadata = (session: Session) => {
+        // Basiq requires a valid email and phone number
+        // check that user has both
+        if (!(session.user.phone && session.user.email)) {
+            toast.show(
+                'Please ensure you have a valid email and mobile.',
+                {
+                    placement: 'top',
+                    duration: 5000
+                }
+            )
+
+            return false;
+        }
+
+        return true;
     }
 
     return (

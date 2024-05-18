@@ -12,7 +12,7 @@ import {
   TableFooter,
 } from '~/components/ui/table';
 import { Text } from '~/components/ui/text';
-import { Large } from '~/components/ui/typography';
+import { Large, Small } from '~/components/ui/typography';
 import { Button } from '~/components/ui/button';
 
 import { useMainContext, type MainState } from '../../../context/MainContext';
@@ -79,15 +79,16 @@ export default function RecentTransactions() {
                   );
                 }}
                 ListEmptyComponent={() => (
-                  <View className='min-h-[120px] flex flex-col items-center justify-center gap-2 p-6'>
+                  <View className='min-h-[240px] flex flex-col items-center justify-center gap-2 p-6'>
                       <Large>Nothing here yet.</Large>
-                      <Text>When you shop here your recent transactions will appear here.</Text>
+                      <Text className='text-center'>When you shop here your recent transactions will appear here.</Text>
                   </View>
                 )}
                 ListFooterComponent={() => (
                   <TableFooter>
-                    <View className='min-h-[120px] flex flex-col items-center p-12'>
-                      <Text>Purchases not here?</Text>
+                    <View className='min-h-[120px] flex flex-col items-center gap-1 p-12'>
+                      <Text className='text-center'>Purchases not here?</Text>
+                      <Small className='text-center'>It takes 24 hours for purchases to appear. If more than 24 hours has passed please contact us.</Small>
                       <ContactButton />
                     </View>
                   </TableFooter>

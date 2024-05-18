@@ -14,17 +14,17 @@ export default function AvailableRewards() {
     const { userData, storeData } = useMainContext() as MainState;
 
     const rewards = useMemo(() => {
-        const hasEnoughPoints = [];
+        const _rewards = [];
 
         for (const pointBalance of userData.points) {
             const store = storeData[pointBalance.store_id];
 
             if (store) {
-                hasEnoughPoints.push(...store.reward_types.filter((obj) => obj.cost < pointBalance.balance));
+                _rewards.push(...store.rewards);
             }
         }
 
-        return hasEnoughPoints;
+        return _rewards.sort((a, b) => a.cost - b.cost);
     },  [userData.points]);
 
     return (
@@ -35,15 +35,16 @@ export default function AvailableRewards() {
                 <FlashList
                     horizontal
                     data={rewards}
-                    estimatedItemSize={160}
+                    estimatedItemSize={240}
                     showsVerticalScrollIndicator={false}
+                    ItemSeparatorComponent={() => <View className='h-full mx-4'/>}
                     renderItem={({ item }) => (
                         <RewardCard key={`reward-card-${item.id}`} data={item} />
                     )}
                     ListEmptyComponent={() => (
                         <View className='w-[360px] flex flex-col items-center justify-center gap-2 p-6'>
                             <Large>Nothing here yet.</Large>
-                            <Text>When you earn enough points your rewards will appear here.</Text>
+                            <Text className='text-center'>When you earn enough points your rewards will appear here.</Text>
                         </View>
                     )}
                 />

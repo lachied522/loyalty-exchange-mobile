@@ -4,11 +4,11 @@ import { Image } from "expo-image";
 
 import { Skeleton } from "~/components/ui/skeleton";
 
-const DEFAULT_STORE_IMAGE = require('assets/images/default-store-image.jpg');
+const DEFAULT_STORE_IMAGE = require('assets/images/default-reward-image.jpg');
 
 const ASPECT_RATIO = 1.0; // width / height
 
-export default function StoreImage({
+export default function RewardImage({
     url,
     width = 180,
     height = 180 / ASPECT_RATIO,

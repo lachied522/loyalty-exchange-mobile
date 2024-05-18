@@ -2,7 +2,7 @@ import { ScrollView } from "react-native";
 import { Stack } from "expo-router";
 
 import RecentTransactions from "./components/recent-transactions";
-import StoresList from "./components/stores-list";
+import PointsList from "./components/points-list";
 import HomeHeader from "./components/home-header";
 
 export default function HomeScreen() {
@@ -17,7 +17,7 @@ export default function HomeScreen() {
                 contentContainerStyle={{ gap: 12, backgroundColor: 'rgb(245 245 245)' }}
                 keyboardShouldPersistTaps='handled'
             >
-                <StoresList />
+                <PointsList />
 
                 <RecentTransactions />
             </ScrollView>
