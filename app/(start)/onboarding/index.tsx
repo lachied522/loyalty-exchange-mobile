@@ -88,7 +88,7 @@ export default function Onboarding() {
 
             <Link href='/(main)/' asChild>
               <Button disabled={!isComplete} className='w-full bg-yellow-400'>
-                  <Text>Next</Text>
+                  <Text className='text-black'>Next</Text>
               </Button>
             </Link>
           </ScrollView>

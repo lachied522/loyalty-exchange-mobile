@@ -74,7 +74,7 @@ export default function AccountList() {
                         )
                     }
                     ListEmptyComponent={() => (
-                        <View className='w-full h-[160px] flex flex-col justify-center py-6'>
+                        <View className='w-full h-[160px] flex flex-col justify-center py-6 gap-4'>
                             {isLoading ? (
                             <>
                                 <Skeleton className='h-14 w-full rounded-xl bg-neutral-200' />

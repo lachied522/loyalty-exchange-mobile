@@ -1,4 +1,4 @@
-import '~/global.css';
+import '../node_modules/.cache/nativewind/global.css';
 
 import { useEffect, useState } from 'react';
 import { AppState } from "react-native";
