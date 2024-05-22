@@ -48,7 +48,7 @@ export default function Store({ storeData }: StoreProps) {
                 keyboardShouldPersistTaps='handled'
             >
                 <View className='relative'>
-                    <View className='z-[10] w-full h-full flex items-center justify-center bg-gray-800/20 p-12 absolute'>
+                    <View className='z-[10] w-full h-full flex items-center justify-center bg-neutral-800/30 p-12 absolute'>
                         <H1 className='text-center text-white'>{storeData.name}</H1>
                     </View>
 
@@ -59,7 +59,7 @@ export default function Store({ storeData }: StoreProps) {
                     <View className='w-full flex flex-col items-center justify-center p-3 gap-2'>
                         <Large>{'Location(s)'}</Large>
 
-                        <Large className='font-display'>{formatAddress(storeData)}</Large>
+                        <Large className='max-w-[320px] text-center font-display'>{formatAddress(storeData)}</Large>
                     </View>
                 </View>
 

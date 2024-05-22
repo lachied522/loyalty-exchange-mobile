@@ -24,6 +24,13 @@ export type UserData = (
     }
 )
 
+export type UserMetadata = {
+    first_name?: string,
+    last_name?: string,
+    email?: string,
+    mobile?: string,
+}
+
 export type Reward = (
     Omit<Tables<'rewards'>, 'icon_name'> & {
         icon_name: keyof typeof icons | null

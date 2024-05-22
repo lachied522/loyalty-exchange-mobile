@@ -21,8 +21,8 @@ export default function LogoutButton() {
     }
 
     return (
-        <Button onPress={onLogout} className='min-h-[48px] p-4'>
-            <View className='flex flex-row items-center justify-center gap-2'>
+        <Button onPress={onLogout}>
+            <View className='min-h-[48px] flex flex-row items-center justify-center gap-2 p-2'>
                 <Large className='text-black'>Log Out</Large>
                 <LogOut size={18} color='black' />
             </View>

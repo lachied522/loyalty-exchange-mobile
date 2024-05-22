@@ -24,7 +24,7 @@ export default function RewardsScreen() {
             onRequestClose={() => setMyRewardsIsOpen(false)}
         >
             <View className='h-full flex flex-col bg-white'>
-                <View className='h-[120px] w-full flex flex-row items-center justify-between bg-white p-3' style={{ paddingTop: insets.top, ...shadowStyles.edge }}>
+                <View className='w-full flex flex-row items-center justify-between bg-white p-3' style={{ paddingTop: insets.top, ...shadowStyles.edge }}>
                     <H3>My Rewards</H3>
 
                     <View className='w-12 h-12 flex items-center justify-center'>

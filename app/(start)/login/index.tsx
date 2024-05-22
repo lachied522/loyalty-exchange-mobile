@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { View, ScrollView, TouchableOpacity, KeyboardAvoidingView, Platform } from 'react-native';
 import { Stack, Link, router } from 'expo-router';
+import * as Linking from 'expo-linking';
+
 import { useToast } from 'react-native-toast-notifications';
 
 import { supabase } from '@/lib/supabase';
@@ -8,10 +10,10 @@ import { supabase } from '@/lib/supabase';
 import { Input } from '~/components/ui/input';
 import { Text } from '~/components/ui/text';
 import { cn } from '~/components/utils';
+import { ExternalLink } from "~/components/Icons";
+import Logo from '~/components/Logo';
 
 import { shadowStyles } from '~/constants/styling';
-
-import Logo from '~/components/Logo';
 
 function handleLoginError(error: Error, toast: ReturnType<typeof useToast>) {
   if (error.message === 'Network request failed') {
@@ -117,7 +119,7 @@ export default function Login() {
               keyboardShouldPersistTaps='handled'
               scrollEnabled={false}
             >
-              <View className='w-full h-[40%] flex items-center justify-center'>
+              <View className='w-full h-[40%] flex items-center justify-center pt-12'>
                 <Logo />
               </View>
               <View className='w-full h-[60%] flex flex-col justify-end'>
@@ -165,6 +167,13 @@ export default function Login() {
                     <View className='w-full flex items-center'>
                       <Text>Don't have an account? <Link href='/signup/' className='text-blue-400 underline'>Create an account</Link></Text>
                     </View>
+
+                    <TouchableOpacity onPress={() => Linking.openURL('https://www.loyaltyexchange.com.au/stores')}>
+                      <View className='w-full flex flex-row items-center justify-center gap-1'>
+                        <Text>I am a store</Text>
+                        <ExternalLink size={16} color='black' />
+                      </View>
+                    </TouchableOpacity>
                   </View>
                 </View>
               </View>

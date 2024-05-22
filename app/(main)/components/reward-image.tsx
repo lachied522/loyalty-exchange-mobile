@@ -28,12 +28,13 @@ export default function RewardImage({
     return (
         <View style={{ width, height, display: 'flex', alignContent: 'center', justifyContent: 'center' }}>
             <Image
-                source={url ?? DEFAULT_STORE_IMAGE}
+                source={url || DEFAULT_STORE_IMAGE}
                 alt='Store Image'
                 style={{
                     width: '100%',
                     height: '100%',
-                    borderRadius: rounded? 12: 0
+                    borderRadius: rounded? 12: 0,
+                    opacity: 0.9
                 }}
                 contentFit={contentFit}
                 tintColor={tintColor}

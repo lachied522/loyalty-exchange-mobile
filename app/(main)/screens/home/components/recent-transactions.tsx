@@ -54,7 +54,7 @@ export default function RecentTransactions() {
         <Table aria-labelledby='transctions-table'>
           <TableBody>
               <FlashList
-                data={sortedData.slice(0, 10)}
+                data={sortedData.slice(0, 5)}
                 estimatedItemSize={100}
                 showsVerticalScrollIndicator={false}
                 renderItem={({ item: transaction, index }) => {
@@ -81,7 +81,7 @@ export default function RecentTransactions() {
                 ListEmptyComponent={() => (
                   <View className='min-h-[240px] flex flex-col items-center justify-center gap-2 p-6'>
                       <Large>Nothing here yet.</Large>
-                      <Text className='text-center'>When you shop here your recent transactions will appear here.</Text>
+                      <Text className='text-center'>When you make a purchase at our stores the transaction will appear here.</Text>
                   </View>
                 )}
                 ListFooterComponent={() => (

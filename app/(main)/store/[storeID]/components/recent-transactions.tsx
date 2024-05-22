@@ -60,14 +60,14 @@ export default function RecentTransactions({ data, storeName }: TransactionsTabl
               <TableHead style={{ width: width / 4 }}>
                 <Text className='font-display-medium'>Amount</Text>
               </TableHead>
-              <TableHead style={{ width: width / 4 }}>
+              <TableHead className='items-end' style={{ width: width / 3 }}>
                 <Text className='font-display-medium'>Points</Text>
               </TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             <FlashList
-              data={data.slice(0, 10)}
+              data={data.slice(0, 5)}
               estimatedItemSize={100}
               showsVerticalScrollIndicator={false}
               renderItem={({ item: transaction, index }) => {
@@ -79,7 +79,7 @@ export default function RecentTransactions({ data, storeName }: TransactionsTabl
                     <TableCell style={{ width: width / 4 }}>
                       <Text>{formatAmount(transaction.amount)}</Text>
                     </TableCell>
-                    <TableCell style={{ width: width / 4 }}>
+                    <TableCell className='items-end' style={{ width: width / 3 }}>
                         <Text>+{transaction.points} points</Text>
                     </TableCell>
                   </TableRow>

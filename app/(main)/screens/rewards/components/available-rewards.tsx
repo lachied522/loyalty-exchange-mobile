@@ -39,7 +39,7 @@ export default function AvailableRewards() {
                     showsVerticalScrollIndicator={false}
                     ItemSeparatorComponent={() => <View className='h-full mx-4'/>}
                     renderItem={({ item }) => (
-                        <RewardCard key={`reward-card-${item.id}`} data={item} />
+                        <RewardCard key={`reward-card-${item.id}`} rewardData={item} />
                     )}
                     ListEmptyComponent={() => (
                         <View className='w-[360px] flex flex-col items-center justify-center gap-2 p-6'>

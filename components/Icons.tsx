@@ -1,23 +1,20 @@
 // https://rnr-docs.vercel.app/getting-started/initial-setup/
 import {
   icons,
-  AlertCircle,
+  type LucideIcon,
   CheckCircle,
   UserRound,
-  LucideIcon,
-  XCircle,
   RefreshCw,
   Loader,
   X,
   Info,
-  ArrowRightLeft,
-  ArrowBigRightDash,
   ChevronLeft,
   Check,
   Plus,
   Pencil,
+  Settings,
   ExternalLink,
-  LogOut
+  LogOut,
 } from 'lucide-react-native';
 import { cssInterop } from 'nativewind';
 
@@ -49,38 +46,32 @@ const Icon = ({
   return <LucideIcon color={color} size={size} />;
 };
 
-interopIcon(AlertCircle);
 interopIcon(CheckCircle);
 interopIcon(UserRound);
-interopIcon(XCircle);
 interopIcon(RefreshCw);
 interopIcon(Loader);
 interopIcon(Info);
-interopIcon(ArrowRightLeft);
-interopIcon(ArrowBigRightDash);
 interopIcon(ChevronLeft);
 interopIcon(Check);
 interopIcon(Plus);
 interopIcon(Pencil);
+interopIcon(Settings);
 interopIcon(ExternalLink);
 interopIcon(LogOut);
 
 export {
   Icon,
-  AlertCircle,
   CheckCircle,
   UserRound,
-  XCircle,
   RefreshCw,
   Loader,
   X,
   Info,
-  ArrowRightLeft,
-  ArrowBigRightDash,
   ChevronLeft,
   Check,
   Plus,
   Pencil,
+  Settings,
   ExternalLink,
-  LogOut
+  LogOut,
 };
