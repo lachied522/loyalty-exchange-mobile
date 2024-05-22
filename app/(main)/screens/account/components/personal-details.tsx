@@ -11,10 +11,11 @@ import { Text } from "~/components/ui/text";
 import { Pencil } from "~/components/Icons";
 import { cn } from "~/components/utils";
 
-import { useGlobalContext, type GlobalState } from "@/context/GlobalContext";
-
 import { supabase } from "@/lib/supabase";
 
+import { useGlobalContext, type GlobalState } from "@/context/GlobalContext";
+
+import type { UserMetadata } from "@/types/helpers";
 
 function handleSubmitError(error: Error, toast: ReturnType<typeof useToast>) {
     toast.show(
@@ -27,17 +28,21 @@ function handleSubmitError(error: Error, toast: ReturnType<typeof useToast>) {
 }
 
 export default function PersonalDetails() {
-    const { session } = useGlobalContext() as GlobalState;
+    const { userMetadata, setUserMetadata } = useGlobalContext() as GlobalState;
     // bug with Button component - functions passed as 'onPress' are not updated with state
     // issue is avoided by using react ref
-    const [formState, setFormState] = useState({
-        firstName: session?.user.user_metadata['first_name'] ?? '',
-        lastName: session?.user.user_metadata['last_name'] ?? '',
-        mobile: session?.user.phone ?? '',
-        email: session?.user.email ?? '',
+    const [formState, setFormState] = useState<UserMetadata>({
+        ...(
+            userMetadata ? userMetadata: {
+                first_name: '',
+                last_name: '',
+                email: '',
+                mobile: ''
+            }
+        )
     });
     const formRef = useRef<typeof formState>(formState);
-    const [isEditting, setIsEditting] = useState<'firstName'|'lastName'|'mobile'|'email'|null>(null);
+    const [isEditting, setIsEditting] = useState<'first_name'|'last_name'|'mobile'|'email'|null>(null);
     const [formIsValid, setFormIsValid] = useState<boolean>(true);
 
     const toast = useToast();
@@ -71,15 +76,18 @@ export default function PersonalDetails() {
         const { error } = await supabase.auth.updateUser({
             email: formRef.current.email,
             data: {
-                first_name: formRef.current.firstName,
-                last_name: formRef.current.lastName,
+                first_name: formRef.current.first_name,
+                last_name: formRef.current.last_name,
                 mobile: formRef.current.mobile,
             }
         });
 
         if (error) {
             handleSubmitError(error, toast);
+            return;
         }
+        
+        setUserMetadata(formState);
     }
 
     return (
@@ -91,26 +99,26 @@ export default function PersonalDetails() {
                         <View className='flex flex-col items-stretch'>
                             <Text className='ml-2'>First Name</Text>
                             <Input
-                                onChangeText={(text) => onFieldChange('firstName', text)}
-                                value={formState.firstName}
-                                editable={isEditting==='firstName'}
+                                onChangeText={(text) => onFieldChange('first_name', text)}
+                                value={formState.first_name}
+                                editable={isEditting==='first_name'}
                                 autoCapitalize='none'
                                 className={cn(
                                     'w-[240px] border-white',
-                                    isEditting==='firstName' && 'border-neutral-200',
-                                    formState.firstName.length === 0 && !formIsValid && 'border-red-400'
+                                    isEditting==='first_name' && 'border-neutral-200',
+                                    formState.first_name!.length === 0 && !formIsValid && 'border-red-400'
                                 )}
                                 style={{ width: 240 }} // width property above doesn't seem to work on ios, set explicitly here
                             />
                         </View>
 
-                        {isEditting==='firstName' ? (
+                        {isEditting==='first_name' ? (
                         <Button onPress={onSave}>
                             <Text className='text-black'>Save</Text>
                         </Button>
                         ) : (
-                        <Button onPress={() => setIsEditting('firstName')} className='flex flex-row items-center justify-center gap-2'>
-                            <Pencil size={18} color='black' />
+                        <Button onPress={() => setIsEditting('first_name')} className='flex flex-row items-center justify-center gap-2'>
+                            <Pencil size={16} color='black' />
                             <Text className='text-black'>Edit</Text>
                         </Button>
                         )}
@@ -122,26 +130,26 @@ export default function PersonalDetails() {
                         <View className='flex flex-col items-stretch'>
                             <Text className='ml-2'>Last Name</Text>
                             <Input
-                                onChangeText={(text) => onFieldChange('lastName', text)}
-                                value={formState.lastName}
-                                editable={isEditting==='lastName'}
+                                onChangeText={(text) => onFieldChange('last_name', text)}
+                                value={formState.last_name}
+                                editable={isEditting==='last_name'}
                                 autoCapitalize='none'
                                 className={cn(
                                     'w-[240px] border-white',
-                                    isEditting==='lastName' && 'border-neutral-200',
-                                    formState.lastName.length === 0 && !formIsValid && 'border-red-400'
+                                    isEditting==='last_name' && 'border-neutral-200',
+                                    formState.last_name!.length === 0 && !formIsValid && 'border-red-400'
                                 )}
                                 style={{ width: 240 }}
                             />
                         </View>
 
-                        {isEditting==='lastName' ? (
+                        {isEditting==='last_name' ? (
                         <Button onPress={onSave}>
                             <Text className='text-black'>Save</Text>
                         </Button>
                         ) : (
-                        <Button onPress={() => setIsEditting('lastName')} className='flex flex-row items-center justify-center gap-2'>
-                            <Pencil size={18} color='black' />
+                        <Button onPress={() => setIsEditting('last_name')} className='flex flex-row items-center justify-center gap-2'>
+                            <Pencil size={16} color='black' />
                             <Text className='text-black'>Edit</Text>
                         </Button>
                         )}
@@ -161,7 +169,7 @@ export default function PersonalDetails() {
                                 className={cn(
                                     'w-[240px] border-white',
                                     isEditting==='email' && 'border-neutral-200',
-                                    formState.lastName.length === 0 && !formIsValid && 'border-red-400'
+                                    formState.email!.length === 0 && !formIsValid && 'border-red-400'
                                 )}
                                 style={{ width: 240 }}
                             />
@@ -173,7 +181,7 @@ export default function PersonalDetails() {
                         </Button>
                         ) : (
                         <Button onPress={() => setIsEditting('email')} className='flex flex-row items-center justify-center gap-2'>
-                            <Pencil size={18} color='black' />
+                            <Pencil size={16} color='black' />
                             <Text className='text-black'>Edit</Text>
                         </Button>
                         )}
@@ -193,7 +201,7 @@ export default function PersonalDetails() {
                                 className={cn(
                                     'w-[240px] border-b border-white',
                                     isEditting==='mobile' && 'border-neutral-200',
-                                    formState.lastName.length === 0 && !formIsValid && 'border-red-400'
+                                    formState.mobile!.length === 0 && !formIsValid && 'border-red-400'
                                 )}
                                 style={{ width: 240 }}
                             />
@@ -205,7 +213,7 @@ export default function PersonalDetails() {
                         </Button>
                         ) : (
                         <Button onPress={() => setIsEditting('mobile')} className='flex flex-row items-center justify-center gap-2'>
-                            <Pencil size={18} color='black' />
+                            <Pencil size={16} color='black' />
                             <Text className='text-black'>Edit</Text>
                         </Button>
                         )}
