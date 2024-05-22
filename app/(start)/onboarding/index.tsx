@@ -53,7 +53,7 @@ export default function Onboarding() {
           await WebBrowser.openBrowserAsync(consentUrl);
           setIsComplete(true);
       },
-      [consentUrl]
+      [consentUrl, setIsComplete]
     );
   
     return (
@@ -69,7 +69,10 @@ export default function Onboarding() {
             keyboardShouldPersistTaps='handled'
             scrollEnabled={false}
           >
-            <Large>Connect your credit/debit card to automatically start accruing points</Large>
+            <View className='flex flex-col items-start gap-2'>
+              <Large>Connect your credit/debit cards to automatically start accruing points.</Large>
+              <Text>Once you have connected your cards, click 'Next'.</Text>
+            </View>
             
             <Button
               size='lg'
@@ -82,13 +85,12 @@ export default function Onboarding() {
               <Text className='text-black'>Connect Card</Text>
               )}
             </Button>
+
             <Link href='/(main)/' asChild>
-              <View className='w-full items-center bg-yellow-400 p-2 rounded-xl'>
-                  <Button disabled={!isComplete}>
-                      <Text>Next</Text>
-                  </Button>
-                </View>
-              </Link>
+              <Button disabled={!isComplete} className='w-full bg-yellow-400'>
+                  <Text>Next</Text>
+              </Button>
+            </Link>
           </ScrollView>
         </SafeAreaView>
       </>

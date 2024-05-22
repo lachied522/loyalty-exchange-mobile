@@ -122,6 +122,7 @@ export default function Login() {
               <View className='w-full h-[40%] flex items-center justify-center pt-12'>
                 <Logo />
               </View>
+
               <View className='w-full h-[60%] flex flex-col justify-end'>
                 <View className='w-full h-[60%] flex items-center justify-center bg-yellow-300 p-12 rounded-t-xl relative'>
                   <View className='w-full max-w-[360px] bg-white rounded-xl p-6 gap-6 top-[-60%] absolute'  style={shadowStyles.edge}>
@@ -150,19 +151,18 @@ export default function Login() {
                       </View>
                     </View>
 
-
-                      <TouchableOpacity
-                        disabled={isLoading}
-                        onPress={handleSubmit}
-                      >
-                        <View className='w-full items-center bg-yellow-400 p-3 rounded-xl'>
-                          {isLoading? (
-                          <Text className='font-display-medium text-lg text-black'>Please wait...</Text>
-                          ) : (
-                          <Text className='font-display-medium text-lg text-black'>Login</Text>
-                          )}
-                        </View>
-                      </TouchableOpacity>
+                    <TouchableOpacity
+                      disabled={isLoading}
+                      onPress={handleSubmit}
+                    >
+                      <View className='w-full items-center bg-yellow-400 p-3 rounded-xl'>
+                        {isLoading? (
+                        <Text className='font-display-medium text-lg text-black'>Please wait...</Text>
+                        ) : (
+                        <Text className='font-display-medium text-lg text-black'>Login</Text>
+                        )}
+                      </View>
+                    </TouchableOpacity>
 
                     <View className='w-full flex items-center'>
                       <Text>Don't have an account? <Link href='/signup/' className='text-blue-400 underline'>Create an account</Link></Text>
