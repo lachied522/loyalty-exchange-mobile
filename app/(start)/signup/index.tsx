@@ -1,6 +1,8 @@
 import { useState } from 'react';
-import { Alert, View, SafeAreaView, ScrollView, TouchableOpacity, KeyboardAvoidingView, Platform } from 'react-native';
+import { View, ScrollView, TouchableOpacity, KeyboardAvoidingView, Platform } from 'react-native';
 import { Stack, Link, router } from 'expo-router';
+
+import { useToast } from 'react-native-toast-notifications';
 
 import { Input } from '~/components/ui/input';
 import { Text } from '~/components/ui/text';
@@ -13,81 +15,122 @@ import { supabase } from '@/lib/supabase';
 
 import { useStartContext, type StartState } from '../context/StartContext';
 
+type SignupData = {
+  first_name: string,
+  last_name: string,
+  email: string,
+  mobile: string,
+  password: string,
+}
+
+function handleSignupError(error: Error, toast: ReturnType<typeof useToast>) {
+  if (error.message === 'Network request failed') {
+    toast.show(
+      'Internet access is required.',
+      {
+          placement: 'top',
+          duration: 5000
+      }
+    )
+  } else if (error.message === 'User already registered') {
+    toast.show(
+      'An account already exists with this email.',
+      {
+          placement: 'top',
+          duration: 5000
+      }
+    )
+  } else {
+    toast.show(
+      'Something went wrong. Please try again later.',
+      {
+          placement: 'top',
+          duration: 5000
+      }
+    )
+  }
+}
+
+function getFormErrors(data: SignupData) {
+    const errors: { [field: string]: string } = {};
+
+    if (data.first_name.length === 0) {
+      errors.first_name = 'Please provide your first name.';
+    }
+
+    if (data.last_name.length === 0) {
+      errors.last_name = 'Please provide your last name.';
+    }
+
+    if (data.email.length === 0 || !data.email.includes('@')) {
+      errors.email = 'Enter a valid email.';
+    }
+
+    if (data.mobile.length < 10) {
+      errors.mobile = 'Enter a valid mobile.';
+    }
+
+    if (data.password.length < 6) {
+      errors.password = 'Password must be at least 6 characters.';
+    }
+
+    return errors;
+}
+
 export default function Signup() {
-    const { email, mobile, setEmail, setMobile, setSession } = useStartContext() as StartState;
-    const [password, setPassword] = useState<string>('');
-    const [firstName, setFirstName] = useState<string>('');
-    const [lastName, setLastName] = useState<string>('');
-    const [formErrors, setFormErrors] = useState<{ [field: string]: string }>({});
-    const [formIsValid, setFormIsValid] = useState<boolean>(true);
+    const { setSession } = useStartContext() as StartState;
+    const [formState, setFormState] = useState<SignupData>({
+        first_name: '',
+        last_name: '',
+        email: '',
+        mobile: '',
+        password: '',
+    });
+    const [formErrors, setFormErrors] = useState<{ [field: string]: string | null }>({});
     const [isLoading, setIsLoading] = useState<boolean>(false);
+    const toast = useToast();
 
     const signUpWithEmail = async () => {
       setIsLoading(true);
 
       const { data:  { session }, error } = await supabase.auth.signUp({
-        email: email,
-        password: password,
-        phone: mobile,
-        options: {
-          // emailRedirectTo: redirectTo,
-          data: {
-            first_name: firstName,
-            last_name: lastName,
-            mobile,
+          email: formState.email,
+          password: formState.password,
+          options: {
+            // emailRedirectTo: redirectTo,
+            data: {
+              first_name: formState.first_name,
+              last_name: formState.last_name,
+              mobile: formState.mobile,
+            }
           }
-        }
-      });
+        });
 
-      if (error) {
-        Alert.alert(error.message);
-        setIsLoading(false);
-        return;
-      };
+        if (error) {
+          handleSignupError(error, toast);
+          setIsLoading(false);
+          return;
+        };
 
-      setSession(session);
-      // navigate to onboarding page
-      router.replace('/(start)/onboarding');
-    }
-
-    const validateForm = () => {
-      const errors: { [field: string]: string } = {};
-
-      if (email.length === 0) {
-        errors['email'] = 'Enter a valid email';
-      }
-
-      if (mobile.length === 0) {
-        errors['mobile'] = 'Enter a valid mobile';
-      }
-
-      if (password.length === 0) {
-        errors['password'] = 'Enter a valid password';
-      }
-
-      if (firstName.length === 0) {
-        errors['firstName'] = 'Please provide your first name';
-      }
-
-      if (lastName.length === 0) {
-        errors['lastName'] = 'Please provide your last name';
-      }
-
-      setFormErrors(errors);
-
-      const isValid = Object.keys(errors).length === 0;
-      setFormIsValid(isValid);
-
-      return isValid;
+        setSession(session);
+        // navigate to onboarding page
+        router.replace('/(start)/onboarding');
     }
 
     const handleSubmit = () => {
-        const isValid = validateForm();
-        if (isValid) signUpWithEmail();
+        const errors = getFormErrors(formState);
+        if (Object.keys(errors).length === 0) {
+            signUpWithEmail();
+        } else {
+          setFormErrors(errors);
+        };
     }
 
-    // const url = Linking.useURL();
-    // if (url) createSessionFromUrl(url);
+    const onFieldChange = (field: string, value: string) => {
+        // update field and reset errors
+        setFormState((curr) => ({ ...curr, [field]: value }));
+        setFormErrors((curr) => ({ ...curr, [field]: null }));
+    }
 
     return (
         <>
@@ -96,96 +139,101 @@ export default function Signup() {
                   headerShown: false
               }}
           />
-          <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-            <ScrollView
-              contentContainerStyle={{ height: '100%' }}
-              keyboardShouldPersistTaps='handled'
-              scrollEnabled={false}
+        
+          <ScrollView
+            contentContainerStyle={{ height: '100%', position: 'relative' }}
+            keyboardShouldPersistTaps='handled'
+            scrollEnabled={false}
+          >
+            <View className='h-[50vh] w-full bg-yellow-300 bottom-0 absolute'/>
+
+            <KeyboardAvoidingView
+              behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+              className='h-full flex flex-col items-center justify-center gap-12'
             >
-              <View className='w-full h-[50%] flex items-center justify-start'>
-                <SafeAreaView>
+              <View className='w-full flex items-center justify-center'>
                   <H1 className='p-12'>Welcome!</H1>
-                </SafeAreaView>
               </View>
 
-              <View className='w-full h-[50%] flex flex-col justify-end'>
-                <View className='w-full h-full items-center justify-center bg-yellow-300 p-12 rounded-t-xl relative'>
-                  <View className='w-full max-w-[360px] bg-white flex flex-col p-6 gap-6 rounded-xl top-[-50%] absolute' style={shadowStyles.edge}>
-                    <View>
-                      <Text>First Name</Text>
-                      <Input
-                        onChangeText={(text) => setFirstName(text)}
-                        value={firstName}
-                        autoCapitalize='none'
-                        className={cn('border-black', firstName.length === 0 && !formIsValid && 'border-red-400')}
-                      />
-                    </View>
+              <View className='w-full max-w-[360px] bg-white flex flex-col p-6 gap-6 rounded-xl' style={shadowStyles.edge}>
+                <View>
+                  <Text>First Name</Text>
+                  <Input
+                      onChangeText={(text) => onFieldChange('first_name', text)}
+                      value={formState.first_name}
+                      autoCapitalize='none'
+                      className={cn('border-black', formErrors.first_name && 'border-red-400')}
+                  />
+                  {formErrors.first_name && <Text className='text-red-400'>{formErrors.first_name}</Text>}
+                </View>
 
-                    <View>
-                      <Text>Last Name</Text>
-                      <Input
-                        onChangeText={(text) => setLastName(text)}
-                        value={lastName}
-                        autoCapitalize='none'
-                        className={cn('border-black', lastName.length === 0 && !formIsValid && 'border-red-400')}
-                      />
-                    </View>
+                <View>
+                  <Text>Last Name</Text>
+                  <Input
+                      onChangeText={(text) => onFieldChange('last_name', text)}
+                      value={formState.last_name}
+                      autoCapitalize='none'
+                      className={cn('border-black', formErrors.last_name && 'border-red-400')}
+                  />
+                  {formErrors.last_name && <Text className='text-red-400'>{formErrors.last_name}</Text>}
+                </View>
 
-                    <View>
-                      <Text>Email</Text>
-                      <Input
-                        onChangeText={(text) => setEmail(text)}
-                        value={email}
-                        autoCapitalize='none'
-                        keyboardType='email-address'
-                        className={cn('border-black', email.length === 0 && !formIsValid && 'border-red-400')}
-                      />
-                    </View>
+                <View>
+                  <Text>Email</Text>
+                  <Input
+                      onChangeText={(text) => onFieldChange('email', text)}
+                      value={formState.email}
+                      autoCapitalize='none'
+                      keyboardType='email-address'
+                      className={cn('border-black', formErrors.email && 'border-red-400')}
+                  />
+                  {formErrors.email && <Text className='text-red-400'>{formErrors.email}</Text>}
+                </View>
+                
+                <View>
+                  <Text>Mobile</Text>
+                  <Input
+                      onChangeText={(text) => onFieldChange('mobile', text)}
+                      value={formState.mobile}
+                      autoCapitalize='none'
+                      keyboardType='phone-pad'
+                      className={cn('border-black', formErrors.mobile && 'border-red-400')}
+                  />
+                  {formErrors.mobile && <Text className='text-red-400'>{formErrors.mobile}</Text>}
+                </View>
 
-                    <View>
-                      <Text>Mobile</Text>
-                      <Input
-                        onChangeText={(text) => setMobile(text)}
-                        value={mobile}
-                        autoCapitalize='none'
-                        keyboardType='phone-pad'
-                        className={cn('border-black', mobile.length === 0 && !formIsValid && 'border-red-400')}
-                      />
-                    </View>
+                <View>
+                  <Text>Password</Text>
+                  <Input
+                      onChangeText={(text) => onFieldChange('password', text)}
+                      value={formState.password}
+                      secureTextEntry={true}
+                      autoCapitalize='none'
+                      className={cn('border-black', formErrors.password && 'border-red-400')}
+                  />
+                  {formErrors.password && <Text className='text-red-400'>{formErrors.password}</Text>}
+                </View>
 
-                    <View>
-                      <Text>Password</Text>
-                      <Input
-                        onChangeText={(text) => setPassword(text)}
-                        value={password}
-                        secureTextEntry={true}
-                        autoCapitalize='none'
-                        className={cn('border-black', password.length === 0 && !formIsValid && 'border-red-400')}
-                      />
-                    </View>
+                <TouchableOpacity
+                  disabled={isLoading}
+                  onPress={handleSubmit}
+                >
+                  <View className='w-full items-center bg-yellow-400 p-3 rounded-xl'>
+                    {isLoading? (
+                    <Text className='font-display-medium text-lg'>Please wait...</Text>
+                    ) : (
 
-                    <TouchableOpacity
-                      disabled={isLoading}
-                      onPress={handleSubmit}
-                    >
-                      <View className='w-full items-center bg-yellow-400 p-3 rounded-xl'>
-                        {isLoading? (
-                        <Text className='font-display-medium text-lg'>Please wait...</Text>
-                        ) : (
-
-                          <Text className='font-display-medium text-lg'>Sign Up</Text>
-                        )}
-                      </View>
-                    </TouchableOpacity>
-
-                    <View className='w-full flex items-center'>
-                      <Text>Already have an account? <Link href='/login/' className='text-blue-400 underline'>Login</Link></Text>
-                    </View>
+                      <Text className='font-display-medium text-lg'>Sign Up</Text>
+                    )}
                   </View>
+                </TouchableOpacity>
+
+                <View className='w-full flex items-center'>
+                  <Text>Already have an account? <Link href='/login/' className='text-blue-400 underline'>Login</Link></Text>
                 </View>
               </View>
-            </ScrollView>
-          </KeyboardAvoidingView>
+            </KeyboardAvoidingView>
+          </ScrollView>
       </>
     )
 }

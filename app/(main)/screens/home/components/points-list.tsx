@@ -53,8 +53,12 @@ export default function PointsList() {
                     ListEmptyComponent={() => (
                         <View className='w-[360px] h-[240px] flex flex-col items-center justify-center gap-2 py-6'>
                             <Large>Nothing here yet.</Large>
-                            <Text className='text-center'>Your points will automatically accumulate here when you make a purchase at one of our stores.</Text>
-                            <Text className='text-center'>Make sure your card is connected.</Text>
+                            <Text className='text-center'>
+                                Your points will automatically appear here when you make a purchase at one of our stores.
+                            </Text>
+                            <Text className='text-center'>
+                                Make sure your card is connected so we can track your spending.
+                            </Text>
                         </View>
                     )}
                 />

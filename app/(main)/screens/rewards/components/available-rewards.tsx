@@ -24,8 +24,8 @@ export default function AvailableRewards() {
             }
         }
 
-        return _rewards.sort((a, b) => a.cost - b.cost);
-    },  [userData.points]);
+        return _rewards.sort((a, b) => b.cost - a.cost);
+    },  [userData.points, storeData]);
 
     return (
         <View className='flex flex-col bg-white gap-4 p-3 pt-6'>
@@ -33,7 +33,7 @@ export default function AvailableRewards() {
 
             <View className='min-h-[100px] p-3'>
                 <FlashList
-                    horizontal
+                    horizontal={!!rewards}
                     data={rewards}
                     estimatedItemSize={240}
                     showsVerticalScrollIndicator={false}
@@ -44,7 +44,9 @@ export default function AvailableRewards() {
                     ListEmptyComponent={() => (
                         <View className='w-[360px] flex flex-col items-center justify-center gap-2 p-6'>
                             <Large>Nothing here yet.</Large>
-                            <Text className='text-center'>When you earn enough points your rewards will appear here.</Text>
+                            <Text className='text-center'>
+                                When you make a purchase at one of stores the available rewards will appear here.
+                            </Text>
                         </View>
                     )}
                 />

@@ -13,15 +13,14 @@ import { supabase } from "@/lib/supabase";
 
 function handleError(error: Error, toast: ReturnType<typeof useToast>) {
     if (error.message === 'Network request failed') {
-      toast.show(
-        'Internet access is required.',
-        {
-            placement: 'top',
-            duration: 5000
-        }
-      )
+        toast.show(
+            'Internet access is required.',
+            {
+                placement: 'top',
+                duration: 5000
+            }
+        )
     } else {
-        console.log(error);
         toast.show(
             'Something went wrong. Please try again later.',
             {
@@ -44,7 +43,7 @@ export default function ForgotPassword() {
         const { error } = await supabase.auth.resetPasswordForEmail(
             email,
             {
-                redirectTo: 'https://loyaltyexchange.com.au/password-reset',
+                redirectTo: 'https://www.loyaltyexchange.com.au/reset-password',
             }
         );
 

@@ -95,7 +95,9 @@ export default function RecentTransactions({ data, storeName }: TransactionsTabl
                 <TableFooter>
                   <View className='min-h-[120px] flex flex-col items-center gap-1 p-12'>
                     <Text>Purchases not here?</Text>
-                    <Small className='text-center'>It takes 24 hours for purchases to appear. If more than 24 hours has passed please contact us.</Small>
+                    <Small className='text-center'>
+                      Allow up to 24 hours for purchases to appear. If more than 24 hours has passed please contact us.
+                    </Small>
                     <ContactButton storeName={storeName || 'Store'} />
                   </View>
                 </TableFooter>

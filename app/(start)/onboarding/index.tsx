@@ -78,6 +78,7 @@ export default function Onboarding() {
               size='lg'
               onPress={handleWebBrowser}
               disabled={!isReady}
+              className='min-h-[56px]'
             >
               {!isReady? (
               <Text className='text-black'>Please wait...</Text>
@@ -87,7 +88,7 @@ export default function Onboarding() {
             </Button>
 
             <Link href='/(main)/' asChild>
-              <Button disabled={!isComplete} className='w-full bg-yellow-400'>
+              <Button disabled={!isComplete} className='w-full min-h-[56px] bg-yellow-400'>
                   <Text className='text-black'>Next</Text>
               </Button>
             </Link>

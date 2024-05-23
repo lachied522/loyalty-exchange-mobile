@@ -81,14 +81,18 @@ export default function RecentTransactions() {
                 ListEmptyComponent={() => (
                   <View className='min-h-[240px] flex flex-col items-center justify-center gap-2 p-6'>
                       <Large>Nothing here yet.</Large>
-                      <Text className='text-center'>When you make a purchase at our stores the transaction will appear here.</Text>
+                      <Text className='text-center'>
+                        When you make a purchase at one of our stores the transaction will appear here.
+                      </Text>
                   </View>
                 )}
                 ListFooterComponent={() => (
                   <TableFooter>
                     <View className='min-h-[120px] flex flex-col items-center gap-1 p-12'>
                       <Text className='text-center'>Purchases not here?</Text>
-                      <Small className='text-center'>It takes 24 hours for purchases to appear. If more than 24 hours has passed please contact us.</Small>
+                      <Small className='text-center'>
+                        Allow up to 24 hours for purchases to appear. If more than 24 hours has passed please contact us.
+                      </Small>
                       <ContactButton />
                     </View>
                   </TableFooter>
