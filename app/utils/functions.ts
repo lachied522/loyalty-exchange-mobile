@@ -46,7 +46,10 @@ export async function fetchUserData(): Promise<UserData> {
     );
 }
 
-export async function refreshUserData(): Promise<boolean> {
+export async function refreshUserData(): Promise<{
+    hasNewData: boolean,
+    data: UserData | null,
+}> {
     // check if user has new data
     const { data: { session } } = await supabase.auth.getSession();
 
@@ -58,8 +61,7 @@ export async function refreshUserData(): Promise<boolean> {
         'refresh-user',
         session.user.id,
         session
-    )
-    .then(({ hasNewData }) => hasNewData);
+    );
 }
 
 export async function fetchUserAccounts(): Promise<Account[]> {

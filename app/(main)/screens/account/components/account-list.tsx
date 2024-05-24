@@ -68,7 +68,7 @@ export default function AccountList() {
                     showsVerticalScrollIndicator={false}
                     renderItem={({ item: account, index }) => (
                         <View key={`accounts-${index}`} className='w-full flex flex-row justify-between p-3'>
-                            <Large className='font-display-semibold truncate'>{account.name}</Large>
+                            <Large className='font-display-semibold'>{account.name}</Large>
                             <Large>{maskAccountNumber(account.accountNo)}</Large>
                         </View>
                         )

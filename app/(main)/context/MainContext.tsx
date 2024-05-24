@@ -1,11 +1,13 @@
 import { useState, createContext, useContext, useCallback, useReducer } from "react";
 
-import { fetchUserData, refreshUserData, redeemReward } from "@/utils/functions";
+import { refreshUserData, redeemReward } from "@/utils/functions";
 
 import { MainReducer, type Action } from "./MainReducer";
 
 import type { Session } from "@supabase/supabase-js";
 import type { UserData, StoreData, Reward } from "@/types/helpers";
+
+const REFRESH_LIMIT = 5 * 60 * 1000; // five minutes
 
 const MainContext = createContext<any>(null);
 
@@ -39,24 +41,34 @@ export default function MainContextProvider({
         initialState.points?.reduce((acc, obj) => ({ ...acc, [obj.store_id]: obj.stores }), {}) || {}
     );
     const [myRewardsIsOpen, setMyRewardsIsOpen] = useState<boolean>(false); // controls whether the My Rewards modal is open
+    const [lastRefresh, setLastRefresh] = useState<number | null>(null); // time of last refresh request
 
     const refreshUserDataAndUpdateState = useCallback(
         async () => {
-            return await refreshUserData()
-            .then((hasNewData) => {
-                if (hasNewData) {
-                    // update state
-                    fetchUserData()
-                    .then((newData) => {
-                        dispatch({
-                            type: 'SET_DATA',
-                            payload: newData
-                        })
-                    });
+            // limit calls of this to 1 every 5 mins
+            if (lastRefresh) {
+                const now = new Date();
+                if (now.getTime() - lastRefresh < REFRESH_LIMIT) {
+                    return;
                 }
-            });
+            }
+
+            // update last refresh
+            setLastRefresh(new Date().getTime());
+            
+            return await refreshUserData()
+            .then(({ data }) => {
+                if (data) {
+                    // update state
+                    dispatch({
+                        type: 'SET_DATA',
+                        payload: data
+                    })
+                }
+            })
+            .catch(() => {});
         },
-        [state]
+        [lastRefresh, setLastRefresh, dispatch]
     );
 
     const redeemRewardAndUpdateState = useCallback(

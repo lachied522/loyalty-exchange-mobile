@@ -19,7 +19,7 @@ export default function RecentlyRedeemed() {
     }, [userData.redeemed]);
 
     return (
-        <View className='flex flex-col bg-white gap-4 p-3 pt-6'>
+        <View className='flex flex-col bg-white gap-4 p-3 pt-6 pb-12'>
             <Large>Recently Redeemed</Large>
 
             <View className='min-h-[100px] p-3'>
@@ -39,7 +39,7 @@ export default function RecentlyRedeemed() {
                                         <View className='w-full flex flex-row items-center justify-between'>
                                             <View className='max-w-[75%]'>
                                                 <Text>{formatDate(item.redeemed_at)}</Text>
-                                                <Text className='font-display-semibold truncate'>
+                                                <Text className='font-display-semibold'>
                                                     {storeData[item.rewards.store_id]?.name || 'Store Name'}
                                                 </Text>
                                             </View>

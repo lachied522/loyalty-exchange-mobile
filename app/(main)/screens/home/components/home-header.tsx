@@ -7,8 +7,6 @@ import { shadowStyles } from '~/constants/styling';
 
 import { useGlobalContext, type GlobalState } from "@/context/GlobalContext";
 
-import RefreshTrigger from "./refresh-trigger";
-
 export default function HomeHeader() {
     // header component for account screen
     const { userMetadata } = useGlobalContext() as GlobalState;
@@ -32,8 +30,6 @@ export default function HomeHeader() {
                     <Large>{userMetadata?.first_name || ''}</Large>
                 </View>
             </View>
-
-            {/* <RefreshTrigger /> */}
         </View>
     )
 }

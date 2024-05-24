@@ -12,7 +12,7 @@ import { Icon } from "~/components/Icons";
 import type { Reward } from "@/types/helpers";
 
 function formatStoreName(text: string) {
-    // tailwind doesn't seem to truncate text, even with set width
+    // truncate text manually as 'truncate' does not work in Native
     return text.length > 21? text.slice(0, 20) + '...': text;
 }
 

@@ -1,4 +1,5 @@
-import { Modal, ScrollView, View } from "react-native";
+import { useState, useCallback } from "react";
+import { Modal, ScrollView, View, RefreshControl } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { Button } from '~/components/ui/button';
@@ -12,9 +13,28 @@ import AvailableRewards from './components/available-rewards';
 import RecentlyRedeemed from './components/recently-redeemed';
 
 export default function RewardsScreen() {
-    const { myRewardsIsOpen, setMyRewardsIsOpen } = useMainContext() as MainState;
-
+    const {
+        myRewardsIsOpen,
+        setMyRewardsIsOpen,
+        refreshUserDataAndUpdateState
+    } = useMainContext() as MainState;
+    const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
     const insets = useSafeAreaInsets();
+    
+    const onRefresh = useCallback(
+        async () => {
+            setIsRefreshing(true);
+
+            // ensure refresh is shown for at least 2 seconds
+            const minWaitTime = new Promise((resolve) => setTimeout(resolve, 2000));
+            await Promise.all([
+                refreshUserDataAndUpdateState(),
+                minWaitTime
+            ])
+            .then(() => setIsRefreshing(false));
+        },
+        [setIsRefreshing, refreshUserDataAndUpdateState]
+    );
 
     return (
         <Modal
@@ -37,6 +57,9 @@ export default function RewardsScreen() {
                 <ScrollView
                     contentContainerStyle={{ gap: 12, backgroundColor: 'rgb(245 245 245)' }}
                     keyboardShouldPersistTaps='handled'
+                    refreshControl={
+                        <RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />
+                    }
                 >
                     <AvailableRewards />
 

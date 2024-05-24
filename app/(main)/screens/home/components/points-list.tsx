@@ -10,9 +10,8 @@ import { Large } from '~/components/ui/typography';
 import { useMainContext, type MainState } from '~/app/(main)/context/MainContext';
 import StoreImage from '~/app/(main)/components/store-image';
 
-
 function formatName(text: string) {
-    // tailwind doesn't seem to truncate text, even with set width
+    // truncate text manually as 'truncate' does not work in Native
     return text.length > 16? text.slice(0, 16) + '...': text;
 }
 
@@ -43,7 +42,7 @@ export default function PointsList() {
                                 />
 
                                 <View className='flex flex-col justify-start'>
-                                    <Large className='font-display-semibold truncate'>{formatName(item.stores!.name)}</Large>
+                                    <Large className='font-display-semibold'>{formatName(item.stores!.name)}</Large>
                                     <Text>{Math.floor(Math.max(item.balance, 0)).toLocaleString()} points</Text>
                                 </View>
                             </View>

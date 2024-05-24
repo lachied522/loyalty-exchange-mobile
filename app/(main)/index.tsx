@@ -1,3 +1,4 @@
+import { useCallback, useEffect } from 'react';
 import { View, TouchableOpacity } from 'react-native';
 import { Stack } from "expo-router";
 
@@ -20,12 +21,17 @@ const FillerComponent = () => {
 }
 
 export default function MainIndex() {
-    const { setMyRewardsIsOpen } = useMainContext() as MainState;
+    const { refreshUserDataAndUpdateState, setMyRewardsIsOpen } = useMainContext() as MainState;
 
-    const handleRewardsPress = () => {
+    useEffect(() => {
+        // refresh user data once when component mounts
+        refreshUserDataAndUpdateState();
+    }, []);
+
+    const handleRewardsPress = useCallback(() => {
         // Toggle rewards modal or visibility
         setMyRewardsIsOpen((curr) => !curr);
-    };
+    }, [setMyRewardsIsOpen]);
 
     return (
         <>
