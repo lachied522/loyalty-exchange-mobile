@@ -10,6 +10,7 @@ import {
   Info,
   ChevronLeft,
   Check,
+  MapPin,
   Plus,
   Pencil,
   Settings,
@@ -53,6 +54,7 @@ interopIcon(Loader);
 interopIcon(Info);
 interopIcon(ChevronLeft);
 interopIcon(Check);
+interopIcon(MapPin);
 interopIcon(Plus);
 interopIcon(Pencil);
 interopIcon(Settings);
@@ -69,6 +71,7 @@ export {
   Info,
   ChevronLeft,
   Check,
+  MapPin,
   Plus,
   Pencil,
   Settings,

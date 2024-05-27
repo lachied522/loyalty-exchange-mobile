@@ -2,7 +2,8 @@ import { useMemo } from "react";
 import { ScrollView, View } from "react-native";
 import { Stack } from "expo-router";
 
-import { H1, Large } from "~/components/ui/typography";
+import { H1, H3, Large } from "~/components/ui/typography";
+import { MapPin } from "~/components/Icons";
 import { colors } from "~/constants/styling";
 
 import { useMainContext, type MainState } from "~/app/(main)/context/MainContext";
@@ -57,9 +58,19 @@ export default function Store({ storeData }: StoreProps) {
                 
                 <View className='flex items-center p-6 bg-white mb-3'>
                     <View className='w-full flex flex-col items-center justify-center p-3 gap-2'>
-                        <Large>{'Location(s)'}</Large>
+                        <H3 className='text-center'>
+                            Earn 10 points for every $1 spent
+                        </H3>
 
-                        <Large className='max-w-[320px] text-center font-display'>{formatAddress(storeData)}</Large>
+                        <View className='h-[1px] w-full my-3 bg-neutral-200' />
+                        
+                        <View className='flex flex-row items-center gap-5'>
+                            <MapPin size={30} color='black' />
+
+                            <Large className='max-w-[300px] text-right font-display'>
+                                {formatAddress(storeData)}
+                            </Large>
+                        </View>
                     </View>
                 </View>
 

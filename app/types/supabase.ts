@@ -14,6 +14,7 @@ export type Database = {
           auth_user_id: string | null
           created_at: string
           email: string | null
+          fee_rate: number
           id: string
           name: string | null
           stripe_customer_id: string | null
@@ -22,6 +23,7 @@ export type Database = {
           auth_user_id?: string | null
           created_at?: string
           email?: string | null
+          fee_rate?: number
           id?: string
           name?: string | null
           stripe_customer_id?: string | null
@@ -30,6 +32,7 @@ export type Database = {
           auth_user_id?: string | null
           created_at?: string
           email?: string | null
+          fee_rate?: number
           id?: string
           name?: string | null
           stripe_customer_id?: string | null
@@ -46,27 +49,38 @@ export type Database = {
       }
       jobs: {
         Row: {
-          created: string
+          created_at: string
+          details: Json | null
           id: number
           job_id: string | null
-          jobType: string | null
-          steps: Json | null
+          job_type: Database["public"]["Enums"]["job_type"] | null
+          user_id: string | null
         }
         Insert: {
-          created?: string
+          created_at?: string
+          details?: Json | null
           id?: number
           job_id?: string | null
-          jobType?: string | null
-          steps?: Json | null
+          job_type?: Database["public"]["Enums"]["job_type"] | null
+          user_id?: string | null
         }
         Update: {
-          created?: string
+          created_at?: string
+          details?: Json | null
           id?: number
           job_id?: string | null
-          jobType?: string | null
-          steps?: Json | null
+          job_type?: Database["public"]["Enums"]["job_type"] | null
+          user_id?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "jobs_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       points: {
         Row: {
@@ -139,6 +153,7 @@ export type Database = {
       }
       rewards: {
         Row: {
+          conditions: string | null
           cost: number
           icon_name: string | null
           id: string
@@ -149,6 +164,7 @@ export type Database = {
           title: string
         }
         Insert: {
+          conditions?: string | null
           cost?: number
           icon_name?: string | null
           id?: string
@@ -159,6 +175,7 @@ export type Database = {
           title: string
         }
         Update: {
+          conditions?: string | null
           cost?: number
           icon_name?: string | null
           id?: string
@@ -283,7 +300,7 @@ export type Database = {
         }
         Insert: {
           basiq_user_id?: string | null
-          id: string
+          id?: string
           last_updated?: string | null
           name?: string | null
           points_balance?: number
@@ -310,9 +327,74 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      gtrgm_compress: {
+        Args: {
+          "": unknown
+        }
+        Returns: unknown
+      }
+      gtrgm_decompress: {
+        Args: {
+          "": unknown
+        }
+        Returns: unknown
+      }
+      gtrgm_in: {
+        Args: {
+          "": unknown
+        }
+        Returns: unknown
+      }
+      gtrgm_options: {
+        Args: {
+          "": unknown
+        }
+        Returns: undefined
+      }
+      gtrgm_out: {
+        Args: {
+          "": unknown
+        }
+        Returns: unknown
+      }
+      search_vendor_names: {
+        Args: {
+          query: string
+        }
+        Returns: {
+          address_line_1: string | null
+          city: string | null
+          client_id: string
+          created_at: string
+          id: string
+          name: string
+          points_rate: number
+          postcode: string | null
+          state: string | null
+          store_img_url: string | null
+          store_logo_url: string | null
+          vendor_name: string
+        }[]
+      }
+      set_limit: {
+        Args: {
+          "": number
+        }
+        Returns: number
+      }
+      show_limit: {
+        Args: Record<PropertyKey, never>
+        Returns: number
+      }
+      show_trgm: {
+        Args: {
+          "": string
+        }
+        Returns: string[]
+      }
     }
     Enums: {
+      job_type: "delete-user" | "refresh-data" | "connect"
       reward_type: "free_item" | "discount" | "promo_code"
     }
     CompositeTypes: {

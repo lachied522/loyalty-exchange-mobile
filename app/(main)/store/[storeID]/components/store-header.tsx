@@ -7,7 +7,6 @@ import { Button } from "~/components/ui/button";
 import { ChevronLeft } from "~/components/Icons";
 import { shadowStyles } from '~/constants/styling';
 
-
 export default function StoreHeader({ points } : {
     points: number
 }) {

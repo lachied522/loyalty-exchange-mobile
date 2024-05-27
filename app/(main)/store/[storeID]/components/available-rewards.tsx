@@ -15,7 +15,6 @@ interface RewardProgressProps {
 }
 
 export default function AvailableRewards({ storeData }: RewardProgressProps) {
-
     return (
         <View className='w-full flex flex-col bg-white gap-4 p-3 pt-6'>
             <Large>Available Rewards</Large>
@@ -24,7 +23,7 @@ export default function AvailableRewards({ storeData }: RewardProgressProps) {
                 <FlashList
                     horizontal
                     data={storeData.rewards}
-                    estimatedItemSize={240}
+                    estimatedItemSize={400}
                     showsVerticalScrollIndicator={true}
                     ItemSeparatorComponent={() => <View className='h-full mx-4'/>}
                     renderItem={({ item }) => (

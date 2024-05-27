@@ -35,7 +35,7 @@ export default function AvailableRewards() {
                 <FlashList
                     horizontal={!!rewards}
                     data={rewards}
-                    estimatedItemSize={240}
+                    estimatedItemSize={400}
                     showsVerticalScrollIndicator={false}
                     ItemSeparatorComponent={() => <View className='h-full mx-4'/>}
                     renderItem={({ item }) => (

@@ -101,13 +101,13 @@ export default function RewardTrigger({ rewardData }: RewardProps) {
                     </Button>
                 ) : (
                     <Button onPress={onPress} className='bg-yellow-400'>
-                        <Text className='text-black'>{rewardData.cost} points</Text>
+                        <Text className='text-black'>{rewardData.cost.toLocaleString()} points</Text>
                     </Button>
                 )}
                 </>
             ) : (
                 <Button disabled className='bg-transparent border border-neutral-300'>
-                    <Text className='text-black'>{rewardData.cost} points</Text>
+                    <Text className='text-black'>{rewardData.cost.toLocaleString()} points</Text>
                 </Button>
             )}
         </View>

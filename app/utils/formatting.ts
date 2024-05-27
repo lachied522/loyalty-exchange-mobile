@@ -15,3 +15,7 @@ export function formatDate(dateString: string) {
     const day = date.getDate().toString().padStart(2, '0');
     return `${dayOfWeek} ${day} ${monthName}`;
 }
+
+export function truncateText(text: string, maxLength: number) {
+    return text.length > maxLength? text.slice(0, maxLength - 3) + '...': text;
+}
