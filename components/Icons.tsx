@@ -4,10 +4,12 @@ import {
   type LucideIcon,
   CheckCircle,
   UserRound,
+  CircleUserRound,
   RefreshCw,
   Loader,
   X,
   Info,
+  Search,
   ChevronLeft,
   Check,
   MapPin,
@@ -49,9 +51,12 @@ const Icon = ({
 
 interopIcon(CheckCircle);
 interopIcon(UserRound);
+interopIcon(CircleUserRound);
 interopIcon(RefreshCw);
 interopIcon(Loader);
+interopIcon(X);
 interopIcon(Info);
+interopIcon(Search);
 interopIcon(ChevronLeft);
 interopIcon(Check);
 interopIcon(MapPin);
@@ -65,10 +70,12 @@ export {
   Icon,
   CheckCircle,
   UserRound,
+  CircleUserRound,
   RefreshCw,
   Loader,
   X,
   Info,
+  Search,
   ChevronLeft,
   Check,
   MapPin,

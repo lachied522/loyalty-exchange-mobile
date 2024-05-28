@@ -18,12 +18,12 @@ export const useMainContext = () => {
 export type MainState = {
     session: Session | null
     userData: UserData
-    storeData: { [store_id: string]: StoreData }
+    storeDataMap: { [store_id: string]: StoreData }
     myRewardsIsOpen: boolean,
     dispatch: React.Dispatch<Action>
     refreshUserDataAndUpdateState: () => Promise<void>
     redeemRewardAndUpdateState: (reward: Reward) => Promise<void>
-    setStoreData: React.Dispatch<{ [store_id: string]: StoreData }>
+    setStoreDataMap: React.Dispatch<React.SetStateAction<{ [store_id: string]: StoreData }>>
     setMyRewardsIsOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
 
@@ -37,7 +37,7 @@ export default function MainContextProvider({
     children
 }: MainContextProps) {
     const [state, dispatch] = useReducer<typeof MainReducer>(MainReducer, initialState);
-    const [storeData, setStoreData] = useState<{ [store_id: string]: StoreData }>(
+    const [storeDataMap, setStoreDataMap] = useState<{ [store_id: string]: StoreData }>(
         initialState.points?.reduce((acc, obj) => ({ ...acc, [obj.store_id]: obj.stores }), {}) || {}
     );
     const [myRewardsIsOpen, setMyRewardsIsOpen] = useState<boolean>(false); // controls whether the My Rewards modal is open
@@ -115,12 +115,12 @@ export default function MainContextProvider({
     return (
         <MainContext.Provider value={{
             userData: state,
-            storeData,
+            storeDataMap,
             myRewardsIsOpen,
             dispatch,
             refreshUserDataAndUpdateState,
             redeemRewardAndUpdateState,
-            setStoreData,
+            setStoreDataMap,
             setMyRewardsIsOpen,
         }}>
             {children}

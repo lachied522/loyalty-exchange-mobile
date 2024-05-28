@@ -14,13 +14,13 @@ interface RewardCardProps {
 }
 
 export default function RewardCard({ rewardData }: RewardCardProps) {
-    const { storeData } = useMainContext() as MainState;
+    const { storeDataMap } = useMainContext() as MainState;
 
     return (
         <View className='min-h-[345px]'>
             <View className='w-[240px] flex flex-col items-center bg-neutral-100 rounded-xl'>
                 <RewardImage
-                    url={rewardData.image_url || storeData[rewardData.store_id]?.store_img_url}
+                    url={rewardData.image_url || storeDataMap[rewardData.store_id]?.store_img_url}
                     width='100%'
                     height={160}
                 />

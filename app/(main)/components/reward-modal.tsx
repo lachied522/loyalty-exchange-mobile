@@ -25,7 +25,7 @@ export default function RewardModal({
     onClose,
     maxTime = 60
 }: RewardProps) {
-    const { storeData } = useMainContext() as MainState;
+    const { storeDataMap } = useMainContext() as MainState;
     const [timeElapsed, setTimeElapsed] = useState<number>(0);
 
     useEffect(() => {
@@ -79,7 +79,7 @@ export default function RewardModal({
                                 <Logo />
 
                                 <StoreLogo
-                                    url={storeData[rewardData.store_id]?.store_logo_url ?? null}
+                                    url={storeDataMap[rewardData.store_id]?.store_logo_url ?? null}
                                     height={90}
                                 />
                             </View>
@@ -88,7 +88,7 @@ export default function RewardModal({
                                 <View className='flex flex-col items-center gap-1 px-6'>
                                     <H3 className='max-w-[360px]'>{rewardData.title.slice(0, 60)} @</H3>
                                     <H3>
-                                        {storeData[rewardData.store_id]!.name}
+                                        {storeDataMap[rewardData.store_id]!.name}
                                         {rewardData.conditions? '*': ''}
                                     </H3>
                                     {rewardData.conditions && (
@@ -111,7 +111,7 @@ export default function RewardModal({
                                 ) : (
                                 <>
                                     <RewardImage
-                                        url={rewardData.image_url || storeData[rewardData.store_id]?.store_logo_url}
+                                        url={rewardData.image_url || storeDataMap[rewardData.store_id]?.store_logo_url}
                                         width={180}
                                         height={120}
                                         rounded={false}

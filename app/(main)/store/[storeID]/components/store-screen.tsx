@@ -25,7 +25,7 @@ function formatAddress(storeData: StoreData) {
     return `${storeData.address_line_1}, ${storeData.city} ${storeData.state} ${storeData.postcode}`;
 }
 
-export default function Store({ storeData }: StoreProps) {
+export default function StoreScreen({ storeData }: StoreProps) {
     const { userData } = useMainContext() as MainState;
 
     const userPoints = useMemo(() => {
@@ -53,7 +53,12 @@ export default function Store({ storeData }: StoreProps) {
                         <H1 className='text-center text-white'>{storeData.name}</H1>
                     </View>
 
-                    <StoreImage url={storeData.store_img_url} width='100%' height={240} rounded={false} />
+                    <StoreImage
+                        url={storeData.store_img_url}
+                        height={240}
+                        width='100%'
+                        rounded={false}
+                    />
                 </View>
                 
                 <View className='flex items-center p-6 bg-white mb-3'>

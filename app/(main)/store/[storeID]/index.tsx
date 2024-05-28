@@ -1,20 +1,17 @@
 import { useState, useEffect } from 'react';
-import { View } from 'react-native';
-import { Stack, Link, useLocalSearchParams } from 'expo-router';
-
-import { Large } from '~/components/ui/typography';
+import { useLocalSearchParams } from 'expo-router';
 
 import { fetchStoresById } from '@/utils/crud';
 import type { StoreData } from '@/types/helpers';
 
 import { useMainContext, type MainState } from '../../context/MainContext';
 
-import Store from './components/store-screen';
+import LoadingScreen from './components/loading-screen';
+import StoreScreen from './components/store-screen';
 import NotFoundScreen from '~/app/+not-found';
 
-
 export default function StoreIDPage() {
-    const { storeData, setStoreData } = useMainContext() as MainState;
+    const { storeDataMap, setStoreDataMap } = useMainContext() as MainState;
     const { storeID } = useLocalSearchParams() as { storeID: string };
     const [data, setData] = useState<StoreData | null>();
     const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -28,13 +25,18 @@ export default function StoreIDPage() {
             if (isMounted) return;
 
             // check if store data already in state
-            if (storeID in storeData) {
-                setData(storeData[storeID]);
+            if (storeID in storeDataMap) {
+                setData(storeDataMap[storeID]);
                 setIsLoading(false);
             } else {
                 fetchStoresById([storeID])
                 .then((res) => {
-                    if (res) setData(res[0] as StoreData);
+                    if (res) {
+                        const _data = res[0] as StoreData;
+                        setData(_data);
+                        // add data to global store map so it does not have to be refetched
+                        setStoreDataMap((curr) => ({ ...curr, [_data.id]: _data }));
+                    };
                 })
                 .finally(() => setIsLoading(false));
             }
@@ -46,11 +48,9 @@ export default function StoreIDPage() {
     return (
         <>
             {isLoading ? (
-            <View className='flex-1 items-center justify-center'>
-                <Large>Loading...</Large>
-            </View>
+            <LoadingScreen />
             ) : data ? (
-            <Store storeData={data} />
+            <StoreScreen storeData={data} />
             ) : (
             <NotFoundScreen />
             )}

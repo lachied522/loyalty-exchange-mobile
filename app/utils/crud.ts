@@ -12,3 +12,15 @@ export async function fetchStoresById(stores: string[]) {
 
     return data;
 }
+
+export async function searchStoresByName(query: string) {
+    const { data, error } = await supabase
+    .from('stores')
+    .select('*')
+    .textSearch('name', `'${query}'`, { type: 'websearch' });
+    // const { data, error } = await supabase.rpc('search_store_names', { query });
+
+    if (error) return null;
+
+    return data;
+}

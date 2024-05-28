@@ -12,7 +12,7 @@ import { useMainContext, type MainState } from "../../../context/MainContext";
 import { formatDate } from '@/utils/formatting';
 
 export default function RecentlyRedeemed() {
-    const { userData, storeData, setMyRewardsIsOpen } = useMainContext() as MainState;
+    const { userData, storeDataMap, setMyRewardsIsOpen } = useMainContext() as MainState;
 
     const sortedData = useMemo(() => {
         return userData.redeemed.sort((a, b) => new Date(b.redeemed_at).getTime() - new Date(a.redeemed_at).getTime());
@@ -40,7 +40,7 @@ export default function RecentlyRedeemed() {
                                             <View className='max-w-[75%]'>
                                                 <Text>{formatDate(item.redeemed_at)}</Text>
                                                 <Text className='font-display-semibold'>
-                                                    {storeData[item.rewards.store_id]?.name || 'Store Name'}
+                                                    {storeDataMap[item.rewards.store_id]?.name || 'Store Name'}
                                                 </Text>
                                             </View>
                                             <Text>{item.rewards.title}</Text>

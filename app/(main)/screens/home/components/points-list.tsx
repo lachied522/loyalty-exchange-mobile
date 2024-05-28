@@ -7,16 +7,13 @@ import { FlashList } from '@shopify/flash-list';
 import { Text } from '~/components/ui/text';
 import { Large } from '~/components/ui/typography';
 
+import { truncateText } from '@/utils/formatting';
+
 import { useMainContext, type MainState } from '~/app/(main)/context/MainContext';
 import StoreImage from '~/app/(main)/components/store-image';
 
-function formatName(text: string) {
-    // truncate text manually as 'truncate' does not work in Native
-    return text.length > 16? text.slice(0, 16) + '...': text;
-}
-
 export default function PointsList() {
-    const { userData, storeData } = useMainContext() as MainState;
+    const { userData, storeDataMap } = useMainContext() as MainState;
     
     const sortedData = useMemo(() => {
         return userData.points.sort((a, b) => b.balance - a.balance);
@@ -37,12 +34,12 @@ export default function PointsList() {
                         <Link key={`store-list-item-${index}`} href={`../../store/${item.store_id}`}>
                             <View className='max-w-[180px] flex flex-col items-start gap-2'>
                                 <StoreImage
-                                    url={storeData[item.store_id]?.store_img_url || null}
+                                    url={storeDataMap[item.store_id]?.store_img_url || null}
                                     width={180}
                                 />
 
                                 <View className='flex flex-col justify-start'>
-                                    <Large className='font-display-semibold'>{formatName(item.stores!.name)}</Large>
+                                    <Large className='font-display-semibold'>{truncateText(item.stores!.name, 18)}</Large>
                                     <Text>{Math.floor(Math.max(item.balance, 0)).toLocaleString()} points</Text>
                                 </View>
                             </View>

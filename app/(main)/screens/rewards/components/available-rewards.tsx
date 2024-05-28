@@ -11,13 +11,13 @@ import { useMainContext, type MainState } from '../../../context/MainContext';
 import RewardCard from './reward-card';
 
 export default function AvailableRewards() {
-    const { userData, storeData } = useMainContext() as MainState;
+    const { userData, storeDataMap } = useMainContext() as MainState;
 
     const rewards = useMemo(() => {
         const _rewards = [];
 
         for (const pointBalance of userData.points) {
-            const store = storeData[pointBalance.store_id];
+            const store = storeDataMap[pointBalance.store_id];
 
             if (store) {
                 _rewards.push(...store.rewards);
@@ -25,7 +25,7 @@ export default function AvailableRewards() {
         }
 
         return _rewards.sort((a, b) => b.cost - a.cost);
-    },  [userData.points, storeData]);
+    },  [userData.points, storeDataMap]);
 
     return (
         <View className='flex flex-col bg-white gap-4 p-3 pt-6'>
