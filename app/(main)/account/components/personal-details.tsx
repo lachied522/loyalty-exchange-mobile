@@ -6,7 +6,7 @@ import { useToast } from "react-native-toast-notifications";
 import { Card, CardContent } from "~/components/ui/card";
 import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
-import { H3 } from "~/components/ui/typography";
+import { Large } from "~/components/ui/typography";
 import { Text } from "~/components/ui/text";
 import { Pencil } from "~/components/Icons";
 import { cn } from "~/components/utils";
@@ -92,7 +92,8 @@ export default function PersonalDetails() {
 
     return (
         <View className='w-full flex flex-col bg-white gap-4 p-3 pt-6'>
-            <H3>My Details</H3>
+            <Large>My Details</Large>
+
             <View className='flex flex-col gap-4 px-3'>
                 <Card>
                     <CardContent className='w-full flex flex-row items-center justify-between p-2'>

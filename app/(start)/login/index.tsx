@@ -125,8 +125,9 @@ export default function Login() {
                 <View className='flex flex-col gap-1'>
                   <Text>Password</Text>
                   <Input
-                    onChangeText={(text) => setPassword(text)}
                     value={password}
+                    onChangeText={(text) => setPassword(text)}
+                    onSubmitEditing={handleSubmit}
                     secureTextEntry={true}
                     autoCapitalize='none'
                     className={cn('border-black', password.length === 0 && !formIsValid && 'border-red-400')}

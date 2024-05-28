@@ -1,5 +1,4 @@
-import { useState, useCallback } from "react";
-import { ScrollView, RefreshControl } from "react-native";
+import { ScrollView } from "react-native";
 import { Stack } from "expo-router";
 
 import { colors } from "~/constants/styling";
@@ -7,6 +6,7 @@ import { colors } from "~/constants/styling";
 import SearchContextProvider from "./context/SearchContext";
 import SearchBar from "./components/search-bar";
 import SearchResults from "./components/search-results";
+import SearchHeader from "./components/search-header";
 
 export default function SearchScreen() {
 
@@ -15,7 +15,7 @@ export default function SearchScreen() {
         <SearchContextProvider>
             <Stack.Screen
                 options={{
-                    headerTitle: 'Search Stores',
+                    header: SearchHeader,
                 }}
             />
             <ScrollView

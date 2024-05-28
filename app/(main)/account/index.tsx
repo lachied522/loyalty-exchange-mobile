@@ -3,7 +3,6 @@ import { Stack } from "expo-router";
 
 import { Button } from "~/components/ui/button";
 import { Text } from "~/components/ui/text";
-
 import { colors } from "~/constants/styling";
 
 import AccountList from "./components/account-list";
@@ -12,19 +11,19 @@ import LogoutButton from "./components/logout-button";
 import AccountHeader from "./components/account-header";
 import DeleteAccountButton from "./components/delete-account-button";
 
-export default function Account() {
+export default function AccountPage() {
 
     return (
         <>
             <Stack.Screen
                 options={{
-                    header: AccountHeader
+                    header: AccountHeader,
                 }}
             />
             <ScrollView
                 contentContainerStyle={{ ...colors.background, gap: 12 }}
                 keyboardShouldPersistTaps='handled'
-            >
+            >                
                 <AccountList />
 
                 <PersonalDetails />

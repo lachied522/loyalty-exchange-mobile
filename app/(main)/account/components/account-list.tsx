@@ -4,9 +4,9 @@ import { FlashList } from "@shopify/flash-list";
 
 import { fetchUserAccounts } from "~/app/utils/functions";
 
-import { H3, Large, Small } from "~/components/ui/typography";
-import { Skeleton } from "~/components/ui/skeleton";
 import { Text } from "~/components/ui/text";
+import { Large } from "~/components/ui/typography";
+import { Skeleton } from "~/components/ui/skeleton";
 import { RefreshCw } from "~/components/Icons";
 
 import ManageAccountButton from "./manage-account-button";
@@ -59,7 +59,7 @@ export default function AccountList() {
 
     return (
         <View className='w-full flex bg-white gap-2 p-3 pt-6'>
-            <H3>My Linked Accounts</H3>
+            <Large>My Linked Accounts</Large>
 
             <View className='min-h-[100px] p-3'>               
                 <FlashList

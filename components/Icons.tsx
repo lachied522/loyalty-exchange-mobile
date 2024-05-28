@@ -4,6 +4,7 @@ import {
   type LucideIcon,
   CheckCircle,
   UserRound,
+  CircleUserRound,
   RefreshCw,
   Loader,
   X,
@@ -50,6 +51,7 @@ const Icon = ({
 
 interopIcon(CheckCircle);
 interopIcon(UserRound);
+interopIcon(CircleUserRound);
 interopIcon(RefreshCw);
 interopIcon(Loader);
 interopIcon(X);
@@ -68,6 +70,7 @@ export {
   Icon,
   CheckCircle,
   UserRound,
+  CircleUserRound,
   RefreshCw,
   Loader,
   X,

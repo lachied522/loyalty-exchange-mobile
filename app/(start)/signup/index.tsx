@@ -205,8 +205,9 @@ export default function Signup() {
                 <View>
                   <Text>Password</Text>
                   <Input
-                      onChangeText={(text) => onFieldChange('password', text)}
                       value={formState.password}
+                      onChangeText={(text) => onFieldChange('password', text)}
+                      onSubmitEditing={handleSubmit}
                       secureTextEntry={true}
                       autoCapitalize='none'
                       className={cn('border-black', formErrors.password && 'border-red-400')}

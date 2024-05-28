@@ -15,7 +15,7 @@ export default function LoadingScreen() {
                 }}
             />
             <View className='flex-1 items-center justify-center'>
-                <Large>Loading...</Large>
+                <Large className='mb-24'>Loading...</Large>
             </View>
         </>
     )
