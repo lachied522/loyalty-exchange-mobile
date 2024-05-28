@@ -13,6 +13,7 @@ import { useMainContext, type MainState } from "./context/MainContext";
 import HomeScreen from "./screens/home/home-screen";
 import RewardsScreen from "./screens/rewards/rewards-screen";
 import Account from "./screens/account/account-screen";
+import SearchScreen from './screens/search/search-screen';
 
 const Tab = createBottomTabNavigator();
 
@@ -72,6 +73,20 @@ export default function MainIndex() {
                         tabBarLabel: ({ focused }) => (
                             <Text className='font-display-semibold' style={{ color: focused ? 'rgb(250 204 21)' : '#222' }}>
                                 Home
+                            </Text>
+                        ),
+                    }}
+                />
+                <Tab.Screen
+                    name="Search"
+                    component={SearchScreen}
+                    options={{
+                        tabBarIcon: ({ focused }) => (
+                            <Icon name='Search' size={30} color={focused ? 'rgb(250 204 21)' : '#222'} />
+                        ),
+                        tabBarLabel: ({ focused }) => (
+                            <Text className='font-display-semibold' style={{ color: focused ? 'rgb(250 204 21)' : '#222' }}>
+                                Search
                             </Text>
                         ),
                     }}

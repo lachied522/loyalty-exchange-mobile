@@ -357,6 +357,25 @@ export type Database = {
         }
         Returns: unknown
       }
+      search_store_names: {
+        Args: {
+          query: string
+        }
+        Returns: {
+          address_line_1: string | null
+          city: string | null
+          client_id: string
+          created_at: string
+          id: string
+          name: string
+          points_rate: number
+          postcode: string | null
+          state: string | null
+          store_img_url: string | null
+          store_logo_url: string | null
+          vendor_name: string
+        }[]
+      }
       search_vendor_names: {
         Args: {
           query: string

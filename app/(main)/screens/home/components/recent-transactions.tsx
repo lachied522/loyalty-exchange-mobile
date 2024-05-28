@@ -40,7 +40,7 @@ const ContactButton = () => {
 }
 
 export default function RecentTransactions() {
-    const { userData, storeData } = useMainContext() as MainState;
+    const { userData, storeDataMap } = useMainContext() as MainState;
     const { width } = useWindowDimensions();
 
     const sortedData = useMemo(() => {
@@ -64,7 +64,7 @@ export default function RecentTransactions() {
                           <Link href={`../../store/${transaction.store_id}`}>
                             <View  className='flex flex-col gap-1'>
                               <Text>{formatDate(transaction.date)}</Text>
-                              <Text className='font-display-semibold'>{storeData[transaction.store_id].name}</Text>
+                              <Text className='font-display-semibold'>{storeDataMap[transaction.store_id].name}</Text>
                             </View>
                           </Link>
                         

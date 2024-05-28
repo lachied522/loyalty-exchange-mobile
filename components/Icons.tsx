@@ -8,6 +8,7 @@ import {
   Loader,
   X,
   Info,
+  Search,
   ChevronLeft,
   Check,
   MapPin,
@@ -51,7 +52,9 @@ interopIcon(CheckCircle);
 interopIcon(UserRound);
 interopIcon(RefreshCw);
 interopIcon(Loader);
+interopIcon(X);
 interopIcon(Info);
+interopIcon(Search);
 interopIcon(ChevronLeft);
 interopIcon(Check);
 interopIcon(MapPin);
@@ -69,6 +72,7 @@ export {
   Loader,
   X,
   Info,
+  Search,
   ChevronLeft,
   Check,
   MapPin,
