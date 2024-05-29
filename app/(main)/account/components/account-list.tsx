@@ -2,14 +2,17 @@ import { useEffect, useState } from "react";
 import { TouchableOpacity, View } from "react-native";
 import { FlashList } from "@shopify/flash-list";
 
-import { fetchUserAccounts } from "~/app/utils/functions";
+import { fetchUserAccounts } from "@/utils/functions";
 
 import { Text } from "~/components/ui/text";
 import { Large } from "~/components/ui/typography";
 import { Skeleton } from "~/components/ui/skeleton";
 import { RefreshCw } from "~/components/Icons";
 
+import { type GlobalState, useGlobalContext } from "@/context/GlobalContext";
+
 import ManageAccountButton from "./manage-account-button";
+import ConvertAccountButton from "./convert-account-button";
 
 import type { Account } from "@/types/basiq";
 
@@ -19,6 +22,7 @@ function maskAccountNumber(accountNo: string) {
 }
 
 export default function AccountList() {
+    const { isAnonymous } = useGlobalContext() as GlobalState;
     const [accounts, setAccounts] = useState<Account[] | null>();
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [error, setError] = useState<boolean>(false);
@@ -75,26 +79,36 @@ export default function AccountList() {
                     }
                     ListEmptyComponent={() => (
                         <View className='w-full h-[160px] flex flex-col justify-center py-6 gap-4'>
-                            {isLoading ? (
-                            <>
-                                <Skeleton className='h-14 w-full rounded-xl bg-neutral-200' />
-                                <Skeleton className='h-14 w-full rounded-xl bg-neutral-200' />
-                            </>
+                            {isAnonymous ? (
+                            <View className='flex flex-col items-center justify-center p-6 gap-6'>
+                                <Text>You are logged in as a guest.</Text>
+                                <ConvertAccountButton />
+                            </View>
                             ) : (
                             <>
-                                {error ? (
+                                {isLoading ? (
                                 <>
-                                    <Large className='text-center'>There was an error fetching your accounts.</Large>
-                                    <Text className='text-center'>Please try again later.</Text>
+                                    <Skeleton className='h-14 w-full rounded-xl bg-neutral-200' />
+                                    <Skeleton className='h-14 w-full rounded-xl bg-neutral-200' />
                                 </>
                                 ) : (
                                 <>
-                                    <Large className='text-center'>You don't have any linked accounts.</Large>
-                                    <Text className='text-center'>Add a new account below.</Text>
+                                    {error ? (
+                                    <>
+                                        <Large className='text-center'>There was an error fetching your accounts.</Large>
+                                        <Text className='text-center'>Please try again later.</Text>
+                                    </>
+                                    ) : (
+                                    <>
+                                        <Large className='text-center'>You don't have any linked accounts.</Large>
+                                        <Text className='text-center'>Add a new account below.</Text>
+                                    </>
+                                    )}
                                 </>
                                 )}
                             </>
                             )}
+                            
                         </View>
                     )}
                     ListFooterComponent={() => (
@@ -110,14 +124,14 @@ export default function AccountList() {
                             <>
                                 <ManageAccountButton
                                     action='manage'
-                                    disabled={isActionButtonsDisabled || isLoading || !accounts || !accounts.length} // cannot manage accounts if none exist
+                                    disabled={isAnonymous || isActionButtonsDisabled || isLoading || !accounts || !accounts.length} // cannot manage accounts if none exist
                                     onStartNewRequest={() => setIsActionButtonsDisabled(true)}
                                     onSuccess={() => setIsRefreshButtonVisible(true)}
                                     onError={() => setIsRefreshButtonVisible(true)}
                                 />
                                 <ManageAccountButton
                                     action='connect'
-                                    disabled={isActionButtonsDisabled || isLoading}
+                                    disabled={isAnonymous || isActionButtonsDisabled || isLoading}
                                     onStartNewRequest={() => setIsActionButtonsDisabled(true)}
                                     onSuccess={() => setIsRefreshButtonVisible(true)}
                                     onError={() => setIsRefreshButtonVisible(true)}

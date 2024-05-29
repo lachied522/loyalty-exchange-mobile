@@ -15,6 +15,8 @@ import Logo from '~/components/Logo';
 
 import { shadowStyles } from '~/constants/styling';
 
+import GuestSigninDialog from './components/guest-signin-dialog';
+
 function handleLoginError(error: Error, toast: ReturnType<typeof useToast>) {
   if (error.message === 'Network request failed') {
     toast.show(
@@ -44,9 +46,9 @@ function handleLoginError(error: Error, toast: ReturnType<typeof useToast>) {
 }
 
 export default function Login() {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [isLoading, setIsLoading] = useState(false);
+    const [email, setEmail] = useState<string>('');
+    const [password, setPassword] = useState<string>('');
+    const [isLoading, setIsLoading] = useState<boolean>(false);
     const [formErrors, setFormErrors] = useState<{ [field: string]: string }>({});
     const [formIsValid, setFormIsValid] = useState<boolean>(true);
     const toast = useToast();
@@ -95,7 +97,8 @@ export default function Login() {
       <>
           <Stack.Screen
               options={{
-                  headerShown: false
+                  headerShown: false,
+                  gestureEnabled: false
               }}
           />
           <ScrollView
@@ -150,8 +153,18 @@ export default function Login() {
                   </View>
                 </TouchableOpacity>
 
+                <View className='w-full h-[1px] bg-neutral-200' />
+                
+                <GuestSigninDialog handleError={(e: Error) => handleLoginError(e, toast)}>
+                    <TouchableOpacity disabled={isLoading}>
+                        <View className='w-full items-center bg-neutral-50 p-3 rounded-xl'>
+                          <Text className='font-display-medium text-lg'>Continue as guest</Text>
+                        </View>
+                    </TouchableOpacity>
+                </GuestSigninDialog>
+
                 <View className='w-full flex items-center'>
-                  <Text>Don't have an account? <Link href='/signup/' className='text-blue-400 underline'>Create an account</Link></Text>
+                  <Text>Don't have an account? <Link href='/signup/' push className='text-blue-400 underline'>Create an account</Link></Text>
                 </View>
 
                 <TouchableOpacity onPress={() => Linking.openURL('https://www.loyaltyexchange.com.au/stores')}>

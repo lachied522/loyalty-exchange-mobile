@@ -60,7 +60,8 @@ export default function Onboarding() {
       <>
         <Stack.Screen
               options={{
-                  headerShown: false
+                  headerShown: false,
+                  gestureEnabled: false
               }}
           />
         <SafeAreaView style={{ flex: 1, marginTop: 40, padding: 24 }}>

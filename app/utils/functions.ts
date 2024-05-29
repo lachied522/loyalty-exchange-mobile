@@ -39,6 +39,19 @@ export async function fetchUserData(): Promise<UserData> {
         throw new NotLoggedInError();
     }
 
+    if (session.user.is_anonymous) {
+        return {
+            id: '',
+            name: 'Guest',
+            basiq_user_id: null,
+            points_balance: 0,
+            last_updated: '',
+            points: [],
+            redeemed: [],
+            transactions: [],
+        };
+    }
+
     return await makeAuthenticatedGetRequest(
         'get-user',
         session.user.id,
@@ -69,6 +82,10 @@ export async function fetchUserAccounts(): Promise<Account[]> {
 
     if (!session) {
         throw new NotLoggedInError();
+    }
+
+    if (session.user.is_anonymous) {
+        return [];
     }
 
     return await makeAuthenticatedGetRequest(

@@ -15,6 +15,8 @@ import { supabase } from "@/lib/supabase";
 
 import { useGlobalContext, type GlobalState } from "@/context/GlobalContext";
 
+import ConvertAccountButton from "./convert-account-button";
+
 import type { UserMetadata } from "@/types/helpers";
 
 function handleSubmitError(error: Error, toast: ReturnType<typeof useToast>) {
@@ -28,7 +30,7 @@ function handleSubmitError(error: Error, toast: ReturnType<typeof useToast>) {
 }
 
 export default function PersonalDetails() {
-    const { userMetadata, setUserMetadata } = useGlobalContext() as GlobalState;
+    const { isAnonymous, userMetadata, setUserMetadata } = useGlobalContext() as GlobalState;
     // bug with Button component - functions passed as 'onPress' are not updated with state
     // issue is avoided by using react ref
     const [formState, setFormState] = useState<UserMetadata>({
@@ -94,6 +96,13 @@ export default function PersonalDetails() {
         <View className='w-full flex flex-col bg-white gap-4 p-3 pt-6'>
             <Large>My Details</Large>
 
+            {isAnonymous? (
+            <View className='flex flex-col items-center justify-center p-6 gap-6'>
+                <Text>You are logged in as a guest.</Text>
+
+                <ConvertAccountButton />
+            </View>
+            ) : (
             <View className='flex flex-col gap-4 px-3'>
                 <Card>
                     <CardContent className='w-full flex flex-row items-center justify-between p-2'>
@@ -221,6 +230,7 @@ export default function PersonalDetails() {
                     </CardContent>
                 </Card>
             </View>
+            )}
         </View>
     )
 }

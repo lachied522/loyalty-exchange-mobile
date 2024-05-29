@@ -91,9 +91,9 @@ export default function Signup() {
     const toast = useToast();
 
     const signUpWithEmail = async () => {
-      setIsLoading(true);
+        setIsLoading(true);
 
-      const { data:  { session }, error } = await supabase.auth.signUp({
+        const { data:  { session }, error } = await supabase.auth.signUp({
           email: formState.email,
           password: formState.password,
           options: {
@@ -136,17 +136,17 @@ export default function Signup() {
         <>
           <Stack.Screen
               options={{
-                  headerShown: false
+                  headerShown: false,
+                  gestureEnabled: false
               }}
           />
-        
+          <View className='h-[50vh] w-full bg-yellow-300 bottom-0 absolute'/>
+
           <ScrollView
-            contentContainerStyle={{ height: '100%', position: 'relative' }}
+            contentContainerStyle={{ height: '100%', marginBottom: 24 }}
             keyboardShouldPersistTaps='handled'
             scrollEnabled={false}
           >
-            <View className='h-[50vh] w-full bg-yellow-300 bottom-0 absolute'/>
-
             <KeyboardAvoidingView
               behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
               className='h-full flex flex-col items-center justify-center gap-12'

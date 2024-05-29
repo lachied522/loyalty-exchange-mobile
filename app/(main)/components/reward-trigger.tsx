@@ -113,38 +113,3 @@ export default function RewardTrigger({ rewardData }: RewardProps) {
         </View>
     )
 }
-
-function AlertDialog({ children, onPress }: {
-    children: React.ReactNode,
-    onPress: () => void
-}) {
-    return (
-        <Dialog>
-            <DialogTrigger asChild>
-                {children}
-            </DialogTrigger>
-            <DialogContent className='round-full m-2'>
-                <DialogHeader>
-                    <DialogTitle>
-                        Are you sure?
-                    </DialogTitle>
-                    <DialogDescription>
-                        This reward can only be opened once. Make sure you are ready to redeem this reward now.
-                    </DialogDescription>
-                </DialogHeader>
-                <DialogFooter className='flex flex-row items-center justify-between'>
-                    <DialogClose asChild>
-                        <Button className='w-[80px] border border-slate-200'>
-                            <Text>Cancel</Text>
-                        </Button>
-                    </DialogClose>
-                    <DialogClose asChild>
-                        <Button onPress={onPress} className='border border-slate-200'>
-                            <Text>Redeem</Text>
-                        </Button>
-                    </DialogClose>
-                </DialogFooter>
-            </DialogContent>
-        </Dialog>
-    )
-}

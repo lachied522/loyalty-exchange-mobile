@@ -12,9 +12,9 @@ import { useGlobalContext, type GlobalState } from "@/context/GlobalContext";
 
 export default function HomeHeader() {
     // header component for account screen
-    const { userMetadata } = useGlobalContext() as GlobalState;
+    const { isAnonymous, userMetadata } = useGlobalContext() as GlobalState;
     const insets = useSafeAreaInsets();
-
+    
     return (
         <View className='min-h-[120px] flex flex-row items-center justify-between bg-white p-3' style={{ paddingTop: insets.top, ...shadowStyles.edge }}>
             <View className='flex flex-row items-center justify-center gap-2'>
@@ -30,7 +30,13 @@ export default function HomeHeader() {
 
                 <View className='flex flex-col items-start justify-start gap-1'>
                     <Small>Welcome</Small>
-                    <Large>{userMetadata?.first_name || ''}</Large>
+                    <Large>
+                        {isAnonymous? (
+                            'Guest'
+                        ): userMetadata? (
+                            userMetadata.first_name || 'User'
+                        ): 'User'}
+                    </Large>
                 </View>
             </View>
 
