@@ -1,8 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { View } from "react-native";
 
-import { useToast } from "react-native-toast-notifications";
-
 import { Card, CardContent } from "~/components/ui/card";
 import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
@@ -11,22 +9,18 @@ import { Text } from "~/components/ui/text";
 import { Pencil } from "~/components/Icons";
 import { cn } from "~/components/utils";
 
-import { supabase } from "@/lib/supabase";
+import { supabase } from "~/app/lib/supabase";
 
-import { useGlobalContext, type GlobalState } from "@/context/GlobalContext";
+import { useCustomToast } from "~/app/hooks/useCustomToast";
+
+import { useGlobalContext, type GlobalState } from "~/app/context/GlobalContext";
 
 import ConvertAccountButton from "./convert-account-button";
 
 import type { UserMetadata } from "@/types/helpers";
 
-function handleSubmitError(error: Error, toast: ReturnType<typeof useToast>) {
-    toast.show(
-        'Something went wrong. Please try again later.',
-        {
-            placement: 'top',
-            duration: 5000
-        }
-    )
+function handleSubmitError(error: Error, toast: ReturnType<typeof useCustomToast>) {
+    toast.show('Something went wrong. Please try again later.');
 }
 
 export default function PersonalDetails() {
@@ -46,8 +40,7 @@ export default function PersonalDetails() {
     const formRef = useRef<typeof formState>(formState);
     const [isEditting, setIsEditting] = useState<'first_name'|'last_name'|'mobile'|'email'|null>(null);
     const [formIsValid, setFormIsValid] = useState<boolean>(true);
-
-    const toast = useToast();
+    const toast = useCustomToast();
 
     useEffect(() => {
         formRef.current = formState;

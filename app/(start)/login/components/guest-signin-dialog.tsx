@@ -36,7 +36,6 @@ export default function GuestSigninDialog({ children, handleError }: GuestSignin
           const { error } = await supabase.auth.signInAnonymously();
   
           if (error) {
-            console.log({ error });
             handleError(error);
             setIsLoading(false);
             return;
@@ -66,10 +65,11 @@ export default function GuestSigninDialog({ children, handleError }: GuestSignin
                         You will not be able to earn points while you are logged in as a guest.
                     </AlertDialogDescription>
                 </AlertDialogHeader>
-                <AlertDialogFooter className='flex flex-row justify-between'>
+                <AlertDialogFooter className='flex flex-row justify-between mt-2'>
                     <AlertDialogCancel
                         ref={closeRef}
                         onPress={onCancel}
+                        className='border-0 bg-neutral-100'
                     >
                         <Text>Cancel</Text>
                     </AlertDialogCancel>

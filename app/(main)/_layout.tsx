@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { Stack, router } from "expo-router";
-import { useToast } from 'react-native-toast-notifications';
 
 import type { UserData } from '@/types/helpers';
 import { fetchUserData } from '@/utils/functions';
@@ -8,39 +7,29 @@ import { fetchUserData } from '@/utils/functions';
 import { NotLoggedInError } from '@/utils/errors';
 
 import { useGlobalContext, type GlobalState } from "@/context/GlobalContext";
+import { useCustomToast } from '../hooks/useCustomToast';
 
 import LoadingScreen from './loading-screen';
 import MainContextProvider from "./context/MainContext";
 
-function handleError(error: Error, toast: ReturnType<typeof useToast>) {
-    if (error instanceof NotLoggedInError) {
-      // this shouldn't occur, but does sometimes
-      // if this occurs the user should be redirected to login page automatically
-    } else if (error.name === 'TypeError' && error.message === 'Network request timed out') {
-      toast.show(
-        'Internet access is required.',
-        {
-            placement: 'top',
-            duration: 5000
-        }
-      )
-    } else {
-      toast.show(
-        'Something went wrong. Please try again later.',
-        {
-            placement: 'top',
-            duration: 5000
-        }
-      )
-    }
+function handleLoadingError(error: Error, toast: ReturnType<typeof useCustomToast>) {
+  if (error instanceof NotLoggedInError) {
+    // this shouldn't occur, but does sometimes
+    // if this occurs the user should be redirected to login page automatically
+  } else if (error.message === 'Network request failed') {
+      toast.show('Internet access is required.');
+  } else if (error.message === 'Network request timed out') {
+      toast.show('Could not connect to server. Please ensure you are connected to the internet and try again.');
+  } else {
+      toast.show('Something went wrong. Please try again later.');
+  }
 }
 
 export default function MainLayout() {
     const { session } = useGlobalContext() as GlobalState;
     const [userData, setUserData] = useState<UserData | null>(null);
     const [isLoaded, setIsLoaded] = useState<boolean>(false);
-
-    const toast = useToast();
+    const toast = useCustomToast();
 
     useEffect(() => {        
         if (!session) router.replace('/login/');
@@ -49,7 +38,7 @@ export default function MainLayout() {
 
         fetchUserData()
         .catch((e) => {
-          handleError(e, toast);
+          handleLoadingError(e, toast);
         })
         .then((data) => {
           if (data && isMounted) {

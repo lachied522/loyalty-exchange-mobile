@@ -2,8 +2,6 @@ import { useState } from 'react';
 import { View, ScrollView, TouchableOpacity, KeyboardAvoidingView, Platform } from 'react-native';
 import { Stack, Link, router } from 'expo-router';
 
-import { useToast } from 'react-native-toast-notifications';
-
 import { Input } from '~/components/ui/input';
 import { Text } from '~/components/ui/text';
 import { H1 } from '~/components/ui/typography';
@@ -11,7 +9,9 @@ import { cn } from '~/components/utils';
 
 import { shadowStyles } from '~/constants/styling';
 
-import { supabase } from '@/lib/supabase';
+import { supabase } from '~/app/lib/supabase';
+
+import { useCustomToast } from '~/app/hooks/useCustomToast';
 
 import { useStartContext, type StartState } from '../context/StartContext';
 
@@ -23,31 +23,13 @@ type SignupData = {
   password: string,
 }
 
-function handleSignupError(error: Error, toast: ReturnType<typeof useToast>) {
+function handleSignupError(error: Error, toast: ReturnType<typeof useCustomToast>) {
   if (error.message === 'Network request failed') {
-    toast.show(
-      'Internet access is required.',
-      {
-          placement: 'top',
-          duration: 5000
-      }
-    )
+    toast.show('Internet access is required.');
   } else if (error.message === 'User already registered') {
-    toast.show(
-      'An account already exists with this email.',
-      {
-          placement: 'top',
-          duration: 5000
-      }
-    )
+    toast.show('An account already exists with this email.');
   } else {
-    toast.show(
-      'Something went wrong. Please try again later.',
-      {
-          placement: 'top',
-          duration: 5000
-      }
-    )
+    toast.show('Something went wrong. Please try again later.');
   }
 }
 
@@ -88,7 +70,7 @@ export default function Signup() {
     });
     const [formErrors, setFormErrors] = useState<{ [field: string]: string | null }>({});
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    const toast = useToast();
+    const toast = useCustomToast();
 
     const signUpWithEmail = async () => {
         setIsLoading(true);
