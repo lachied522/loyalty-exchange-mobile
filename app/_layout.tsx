@@ -82,7 +82,7 @@ export default function Layout() {
     <>
       <ThemeProvider value={LIGHT_THEME}>
         <ToastProvider
-          offsetTop={80}
+          offsetTop={60}
           swipeEnabled={true}
           renderToast={CustomToast}
         >

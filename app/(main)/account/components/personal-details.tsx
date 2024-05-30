@@ -1,8 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { View } from "react-native";
 
-import { useToast } from "react-native-toast-notifications";
-
 import { Card, CardContent } from "~/components/ui/card";
 import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
@@ -11,24 +9,22 @@ import { Text } from "~/components/ui/text";
 import { Pencil } from "~/components/Icons";
 import { cn } from "~/components/utils";
 
-import { supabase } from "@/lib/supabase";
+import { supabase } from "~/app/lib/supabase";
 
-import { useGlobalContext, type GlobalState } from "@/context/GlobalContext";
+import { useCustomToast } from "~/app/hooks/useCustomToast";
+
+import { useGlobalContext, type GlobalState } from "~/app/context/GlobalContext";
+
+import ConvertAccountButton from "./convert-account-button";
 
 import type { UserMetadata } from "@/types/helpers";
 
-function handleSubmitError(error: Error, toast: ReturnType<typeof useToast>) {
-    toast.show(
-        'Something went wrong. Please try again later.',
-        {
-            placement: 'top',
-            duration: 5000
-        }
-    )
+function handleSubmitError(error: Error, toast: ReturnType<typeof useCustomToast>) {
+    toast.show('Something went wrong. Please try again later.');
 }
 
 export default function PersonalDetails() {
-    const { userMetadata, setUserMetadata } = useGlobalContext() as GlobalState;
+    const { isAnonymous, userMetadata, setUserMetadata } = useGlobalContext() as GlobalState;
     // bug with Button component - functions passed as 'onPress' are not updated with state
     // issue is avoided by using react ref
     const [formState, setFormState] = useState<UserMetadata>({
@@ -44,8 +40,7 @@ export default function PersonalDetails() {
     const formRef = useRef<typeof formState>(formState);
     const [isEditting, setIsEditting] = useState<'first_name'|'last_name'|'mobile'|'email'|null>(null);
     const [formIsValid, setFormIsValid] = useState<boolean>(true);
-
-    const toast = useToast();
+    const toast = useCustomToast();
 
     useEffect(() => {
         formRef.current = formState;
@@ -94,6 +89,13 @@ export default function PersonalDetails() {
         <View className='w-full flex flex-col bg-white gap-4 p-3 pt-6'>
             <Large>My Details</Large>
 
+            {isAnonymous? (
+            <View className='flex flex-col items-center justify-center p-6 gap-6'>
+                <Text>You are logged in as a guest.</Text>
+
+                <ConvertAccountButton />
+            </View>
+            ) : (
             <View className='flex flex-col gap-4 px-3'>
                 <Card>
                     <CardContent className='w-full flex flex-row items-center justify-between p-2'>
@@ -221,6 +223,7 @@ export default function PersonalDetails() {
                     </CardContent>
                 </Card>
             </View>
+            )}
         </View>
     )
 }

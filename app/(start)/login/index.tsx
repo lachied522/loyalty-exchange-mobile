@@ -3,9 +3,7 @@ import { View, ScrollView, TouchableOpacity } from 'react-native';
 import { Stack, Link, router } from 'expo-router';
 import * as Linking from 'expo-linking';
 
-import { useToast } from 'react-native-toast-notifications';
-
-import { supabase } from '@/lib/supabase';
+import { supabase } from '~/app/lib/supabase';
 
 import { Input } from '~/components/ui/input';
 import { Text } from '~/components/ui/text';
@@ -15,52 +13,38 @@ import Logo from '~/components/Logo';
 
 import { shadowStyles } from '~/constants/styling';
 
-function handleLoginError(error: Error, toast: ReturnType<typeof useToast>) {
+import { useCustomToast } from '~/app/hooks/useCustomToast';
+
+import OAuthSigninButton from './components/oauth-signin-button';
+import GuestSigninDialog from './components/guest-signin-dialog';
+
+function handleLoginError(error: Error, toast: ReturnType<typeof useCustomToast>) {
   if (error.message === 'Network request failed') {
-    toast.show(
-      'Internet access is required.',
-      {
-          placement: 'top',
-          duration: 5000
-      }
-    )
+    toast.show('Internet access is required.');
   } else if (error.message === 'Invalid login credentials') {
-    toast.show(
-      'Username or password incorrect.',
-      {
-          placement: 'top',
-          duration: 5000
-      }
-    )
+    toast.show('Username or password incorrect.');
   } else {
-    toast.show(
-      'Something went wrong. Please try again later.',
-      {
-          placement: 'top',
-          duration: 5000
-      }
-    )
+    toast.show('Something went wrong. Please try again later.');
   }
 }
 
 export default function Login() {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [isLoading, setIsLoading] = useState(false);
+    const [email, setEmail] = useState<string>('');
+    const [password, setPassword] = useState<string>('');
+    const [isLoading, setIsLoading] = useState<boolean>(false);
     const [formErrors, setFormErrors] = useState<{ [field: string]: string }>({});
     const [formIsValid, setFormIsValid] = useState<boolean>(true);
-    const toast = useToast();
+    const toast = useCustomToast();
 
     const signInWithEmail = async () => {
       setIsLoading(true);
-      const { data: { user }, error } = await supabase.auth.signInWithPassword({
+      const { data, error } = await supabase.auth.signInWithPassword({
         email: email,
         password: password,
       });
 
       if (error) {
         handleLoginError(error, toast);
-
         setIsLoading(false);
       } else {
         // navigate to home page
@@ -95,18 +79,18 @@ export default function Login() {
       <>
           <Stack.Screen
               options={{
-                  headerShown: false
+                  headerShown: false,
+                  gestureEnabled: false
               }}
           />
+          <View className='h-[40vh] w-full bg-yellow-300 bottom-0 absolute'/>
           <ScrollView
-            contentContainerStyle={{ height: '100%', position: 'relative' }}
+            contentContainerStyle={{ height: '100%' }}
             keyboardShouldPersistTaps='handled'
             scrollEnabled={false}
           >
             <View className='h-full flex flex-col items-center justify-center gap-12'>
-              <View className='h-[40vh] w-full bg-yellow-300 bottom-0 absolute'/>
-
-              <View className='w-full flex items-center justify-center p-12'>
+              <View className='w-full flex items-center justify-center p-6'>
                 <Logo />
               </View>
 
@@ -150,8 +134,25 @@ export default function Login() {
                   </View>
                 </TouchableOpacity>
 
+                <View className='flex flex-row items-center justify-between'>
+                  <View className='flex-1 h-[1px] bg-neutral-200' />
+                  <Text className='flex-[0.25] font-display-medium text-lg text-neutral-400 text-center'>or</Text>
+                  <View className='flex-1 h-[1px] bg-neutral-200' />
+                </View>
+
+                <OAuthSigninButton provider='google' handleError={(e: Error) => handleLoginError(e, toast)} />
+                <OAuthSigninButton provider='facebook' handleError={(e: Error) => handleLoginError(e, toast)} />
+
+                <GuestSigninDialog handleError={(e: Error) => handleLoginError(e, toast)}>
+                    <TouchableOpacity disabled={isLoading}>
+                        <View className='w-full items-center bg-neutral-50 p-3 rounded-xl'>
+                          <Text>Continue as guest</Text>
+                        </View>
+                    </TouchableOpacity>
+                </GuestSigninDialog>
+
                 <View className='w-full flex items-center'>
-                  <Text>Don't have an account? <Link href='/signup/' className='text-blue-400 underline'>Create an account</Link></Text>
+                  <Text>Don't have an account? <Link href='/signup/' push className='text-blue-400 underline'>Create an account</Link></Text>
                 </View>
 
                 <TouchableOpacity onPress={() => Linking.openURL('https://www.loyaltyexchange.com.au/stores')}>

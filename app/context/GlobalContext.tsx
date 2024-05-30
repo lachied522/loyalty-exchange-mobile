@@ -8,6 +8,7 @@ import type { UserMetadata } from "@/types/helpers";
 export type GlobalState = {
     session: Session | null
     userMetadata?: UserMetadata,
+    isAnonymous: boolean
     setUserMetadata: React.Dispatch<React.SetStateAction<UserMetadata | undefined>>
     getConsentURLFromSession: (action: 'manage'|'connect') => Promise<string | null>
 }
@@ -15,6 +16,7 @@ export type GlobalState = {
 const GlobalContext = createContext<GlobalState>({
     session: null,
     userMetadata: {},
+    isAnonymous: false,
     setUserMetadata: () => {},
     getConsentURLFromSession: async () => null
 });
@@ -33,12 +35,17 @@ export default function GlobalContextProvider({
     children,
 }: GlobalContextProps) {
     const [userMetadata, setUserMetadata] = useState<UserMetadata | undefined>();
+    const [isAnonymous, setIsAnonymous] = useState<boolean>(false);
 
     useEffect(() => {
-        if (session) setUserMetadata({
-            ...session.user.user_metadata,
-            email: session.user.email, // email has is stored separately from 'user_metadata'
-        });
+        if (session) {
+            setUserMetadata({
+                ...session.user.user_metadata,
+                email: session.user.email, // email has is stored separately from 'user_metadata'
+            });
+
+            setIsAnonymous(session.user.is_anonymous ?? false);
+        }
     }, [session]);
 
     const getConsentURLFromSession = useCallback(
@@ -53,6 +60,7 @@ export default function GlobalContextProvider({
     return (
         <GlobalContext.Provider value={{
             session,
+            isAnonymous,
             userMetadata,
             setUserMetadata,
             getConsentURLFromSession,

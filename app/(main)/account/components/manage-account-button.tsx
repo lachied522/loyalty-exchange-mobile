@@ -1,14 +1,14 @@
 import { useState } from "react";
 import { View, TouchableOpacity } from "react-native";
-import { useToast } from "react-native-toast-notifications";
-
 import * as WebBrowser from 'expo-web-browser';
 
 import { Large } from "~/components/ui/typography";
 import { cn } from "~/components/utils";
 import { Plus, Settings, Loader } from "~/components/Icons";
 
-import { useGlobalContext, type GlobalState } from "@/context/GlobalContext";
+import { useCustomToast } from "~/app/hooks/useCustomToast";
+
+import { useGlobalContext, type GlobalState } from "~/app/context/GlobalContext";
 
 export default function ManageAccountButton({
     action,
@@ -26,25 +26,17 @@ export default function ManageAccountButton({
     const { getConsentURLFromSession, userMetadata } = useGlobalContext() as GlobalState;
     const [isLoading, setIsLoading] = useState<boolean>(false);
     
-    const toast = useToast();
+    const toast = useCustomToast();
 
     const getConsentURLAndOpenBrowser = async () => {
         onStartNewRequest();
 
         const url = await getConsentURLFromSession(action);
-
         if (url) {
             await WebBrowser.openBrowserAsync(url)
             .then(() => onSuccess());
         } else {
-            toast.show(
-                'Something went wrong. Please try again later.',
-                {
-                    placement: 'top',
-                    duration: 5000
-                }
-            );
-
+            toast.show('Something went wrong. Please try again later.');
             onError();
         }
     }
@@ -53,14 +45,7 @@ export default function ManageAccountButton({
         // Basiq requires a valid email and phone number
         // check that user has both
         if (!(userMetadata?.mobile && userMetadata?.email)) {
-            toast.show(
-                'Please ensure you have a valid email and mobile.',
-                {
-                    placement: 'top',
-                    duration: 3000
-                }
-            )
-
+            toast.show('Please ensure you have a valid email and mobile.');
             return false;
         }
 

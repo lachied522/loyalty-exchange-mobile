@@ -2,16 +2,15 @@ import { useState } from "react";
 import { Alert, View } from "react-native";
 import { router } from "expo-router";
 
-import { useToast } from "react-native-toast-notifications";
-
 import { Button } from "~/components/ui/button";
 import { Large } from "~/components/ui/typography";
 
-import { deleteUserAccount } from "@/utils/functions";
+import { useCustomToast } from "~/app/hooks/useCustomToast";
+import { deleteUserAccount } from "~/app/utils/functions";
 
 export default function DeleteAccountButton() {
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    const toast = useToast();
+    const toast = useCustomToast();
 
     const onDelete = async () => {
         setIsLoading(true);
@@ -21,13 +20,7 @@ export default function DeleteAccountButton() {
             // navigate to login
             router.replace('/login/');
         } catch (e) {
-            toast.show(
-                'Something went wrong. Please try again later or contact us.',
-                {
-                    placement: 'top',
-                    duration: 5000
-                }
-            );
+            toast.show('Something went wrong deleting account. Please try again later or contact us.');
         }
 
         setIsLoading(false);

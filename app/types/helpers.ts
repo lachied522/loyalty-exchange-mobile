@@ -20,7 +20,6 @@ export type UserData = (
             }
         )[]
         transactions: Tables<'transactions'>[] // historical transactions
-        newTransactions: Transaction[] // new transactions from Basiq API
     }
 )
 

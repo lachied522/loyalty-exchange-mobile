@@ -1,43 +1,22 @@
 import { useState, useMemo } from 'react';
 import { View, Alert } from 'react-native';
-import { useToast } from 'react-native-toast-notifications';
 
-import {
-    Dialog,
-    DialogClose,
-    DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
-} from '~/components/ui/dialog';
 import { Button } from '~/components/ui/button';
 import { Text } from '~/components/ui/text';
 
-import type { Reward } from '@/types/helpers';
+import { useCustomToast } from '~/app/hooks/useCustomToast';
 
 import { useMainContext, type MainState } from '../context/MainContext';
 
 import RewardModal from "./reward-modal";
 
-function handleError(error: Error, toast: ReturnType<typeof useToast>) {
+import type { Reward } from '@/types/helpers';
+
+function handleError(error: Error, toast: ReturnType<typeof useCustomToast>) {
     if (error.message === 'Not enough points') {
-      toast.show(
-        "You don't have enough points for this reward.",
-        {
-            placement: 'top',
-            duration: 5000
-        }
-      )
+      toast.show("You don't have enough points for this reward.");
     } else {
-      toast.show(
-        'Something went wrong. Please try again later.',
-        {
-            placement: 'top',
-            duration: 5000
-        }
-      )
+      toast.show('Something went wrong. Please try again later.');
     }
 }
 
@@ -49,8 +28,7 @@ export default function RewardTrigger({ rewardData }: RewardProps) {
     const { userData, redeemRewardAndUpdateState } = useMainContext() as MainState;
     const [isOpen, setIsOpen] = useState<boolean>(false); // render reward modal only once use has confirmed
     const [isLoading, setIsLoading] = useState<boolean>(false);
-
-    const toast = useToast();
+    const toast = useCustomToast();
 
     const userPoints = useMemo(() => {
         // number of points user has at this store
@@ -111,40 +89,5 @@ export default function RewardTrigger({ rewardData }: RewardProps) {
                 </Button>
             )}
         </View>
-    )
-}
-
-function AlertDialog({ children, onPress }: {
-    children: React.ReactNode,
-    onPress: () => void
-}) {
-    return (
-        <Dialog>
-            <DialogTrigger asChild>
-                {children}
-            </DialogTrigger>
-            <DialogContent className='round-full m-2'>
-                <DialogHeader>
-                    <DialogTitle>
-                        Are you sure?
-                    </DialogTitle>
-                    <DialogDescription>
-                        This reward can only be opened once. Make sure you are ready to redeem this reward now.
-                    </DialogDescription>
-                </DialogHeader>
-                <DialogFooter className='flex flex-row items-center justify-between'>
-                    <DialogClose asChild>
-                        <Button className='w-[80px] border border-slate-200'>
-                            <Text>Cancel</Text>
-                        </Button>
-                    </DialogClose>
-                    <DialogClose asChild>
-                        <Button onPress={onPress} className='border border-slate-200'>
-                            <Text>Redeem</Text>
-                        </Button>
-                    </DialogClose>
-                </DialogFooter>
-            </DialogContent>
-        </Dialog>
     )
 }
