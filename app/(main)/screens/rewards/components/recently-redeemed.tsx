@@ -51,7 +51,7 @@ export default function RecentlyRedeemed() {
                         )
                     }
                     ListEmptyComponent={() => (
-                        <View className='flex flex-col items-center justify-center gap-2 p-6'>
+                        <View className='min-h-[240px] flex flex-col items-center justify-center gap-2 p-6'>
                             <Large>Nothing here yet.</Large>
                             <Text className='text-center'>Your recently redeemed rewards will appear here.</Text>
                         </View>

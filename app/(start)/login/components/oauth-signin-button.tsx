@@ -11,6 +11,10 @@ import { Text } from '~/components/ui/text';
 
 import { supabase } from '~/app/lib/supabase';
 
+import { type GlobalState, useGlobalContext } from '~/app/context/GlobalContext';
+
+import { processOAuthUserMetadata } from '../../functions/new-oauth-user';
+
 const PROVIDER_MAP = {
     facebook: {
         logo: require('assets/auth/facebook-logo.png'),
@@ -69,15 +73,24 @@ interface OAuthSigninButtonProps {
 }
 
 export default function OAuthSigninButton({ provider, handleError }: OAuthSigninButtonProps) {
+    const { setUserMetadata } = useGlobalContext() as GlobalState;
+
     const url = Linking.useURL();
     if (url) createSessionFromUrl(url);
 
     const onPress = async () => {
         try {
             const session = await performOAuth(provider);
-
             if (!session) {
-                throw new Error('Something went wrong.');
+                throw new Error('Something went wrong.')
+            }
+            // if user is new, metadata will not contain 'role' field
+            if (!session.user.user_metadata['role']) {
+                const _metadata = processOAuthUserMetadata(session);                
+                
+                setUserMetadata(_metadata);
+                router.replace('/(start)/new-user-from-oauth/');
+                return;
             }
 
             router.replace('/');
@@ -89,7 +102,7 @@ export default function OAuthSigninButton({ provider, handleError }: OAuthSignin
     return (
         <Button
             onPress={onPress}
-            className='flex flex-row justify-center gap-3.5 border border-neutral-400'
+            className='min-h-[48px] flex flex-row justify-center gap-3.5 border border-neutral-400'
         >
             <Image
                 source={PROVIDER_MAP[provider].logo}

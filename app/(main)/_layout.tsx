@@ -12,6 +12,17 @@ import { useCustomToast } from '../hooks/useCustomToast';
 import LoadingScreen from './loading-screen';
 import MainContextProvider from "./context/MainContext";
 
+const skeletonData = {
+  id: '',
+  name: 'Guest',
+  basiq_user_id: null,
+  points_balance: 0,
+  last_updated: '',
+  points: [],
+  redeemed: [],
+  transactions: [],
+} satisfies UserData;
+
 function handleLoadingError(error: Error, toast: ReturnType<typeof useCustomToast>) {
   if (error instanceof NotLoggedInError) {
     // this shouldn't occur, but does sometimes
@@ -27,33 +38,28 @@ function handleLoadingError(error: Error, toast: ReturnType<typeof useCustomToas
 
 export default function MainLayout() {
     const { session } = useGlobalContext() as GlobalState;
-    const [userData, setUserData] = useState<UserData | null>(null);
+    const [userData, setUserData] = useState<UserData>(skeletonData);
     const [isLoaded, setIsLoaded] = useState<boolean>(false);
     const toast = useCustomToast();
 
-    useEffect(() => {        
+    useEffect(() => {
         if (!session) router.replace('/login/');
-
-        let isMounted = true;
 
         fetchUserData()
         .catch((e) => {
           handleLoadingError(e, toast);
         })
         .then((data) => {
-          if (data && isMounted) {
+          if (data) {
             setUserData(data);
             setIsLoaded(true);
           }
         });
 
-        return () => {
-          isMounted = false;
-        };
     }, [session, setUserData, setIsLoaded]);
 
-    if (!(isLoaded && userData)) return <LoadingScreen />;
-
+    if (!(isLoaded)) return <LoadingScreen />;
+    
     return (
         <MainContextProvider initialState={userData}>
             <Stack />

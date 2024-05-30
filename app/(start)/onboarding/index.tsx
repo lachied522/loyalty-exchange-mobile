@@ -7,14 +7,14 @@ import { Button } from '~/components/ui/button';
 import { Text } from '~/components/ui/text';
 import { Large } from '~/components/ui/typography';
 
-import { createNewConnection } from '~/app/utils/connections';
+import { getConsentURL } from '~/app/utils/connections';
 
 import { useCustomToast } from '~/app/hooks/useCustomToast';
 
-import { useStartContext, type StartState } from '../context/StartContext';
+import { type GlobalState, useGlobalContext } from '~/app/context/GlobalContext';
 
 export default function Onboarding() {
-    const { session } = useStartContext() as StartState;
+    const { session } = useGlobalContext() as GlobalState;
     const [consentUrl, setConsentUrl] = useState<string | null>(); // url to consent UI
     const [isReady, setIsReady] = useState<boolean>(false); // true when consent UI is ready
     const [isComplete, setIsComplete] = useState<boolean>(false); // true when user has completed consent
@@ -24,14 +24,15 @@ export default function Onboarding() {
         let isMounted = false; // prevent effect from executing twice
 
         if (session && !isMounted) {
-          createNewConnection(session)
+          getConsentURL(session, 'connect')
           .then((url) => {
               if (url) {
                 setConsentUrl(url);
+                setIsReady(true);
               } else {
                 toast.show("Something went wrong. Please click 'Next' and try again later.");
               }
-              setIsReady(true);
+              setIsComplete(true);
           });
 
           isMounted = true;
@@ -41,7 +42,6 @@ export default function Onboarding() {
     const handleWebBrowser = useCallback(
       async () => {
           if (!consentUrl) return;
-
           // open browser
           await WebBrowser.openBrowserAsync(consentUrl);
           setIsComplete(true);
@@ -72,7 +72,7 @@ export default function Onboarding() {
               size='lg'
               onPress={handleWebBrowser}
               disabled={!isReady}
-              className='min-h-[56px]'
+              className='min-h-[56px] flex items-center justify-center'
             >
               {!isReady? (
               <Text className='text-black'>Please wait...</Text>
@@ -82,7 +82,7 @@ export default function Onboarding() {
             </Button>
 
             <Link href='/(main)/' asChild>
-              <Button disabled={!isComplete} className='w-full min-h-[56px] bg-yellow-400'>
+              <Button disabled={!isComplete} className='w-full min-h-[56px] flex items-center justify-center bg-yellow-400'>
                   <Text className='text-black'>Next</Text>
               </Button>
             </Link>

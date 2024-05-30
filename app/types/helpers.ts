@@ -28,6 +28,7 @@ export type UserMetadata = {
     last_name?: string,
     email?: string,
     mobile?: string,
+    role?: 'user'|'client'
 }
 
 export type Reward = (

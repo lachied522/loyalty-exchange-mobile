@@ -13,8 +13,6 @@ import { supabase } from '~/app/lib/supabase';
 
 import { useCustomToast } from '~/app/hooks/useCustomToast';
 
-import { useStartContext, type StartState } from '../context/StartContext';
-
 type SignupData = {
   first_name: string,
   last_name: string,
@@ -29,7 +27,7 @@ function handleSignupError(error: Error, toast: ReturnType<typeof useCustomToast
   } else if (error.message === 'User already registered') {
     toast.show('An account already exists with this email.');
   } else {
-    toast.show('Something went wrong. Please try again later.');
+    toast.showUnknownError();
   }
 }
 
@@ -60,7 +58,6 @@ function getFormErrors(data: SignupData) {
 }
 
 export default function Signup() {
-    const { setSession } = useStartContext() as StartState;
     const [formState, setFormState] = useState<SignupData>({
         first_name: '',
         last_name: '',
@@ -81,9 +78,10 @@ export default function Signup() {
           options: {
             // emailRedirectTo: redirectTo,
             data: {
-              first_name: formState.first_name,
-              last_name: formState.last_name,
-              mobile: formState.mobile,
+                first_name: formState.first_name,
+                last_name: formState.last_name,
+                mobile: formState.mobile,
+                role: 'user'
             }
           }
         });
@@ -94,7 +92,6 @@ export default function Signup() {
           return;
         };
 
-        setSession(session);
         // navigate to onboarding page
         router.replace('/(start)/onboarding');
     }
@@ -217,6 +214,6 @@ export default function Signup() {
               </View>
             </KeyboardAvoidingView>
           </ScrollView>
-      </>
+        </>
     )
 }

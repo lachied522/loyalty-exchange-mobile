@@ -23,7 +23,7 @@ export default function AccountPage() {
             <ScrollView
                 contentContainerStyle={{ ...colors.background, gap: 12 }}
                 keyboardShouldPersistTaps='handled'
-            >                
+            >
                 <AccountList />
 
                 <PersonalDetails />

@@ -9,9 +9,9 @@ import { Text } from "~/components/ui/text";
 import { Pencil } from "~/components/Icons";
 import { cn } from "~/components/utils";
 
-import { supabase } from "~/app/lib/supabase";
-
 import { useCustomToast } from "~/app/hooks/useCustomToast";
+
+import { updateUserMetaData } from "~/app/utils/user";
 
 import { useGlobalContext, type GlobalState } from "~/app/context/GlobalContext";
 
@@ -65,24 +65,14 @@ export default function PersonalDetails() {
         // check if data is valid
         const isValid = validateForm();
         if (!isValid) return;
-
-        setIsEditting(null);
-
-        const { error } = await supabase.auth.updateUser({
-            email: formRef.current.email,
-            data: {
-                first_name: formRef.current.first_name,
-                last_name: formRef.current.last_name,
-                mobile: formRef.current.mobile,
-            }
-        });
-
-        if (error) {
-            handleSubmitError(error, toast);
-            return;
-        }
         
-        setUserMetadata(formState);
+        setIsEditting(null);
+        try {
+            await updateUserMetaData({ ...formRef.current });
+            setUserMetadata(formState);
+        } catch (error: any) {
+            handleSubmitError(error, toast);
+        }
     }
 
     return (
@@ -102,14 +92,15 @@ export default function PersonalDetails() {
                         <View className='flex flex-col items-stretch'>
                             <Text className='ml-2'>First Name</Text>
                             <Input
-                                onChangeText={(text) => onFieldChange('first_name', text)}
                                 value={formState.first_name}
+                                onChangeText={(text) => onFieldChange('first_name', text)}
+                                onSubmitEditing={onSave}
                                 editable={isEditting==='first_name'}
                                 autoCapitalize='none'
                                 className={cn(
                                     'w-[240px] border-white',
                                     isEditting==='first_name' && 'border-neutral-200',
-                                    formState.first_name!.length === 0 && !formIsValid && 'border-red-400'
+                                    formState.first_name?.length === 0 && !formIsValid && 'border-red-400'
                                 )}
                                 style={{ width: 240 }} // width property above doesn't seem to work on ios, set explicitly here
                             />
@@ -133,14 +124,15 @@ export default function PersonalDetails() {
                         <View className='flex flex-col items-stretch'>
                             <Text className='ml-2'>Last Name</Text>
                             <Input
-                                onChangeText={(text) => onFieldChange('last_name', text)}
                                 value={formState.last_name}
+                                onChangeText={(text) => onFieldChange('last_name', text)}
+                                onSubmitEditing={onSave}
                                 editable={isEditting==='last_name'}
                                 autoCapitalize='none'
                                 className={cn(
                                     'w-[240px] border-white',
                                     isEditting==='last_name' && 'border-neutral-200',
-                                    formState.last_name!.length === 0 && !formIsValid && 'border-red-400'
+                                    formState.last_name?.length === 0 && !formIsValid && 'border-red-400'
                                 )}
                                 style={{ width: 240 }}
                             />
@@ -164,15 +156,16 @@ export default function PersonalDetails() {
                         <View className='flex flex-col items-stretch'>
                             <Text className='ml-2'>Email</Text>
                             <Input
-                                onChangeText={(text) => onFieldChange('email', text)}
                                 value={formState.email}
+                                onChangeText={(text) => onFieldChange('email', text)}
+                                onSubmitEditing={onSave}
                                 editable={isEditting==='email'}
                                 autoCapitalize='none'
                                 keyboardType='email-address'
                                 className={cn(
                                     'w-[240px] border-white',
                                     isEditting==='email' && 'border-neutral-200',
-                                    formState.email!.length === 0 && !formIsValid && 'border-red-400'
+                                    formState.email?.length === 0 && !formIsValid && 'border-red-400'
                                 )}
                                 style={{ width: 240 }}
                             />
@@ -196,15 +189,16 @@ export default function PersonalDetails() {
                         <View className='flex flex-col items-stretch'>
                             <Text className='ml-2'>Mobile</Text>
                             <Input
-                                onChangeText={(text) => onFieldChange('mobile', text)}
                                 value={formState.mobile}
+                                onChangeText={(text) => onFieldChange('mobile', text)}
+                                onSubmitEditing={onSave}
                                 editable={isEditting==='mobile'}
                                 autoCapitalize='none'
                                 keyboardType='phone-pad'
                                 className={cn(
                                     'w-[240px] border-b border-white',
                                     isEditting==='mobile' && 'border-neutral-200',
-                                    formState.mobile!.length === 0 && !formIsValid && 'border-red-400'
+                                    formState.mobile?.length === 0 && !formIsValid && 'border-red-400'
                                 )}
                                 style={{ width: 240 }}
                             />

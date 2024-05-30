@@ -47,11 +47,9 @@ export default function DeleteAccountButton() {
     return (
         <Button onPress={onPress} disabled={isLoading}>
             <View className='min-h-[48px] flex flex-row items-center gap-2 p-2'>
-                {isLoading? (
-                <Large>Please wait...</Large>
-                ) : (
-                <Large>Delete My Account</Large>
-                )}
+                <Large className='text-red-400'>
+                    {isLoading? 'Please wait...': 'Delete My Account'}
+                </Large>
             </View>
         </Button>
     )

@@ -26,7 +26,22 @@ export function useCustomToast() {
         [toast, isToastVisible, setIsToastVisible]
     );
 
+    const showUnknownError = useCallback(
+        () => {
+            toast.show(
+                'Something went wrong. Please try again later.',
+                {
+                    placement: 'top',
+                    type: 'normal',
+                    duration: 5000
+                }
+            )
+        },
+        [toast, isToastVisible, setIsToastVisible]
+    )
+
     return {
-        show
+        show,
+        showUnknownError
     }
 }

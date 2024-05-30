@@ -24,7 +24,7 @@ function handleLoginError(error: Error, toast: ReturnType<typeof useCustomToast>
   } else if (error.message === 'Invalid login credentials') {
     toast.show('Username or password incorrect.');
   } else {
-    toast.show('Something went wrong. Please try again later.');
+    toast.showUnknownError();
   }
 }
 
@@ -89,7 +89,7 @@ export default function Login() {
             keyboardShouldPersistTaps='handled'
             scrollEnabled={false}
           >
-            <View className='h-full flex flex-col items-center justify-center gap-12'>
+            <View className='h-full flex flex-col items-center justify-center gap-6'>
               <View className='w-full flex items-center justify-center p-6'>
                 <Logo />
               </View>
@@ -125,7 +125,7 @@ export default function Login() {
                   disabled={isLoading}
                   onPress={handleSubmit}
                 >
-                  <View className='w-full items-center bg-yellow-400 p-3 rounded-xl'>
+                  <View className='min-h-[48px] w-full items-center justify-center bg-yellow-400 p-3 rounded-xl'>
                     {isLoading? (
                     <Text className='font-display-medium text-lg text-black'>Please wait...</Text>
                     ) : (
@@ -145,8 +145,8 @@ export default function Login() {
 
                 <GuestSigninDialog handleError={(e: Error) => handleLoginError(e, toast)}>
                     <TouchableOpacity disabled={isLoading}>
-                        <View className='w-full items-center bg-neutral-50 p-3 rounded-xl'>
-                          <Text>Continue as guest</Text>
+                        <View className='min-h-[48px] w-full items-center justify-center bg-neutral-50 p-3 rounded-xl'>
+                          <Text className='font-display-medium'>Continue as guest</Text>
                         </View>
                     </TouchableOpacity>
                 </GuestSigninDialog>
@@ -156,7 +156,7 @@ export default function Login() {
                 </View>
 
                 <TouchableOpacity onPress={() => Linking.openURL('https://www.loyaltyexchange.com.au/stores')}>
-                  <View className='w-full flex flex-row items-center justify-center gap-1'>
+                  <View className='min-h-[48px] w-full flex flex-row items-center justify-center gap-1'>
                     <Text>I am a store</Text>
                     <ExternalLink size={16} color='black' />
                   </View>

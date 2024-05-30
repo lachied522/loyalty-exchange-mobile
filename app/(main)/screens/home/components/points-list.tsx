@@ -23,9 +23,10 @@ export default function PointsList() {
         <View className='flex flew-col bg-white gap-4 p-3 pt-6'>
             <Large>My Stores</Large>
 
+            {sortedData.length > 0? (
             <View className='p-3'>
                 <FlashList
-                    horizontal={!!sortedData}
+                    horizontal
                     data={sortedData}
                     estimatedItemSize={200}
                     showsVerticalScrollIndicator={false}
@@ -46,19 +47,19 @@ export default function PointsList() {
                         </Link>
                         )
                     }
-                    ListEmptyComponent={() => (
-                        <View className='w-[360px] h-[240px] flex flex-col items-center justify-center gap-2 py-6'>
-                            <Large>Nothing here yet.</Large>
-                            <Text className='text-center'>
-                                Your points will automatically appear here when you make a purchase at one of our stores.
-                            </Text>
-                            <Text className='text-center'>
-                                Make sure your card is connected so we can track your spending.
-                            </Text>
-                        </View>
-                    )}
                 />
             </View>
+            ) : (
+            <View className='h-[240px] flex flex-col items-center justify-center gap-2 py-6'>
+                <Large>Nothing here yet.</Large>
+                <Text className='text-center'>
+                    Your points will automatically appear here when you make a purchase at one of our stores.
+                </Text>
+                <Text className='text-center'>
+                    Make sure your card is connected so we can track your spending.
+                </Text>
+            </View>
+            )}
         </View>
     )
 }

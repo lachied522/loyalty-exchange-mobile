@@ -31,9 +31,10 @@ export default function AvailableRewards() {
         <View className='flex flex-col bg-white gap-4 p-3 pt-6'>
             <Large>Available Rewards</Large>
 
-            <View className='min-h-[100px] p-3'>
+            {rewards.length > 0? (
+            <View className='p-3'>
                 <FlashList
-                    horizontal={!!rewards}
+                    horizontal
                     data={rewards}
                     estimatedItemSize={400}
                     showsVerticalScrollIndicator={false}
@@ -41,16 +42,16 @@ export default function AvailableRewards() {
                     renderItem={({ item }) => (
                         <RewardCard key={`reward-card-${item.id}`} rewardData={item} />
                     )}
-                    ListEmptyComponent={() => (
-                        <View className='w-[360px] flex flex-col items-center justify-center gap-2 p-6'>
-                            <Large>Nothing here yet.</Large>
-                            <Text className='text-center'>
-                                When you make a purchase at one of stores the available rewards will appear here.
-                            </Text>
-                        </View>
-                    )}
                 />
             </View>
+            ) : (
+            <View className='h-[240px] flex flex-col items-center justify-center gap-2 p-6'>
+                <Large>Nothing here yet.</Large>
+                <Text className='text-center'>
+                    When you make a purchase at one of stores the available rewards will appear here.
+                </Text>
+            </View>
+            )}
         </View>
 
     )
