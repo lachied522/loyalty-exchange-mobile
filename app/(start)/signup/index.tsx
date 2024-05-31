@@ -4,7 +4,7 @@ import { Stack, Link, router } from 'expo-router';
 
 import { Input } from '~/components/ui/input';
 import { Text } from '~/components/ui/text';
-import { H1 } from '~/components/ui/typography';
+import { H1, Small } from '~/components/ui/typography';
 import { cn } from '~/components/utils';
 
 import { shadowStyles } from '~/constants/styling';
@@ -34,20 +34,19 @@ function handleSignupError(error: Error, toast: ReturnType<typeof useCustomToast
 function getFormErrors(data: SignupData) {
     const errors: { [field: string]: string } = {};
 
-    if (data.first_name.length === 0) {
-      errors.first_name = 'Please provide your first name.';
-    }
+    // if (data.first_name.length === 0) {
+    //   errors.first_name = 'Please provide your first name.';
+    // }
 
-    if (data.last_name.length === 0) {
-      errors.last_name = 'Please provide your last name.';
-    }
+    // if (data.last_name.length === 0) {
+    //   errors.last_name = 'Please provide your last name.';
+    // }
 
-    if (data.email.length === 0 || !data.email.includes('@')) {
-      errors.email = 'Enter a valid email.';
-    }
-
-    if (data.mobile.length < 10) {
-      errors.mobile = 'Enter a valid mobile.';
+    if (
+      (data.email.length > 0 && data.email.length < 6) ||
+      !data.email.includes('@')
+    ) {
+      errors.email = 'Please provide a valid email.';
     }
 
     if (data.password.length < 6) {
@@ -120,21 +119,17 @@ export default function Signup() {
               }}
           />
           <View className='h-[50vh] w-full bg-yellow-300 bottom-0 absolute'/>
-
           <ScrollView
             contentContainerStyle={{ height: '100%', marginBottom: 24 }}
             keyboardShouldPersistTaps='handled'
-            scrollEnabled={false}
           >
             <KeyboardAvoidingView
               behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
               className='h-full flex flex-col items-center justify-center gap-12'
             >
-              <View className='w-full flex items-center justify-center'>
-                  <H1 className='p-12'>Welcome!</H1>
-              </View>
-
-              <View className='w-full max-w-[360px] bg-white flex flex-col p-6 gap-6 rounded-xl' style={shadowStyles.edge}>
+              <View className='w-full max-w-[360px] bg-white flex flex-col p-8 gap-5 rounded-xl' style={shadowStyles.edge}>
+                <H1 className='text-center'>Welcome!</H1>
+                
                 <View>
                   <Text>First Name</Text>
                   <Input
@@ -156,18 +151,6 @@ export default function Signup() {
                   />
                   {formErrors.last_name && <Text className='text-red-400'>{formErrors.last_name}</Text>}
                 </View>
-
-                <View>
-                  <Text>Email</Text>
-                  <Input
-                      onChangeText={(text) => onFieldChange('email', text)}
-                      value={formState.email}
-                      autoCapitalize='none'
-                      keyboardType='email-address'
-                      className={cn('border-black', formErrors.email && 'border-red-400')}
-                  />
-                  {formErrors.email && <Text className='text-red-400'>{formErrors.email}</Text>}
-                </View>
                 
                 <View>
                   <Text>Mobile</Text>
@@ -182,7 +165,19 @@ export default function Signup() {
                 </View>
 
                 <View>
-                  <Text>Password</Text>
+                  <Text>Email <Small>(required)</Small></Text>
+                  <Input
+                      onChangeText={(text) => onFieldChange('email', text)}
+                      value={formState.email}
+                      autoCapitalize='none'
+                      keyboardType='email-address'
+                      className={cn('border-black', formErrors.email && 'border-red-400')}
+                  />
+                  {formErrors.email && <Text className='text-red-400'>{formErrors.email}</Text>}
+                </View>
+
+                <View>
+                  <Text>Password <Small>(required)</Small></Text>
                   <Input
                       value={formState.password}
                       onChangeText={(text) => onFieldChange('password', text)}

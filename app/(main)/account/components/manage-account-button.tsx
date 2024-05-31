@@ -3,8 +3,8 @@ import { View, TouchableOpacity } from "react-native";
 import * as WebBrowser from 'expo-web-browser';
 
 import { Large } from "~/components/ui/typography";
+import { Plus, Settings } from "~/components/Icons";
 import { cn } from "~/components/utils";
-import { Plus, Settings, Loader } from "~/components/Icons";
 
 import { useCustomToast } from "~/app/hooks/useCustomToast";
 
@@ -44,8 +44,8 @@ export default function ManageAccountButton({
     const checkUserMetadata = () => {
         // Basiq requires a valid email and phone number
         // check that user has both
-        if (!(userMetadata?.mobile && userMetadata?.email)) {
-            toast.show('Please ensure you have a valid email and mobile.');
+        if (!(userMetadata?.mobile || userMetadata?.email)) {
+            toast.show('Please ensure you have a valid email or mobile.');
             return false;
         }
 

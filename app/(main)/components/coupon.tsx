@@ -20,10 +20,11 @@ export default function Coupon({
     } = useWindowDimensions();
 
     const [width, height] = useMemo(() => {
-        const _width = Math.min(screenHeight * ASPECT_RATIO, screenWidth - 20);
+        // ensure at least 5% gap on each side around coupon, with a max width of 540px
+        const _width = Math.min(screenHeight * ASPECT_RATIO * 0.90, screenWidth * 0.90, 540);
         return [
             _width,
-            Math.min(_width / ASPECT_RATIO, screenHeight - 20),
+            _width / ASPECT_RATIO,
         ];
     }, [screenHeight, screenWidth]);
 

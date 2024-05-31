@@ -2,7 +2,7 @@
   "expo": {
     "name": "Loyalty Exchange",
     "slug": "loyalty-exchange",
-    "version": "1.0.11",
+    "version": "1.0.12",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "com.loyaltyexchange",
@@ -17,7 +17,8 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.loyaltyexchange"
+      "bundleIdentifier": "com.loyaltyexchange",
+      "usesAppleSignIn": true
     },
     "android": {
       "adaptiveIcon": {
@@ -35,7 +36,8 @@
             "./assets/fonts/Raleway/Raleway-VariableFont_wght.ttf"
           ]
         }
-      ]
+      ],
+      "expo-apple-authentication"
     ],
     "experiments": {
       "typedRoutes": true

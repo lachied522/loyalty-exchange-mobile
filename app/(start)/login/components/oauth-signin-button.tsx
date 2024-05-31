@@ -13,7 +13,7 @@ import { supabase } from '~/app/lib/supabase';
 
 import { type GlobalState, useGlobalContext } from '~/app/context/GlobalContext';
 
-import { processOAuthUserMetadata } from '../../functions/new-oauth-user';
+import { processOAuthUserMetadata } from '../../functions/oauth-helpers';
 
 const PROVIDER_MAP = {
     facebook: {
@@ -85,7 +85,8 @@ export default function OAuthSigninButton({ provider, handleError }: OAuthSignin
                 throw new Error('Something went wrong.')
             }
             // if user is new, metadata will not contain 'role' field
-            if (!session.user.user_metadata['role']) {
+            // TO DO: add a better way of handling first time logins
+            if (!(session.user.user_metadata['role'] || session.user.user_metadata['basiq_user_id'])) {
                 const _metadata = processOAuthUserMetadata(session);                
                 
                 setUserMetadata(_metadata);
@@ -113,7 +114,7 @@ export default function OAuthSigninButton({ provider, handleError }: OAuthSignin
                 }}
                 contentFit='cover'
             />
-            <Text className='text-lg font-display-medium'>
+            <Text className='text-lg font-display-medium text-black'>
                 Sign in with {PROVIDER_MAP[provider].name}
             </Text>
         </Button>

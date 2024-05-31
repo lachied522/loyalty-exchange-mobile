@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { View, ScrollView, TouchableOpacity } from 'react-native';
+import { View, ScrollView, TouchableOpacity, KeyboardAvoidingView, Platform  } from 'react-native';
 import { Stack, Link, router } from 'expo-router';
 import * as Linking from 'expo-linking';
 
@@ -16,6 +16,7 @@ import { shadowStyles } from '~/constants/styling';
 import { useCustomToast } from '~/app/hooks/useCustomToast';
 
 import OAuthSigninButton from './components/oauth-signin-button';
+import AppleSigninButton from './components/apple-signin-button';
 import GuestSigninDialog from './components/guest-signin-dialog';
 
 function handleLoginError(error: Error, toast: ReturnType<typeof useCustomToast>) {
@@ -80,59 +81,34 @@ export default function Login() {
           <Stack.Screen
               options={{
                   headerShown: false,
-                  gestureEnabled: false
+                  gestureEnabled: false,
               }}
           />
-          <View className='h-[40vh] w-full bg-yellow-300 bottom-0 absolute'/>
+          <View className='h-[100vh] w-full bg-yellow-200 bottom-0 absolute'/>
           <ScrollView
             contentContainerStyle={{ height: '100%' }}
             keyboardShouldPersistTaps='handled'
-            scrollEnabled={false}
           >
-            <View className='h-full flex flex-col items-center justify-center gap-6'>
-              <View className='w-full flex items-center justify-center p-6'>
+            <KeyboardAvoidingView
+              behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+              className='h-full flex flex-col items-center justify-center'
+            >
+              <View className='w-full flex flex-col max-w-[360px] bg-white rounded-xl p-8 gap-5'  style={shadowStyles.edge}>
                 <Logo />
-              </View>
 
-              <View className='w-full max-w-[360px] bg-white rounded-xl p-6 gap-6'  style={shadowStyles.edge}>
-                <View className='gap-1'>
-                  <Text>Email</Text>
-                  <Input
-                    onChangeText={(text) => setEmail(text)}
-                    value={email}
-                    autoCapitalize='none'
-                    keyboardType='email-address'
-                    className={cn('border-black', email.length === 0 && !formIsValid && 'border-red-400')}
-                  />
+                <View className='flex flex-col gap-3.5 mb-6'>
+                  <AppleSigninButton handleError={(e: Error) => handleLoginError(e, toast)} />
+                  <OAuthSigninButton provider='google' handleError={(e: Error) => handleLoginError(e, toast)} />
+                  <OAuthSigninButton provider='facebook' handleError={(e: Error) => handleLoginError(e, toast)} />
+
+                  <GuestSigninDialog handleError={(e: Error) => handleLoginError(e, toast)}>
+                      <TouchableOpacity disabled={isLoading}>
+                          <View className='min-h-[48px] w-full items-center justify-center bg-neutral-50 rounded-xl'>
+                            <Text className='font-display-medium'>Continue as guest</Text>
+                          </View>
+                      </TouchableOpacity>
+                  </GuestSigninDialog>
                 </View>
-
-                <View className='flex flex-col gap-1'>
-                  <Text>Password</Text>
-                  <Input
-                    value={password}
-                    onChangeText={(text) => setPassword(text)}
-                    onSubmitEditing={handleSubmit}
-                    secureTextEntry={true}
-                    autoCapitalize='none'
-                    className={cn('border-black', password.length === 0 && !formIsValid && 'border-red-400')}
-                  />
-                  <View className='w-full flex items-end'>
-                    <Link href='/forgot-password/' className='text-blue-400 underline'>Forgot Password?</Link>
-                  </View>
-                </View>
-
-                <TouchableOpacity
-                  disabled={isLoading}
-                  onPress={handleSubmit}
-                >
-                  <View className='min-h-[48px] w-full items-center justify-center bg-yellow-400 p-3 rounded-xl'>
-                    {isLoading? (
-                    <Text className='font-display-medium text-lg text-black'>Please wait...</Text>
-                    ) : (
-                    <Text className='font-display-medium text-lg text-black'>Login</Text>
-                    )}
-                  </View>
-                </TouchableOpacity>
 
                 <View className='flex flex-row items-center justify-between'>
                   <View className='flex-1 h-[1px] bg-neutral-200' />
@@ -140,16 +116,43 @@ export default function Login() {
                   <View className='flex-1 h-[1px] bg-neutral-200' />
                 </View>
 
-                <OAuthSigninButton provider='google' handleError={(e: Error) => handleLoginError(e, toast)} />
-                <OAuthSigninButton provider='facebook' handleError={(e: Error) => handleLoginError(e, toast)} />
+                <View className='flex flex-col gap-3.5'>
+                  <View className='gap-1'>
+                    <Text>Email</Text>
+                    <Input
+                      onChangeText={(text) => setEmail(text)}
+                      value={email}
+                      autoCapitalize='none'
+                      keyboardType='email-address'
+                      className={cn('min-h-[48px] border-black', email.length === 0 && !formIsValid && 'border-red-400')}
+                    />
+                  </View>
 
-                <GuestSigninDialog handleError={(e: Error) => handleLoginError(e, toast)}>
-                    <TouchableOpacity disabled={isLoading}>
-                        <View className='min-h-[48px] w-full items-center justify-center bg-neutral-50 p-3 rounded-xl'>
-                          <Text className='font-display-medium'>Continue as guest</Text>
-                        </View>
-                    </TouchableOpacity>
-                </GuestSigninDialog>
+                  <View className='flex flex-col gap-1'>
+                    <Text>Password</Text>
+                    <Input
+                      value={password}
+                      onChangeText={(text) => setPassword(text)}
+                      onSubmitEditing={handleSubmit}
+                      secureTextEntry={true}
+                      autoCapitalize='none'
+                      className={cn('min-h-[48px] border-black', password.length === 0 && !formIsValid && 'border-red-400')}
+                    />
+                  </View>
+
+                  <View className='w-full flex items-end'>
+                      <Link href='/forgot-password/' className='text-blue-400 underline'>Forgot Password?</Link>
+                  </View>
+
+                  <TouchableOpacity
+                    disabled={isLoading}
+                    onPress={handleSubmit}
+                  >
+                    <View className='min-h-[48px] w-full items-center justify-center bg-yellow-400 p-3 rounded-xl'>
+                      <Text className='font-display-medium text-lg text-black'>{isLoading? 'Please wait...': 'Login'}</Text>
+                    </View>
+                  </TouchableOpacity>
+                </View>
 
                 <View className='w-full flex items-center'>
                   <Text>Don't have an account? <Link href='/signup/' push className='text-blue-400 underline'>Create an account</Link></Text>
@@ -162,7 +165,7 @@ export default function Login() {
                   </View>
                 </TouchableOpacity>
               </View>
-            </View>
+            </KeyboardAvoidingView>
           </ScrollView>
       </>
     )

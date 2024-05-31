@@ -31,8 +31,8 @@ export default function Onboarding() {
                 setIsReady(true);
               } else {
                 toast.show("Something went wrong. Please click 'Next' and try again later.");
+                setIsComplete(true);
               }
-              setIsComplete(true);
           });
 
           isMounted = true;
@@ -72,18 +72,14 @@ export default function Onboarding() {
               size='lg'
               onPress={handleWebBrowser}
               disabled={!isReady}
-              className='min-h-[56px] flex items-center justify-center'
+              className='min-h-[56px] flex items-center justify-center bg-neutral-100'
             >
-              {!isReady? (
-              <Text className='text-black'>Please wait...</Text>
-              ) : (
-              <Text className='text-black'>Connect Card</Text>
-              )}
+              <Large className='text-black'>{isReady? 'Connect Card': 'Please wait...'}</Large>
             </Button>
 
             <Link href='/(main)/' asChild>
               <Button disabled={!isComplete} className='w-full min-h-[56px] flex items-center justify-center bg-yellow-400'>
-                  <Text className='text-black'>Next</Text>
+                  <Large className='text-black'>Next</Large>
               </Button>
             </Link>
           </ScrollView>

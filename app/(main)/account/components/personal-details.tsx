@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { View } from "react-native";
+import { View, StyleSheet, Platform } from "react-native";
 
 import { Card, CardContent } from "~/components/ui/card";
 import { Input } from "~/components/ui/input";
@@ -95,14 +95,15 @@ export default function PersonalDetails() {
                                 value={formState.first_name}
                                 onChangeText={(text) => onFieldChange('first_name', text)}
                                 onSubmitEditing={onSave}
+                                maxLength={24}
                                 editable={isEditting==='first_name'}
                                 autoCapitalize='none'
                                 className={cn(
-                                    'w-[240px] border-white',
+                                    'border-white',
                                     isEditting==='first_name' && 'border-neutral-200',
                                     formState.first_name?.length === 0 && !formIsValid && 'border-red-400'
                                 )}
-                                style={{ width: 240 }} // width property above doesn't seem to work on ios, set explicitly here
+                                style={styles.input}
                             />
                         </View>
 
@@ -127,14 +128,15 @@ export default function PersonalDetails() {
                                 value={formState.last_name}
                                 onChangeText={(text) => onFieldChange('last_name', text)}
                                 onSubmitEditing={onSave}
+                                maxLength={24}
                                 editable={isEditting==='last_name'}
                                 autoCapitalize='none'
                                 className={cn(
-                                    'w-[240px] border-white',
+                                    'border-white',
                                     isEditting==='last_name' && 'border-neutral-200',
                                     formState.last_name?.length === 0 && !formIsValid && 'border-red-400'
                                 )}
-                                style={{ width: 240 }}
+                                style={styles.input}
                             />
                         </View>
 
@@ -159,15 +161,17 @@ export default function PersonalDetails() {
                                 value={formState.email}
                                 onChangeText={(text) => onFieldChange('email', text)}
                                 onSubmitEditing={onSave}
+                                maxLength={254}
+                                multiline={false}
                                 editable={isEditting==='email'}
                                 autoCapitalize='none'
                                 keyboardType='email-address'
                                 className={cn(
-                                    'w-[240px] border-white',
+                                    'border-white',
                                     isEditting==='email' && 'border-neutral-200',
                                     formState.email?.length === 0 && !formIsValid && 'border-red-400'
                                 )}
-                                style={{ width: 240 }}
+                                style={styles.input}
                             />
                         </View>
 
@@ -193,14 +197,15 @@ export default function PersonalDetails() {
                                 onChangeText={(text) => onFieldChange('mobile', text)}
                                 onSubmitEditing={onSave}
                                 editable={isEditting==='mobile'}
+                                maxLength={16}
                                 autoCapitalize='none'
                                 keyboardType='phone-pad'
                                 className={cn(
-                                    'w-[240px] border-b border-white',
+                                    'border-white',
                                     isEditting==='mobile' && 'border-neutral-200',
                                     formState.mobile?.length === 0 && !formIsValid && 'border-red-400'
                                 )}
-                                style={{ width: 240 }}
+                                style={styles.input}
                             />
                         </View>
 
@@ -221,3 +226,13 @@ export default function PersonalDetails() {
         </View>
     )
 }
+
+// issue with long text in text input wrapping to new line
+// see https://github.com/facebook/react-native/issues/29068
+const styles = StyleSheet.create({
+    input: {
+        width: 240,
+        height: 48,
+        ...(Platform.OS === 'ios' ? {paddingVertical: 10} : {})
+    }
+})

@@ -1,7 +1,7 @@
 {
   "name": "loyalty-platform-mobile",
   "main": "expo-router/entry",
-  "version": "1.0.11",
+  "version": "1.0.12",
   "scripts": {
     "start": "expo start",
     "dev": "expo start -c --ios",
@@ -52,7 +52,8 @@
     "tailwind-merge": "^2.3.0",
     "tailwindcss": "3.3.3",
     "tailwindcss-animate": "^1.0.7",
-    "zustand": "^4.5.2"
+    "zustand": "^4.5.2",
+    "expo-apple-authentication": "~6.4.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
