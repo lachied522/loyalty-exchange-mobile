@@ -1,13 +1,15 @@
 // https://supabase.com/docs/guides/auth/social-login/auth-apple?queryGroups=platform&platform=react-native
 import { Platform } from 'react-native';
-import * as AppleAuthentication from 'expo-apple-authentication';
+import { router } from 'expo-router';
 import { Image } from 'expo-image';
+import * as AppleAuthentication from 'expo-apple-authentication';
 
 import { supabase } from '~/app/lib/supabase';
 
 import { Button } from '~/components/ui/button';
 import { Text } from '~/components/ui/text';
-import { router } from 'expo-router';
+
+import { updateUserMetaData } from '~/app/utils/user';
 
 async function signInWithApple() {
     const credential = await AppleAuthentication.signInAsync({
@@ -47,7 +49,10 @@ export default function AppleSigninButton({ handleError }: AppleSigninButtonProp
             }
             // if user is new, metadata will not contain 'role' field
             if (!(session.user.user_metadata['role'] || session.user.user_metadata['basiq_user_id'])) {                
-                router.replace('/(start)/new-user-from-oauth/');
+                await updateUserMetaData({
+                    role: 'user'
+                });
+                router.replace('/(start)/onboarding');
                 return;
             }
 

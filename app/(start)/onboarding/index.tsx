@@ -33,6 +33,10 @@ export default function Onboarding() {
                 toast.show("Something went wrong. Please click 'Next' and try again later.");
                 setIsComplete(true);
               }
+          })
+          .catch((e) => {
+              toast.show("Something went wrong. Please click 'Next' and try again later.");
+              setIsComplete(true);
           });
 
           isMounted = true;

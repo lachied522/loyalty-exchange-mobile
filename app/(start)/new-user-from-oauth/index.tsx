@@ -121,7 +121,7 @@ export default function NewUserFromOAuth() {
           >
             <View className='w-full max-w-[360px] bg-white flex flex-col p-6 gap-6 rounded-xl' style={shadowStyles.edge}>
               <H1>Welcome!</H1>
-              <Text>Fill out your details below so you can start earning rewards!</Text>
+              <Text>Confirm your details below so you can start earning rewards!</Text>
               <View>
                 <Text>Email</Text>
                 <Input
