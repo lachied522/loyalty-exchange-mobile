@@ -26,6 +26,10 @@ async function makeAuthenticatedGetRequest(
     );
 
     if (!res.ok) {
+        if (res.status === 401) {
+            // sometimes local session becomes unsynced with sever, in which case server will respond with 401
+            throw new NotLoggedInError();
+        };
         throw new FetchError();
     }
 

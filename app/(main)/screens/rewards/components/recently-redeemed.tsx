@@ -37,13 +37,16 @@ export default function RecentlyRedeemed() {
                                 <Link key={item.id} href={`../../store/${item.rewards.store_id}`} asChild>
                                     <TouchableOpacity onPress={() => setMyRewardsIsOpen(false)}>
                                         <View className='w-full flex flex-row items-center justify-between'>
-                                            <View className='max-w-[75%]'>
+                                            <View className='flex-1'>
                                                 <Text>{formatDate(item.redeemed_at)}</Text>
                                                 <Text className='font-display-semibold'>
                                                     {storeDataMap[item.rewards.store_id]?.name || 'Store Name'}
                                                 </Text>
                                             </View>
-                                            <Text>{item.rewards.title}</Text>
+
+                                            <Text className='flex-1 text-right'>
+                                                {item.rewards.title}
+                                            </Text>
                                         </View>
                                     </TouchableOpacity>
                                 </Link>

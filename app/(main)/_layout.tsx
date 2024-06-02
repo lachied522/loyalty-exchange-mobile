@@ -24,10 +24,7 @@ const skeletonData = {
 } satisfies UserData;
 
 function handleLoadingError(error: Error, toast: ReturnType<typeof useCustomToast>) {
-  if (error instanceof NotLoggedInError) {
-    // this shouldn't occur, but does sometimes
-    // if this occurs the user should be redirected to login page automatically
-  } else if (error.message === 'Network request failed') {
+  if (error.message === 'Network request failed') {
       toast.show('Internet access is required.');
   } else if (error.message === 'Network request timed out') {
       toast.show('Could not connect to server. Please ensure you are connected to the internet and try again.');
@@ -47,7 +44,11 @@ export default function MainLayout() {
 
         fetchUserData()
         .catch((e) => {
-          handleLoadingError(e, toast);
+          if (e instanceof NotLoggedInError) {
+            router.replace('/login/');
+          } else {
+            handleLoadingError(e, toast);
+          }
         })
         .then((data) => {
           if (data) {

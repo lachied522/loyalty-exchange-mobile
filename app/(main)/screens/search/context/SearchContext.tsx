@@ -13,7 +13,7 @@ export type SearchState = {
     results: Tables<'stores'>[]
     isEmpty: boolean
     isLoading: boolean
-    onSearch: (query: string) => Promise<void>
+    onSearch: () => Promise<void>
     setQuery: React.Dispatch<React.SetStateAction<string>>
     setIsLoading: React.Dispatch<React.SetStateAction<boolean>>
 }

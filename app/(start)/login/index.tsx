@@ -20,7 +20,9 @@ import AppleSigninButton from './components/apple-signin-button';
 import GuestSigninDialog from './components/guest-signin-dialog';
 
 function handleLoginError(error: Error, toast: ReturnType<typeof useCustomToast>) {
-  if (error.message === 'Network request failed') {
+  if (error.message === 'User cancelled') {
+    // this occurs when user cancels OAuth flow, okay to pass
+  } else if (error.message === 'Network request failed') {
     toast.show('Internet access is required.');
   } else if (error.message === 'Invalid login credentials') {
     toast.show('Username or password incorrect.');

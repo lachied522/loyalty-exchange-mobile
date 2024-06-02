@@ -61,6 +61,10 @@ async function performOAuth(provider: 'facebook'|'google') {
         redirectTo
     );
 
+    if (res.type === "cancel") {
+        throw new Error('User cancelled');
+    }
+
     if (res.type === "success") {
         const { url } = res;
         return await createSessionFromUrl(url);
@@ -82,7 +86,7 @@ export default function OAuthSigninButton({ provider, handleError }: OAuthSignin
         try {
             const session = await performOAuth(provider);
             if (!session) {
-                throw new Error('Something went wrong.')
+                throw new Error('Something went wrong.');
             }
             // if user is new, metadata will not contain 'role' field
             // TO DO: add a better way of handling first time logins

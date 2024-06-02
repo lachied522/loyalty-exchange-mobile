@@ -136,7 +136,7 @@ export default function Signup() {
                       onChangeText={(text) => onFieldChange('first_name', text)}
                       value={formState.first_name}
                       autoCapitalize='none'
-                      className={cn('border-black', formErrors.first_name && 'border-red-400')}
+                      className={cn('min-h-[48px] border-black', formErrors.first_name && 'border-red-400')}
                   />
                   {formErrors.first_name && <Text className='text-red-400'>{formErrors.first_name}</Text>}
                 </View>
@@ -147,7 +147,7 @@ export default function Signup() {
                       onChangeText={(text) => onFieldChange('last_name', text)}
                       value={formState.last_name}
                       autoCapitalize='none'
-                      className={cn('border-black', formErrors.last_name && 'border-red-400')}
+                      className={cn('min-h-[48px] border-black', formErrors.last_name && 'border-red-400')}
                   />
                   {formErrors.last_name && <Text className='text-red-400'>{formErrors.last_name}</Text>}
                 </View>
@@ -159,7 +159,7 @@ export default function Signup() {
                       value={formState.mobile}
                       autoCapitalize='none'
                       keyboardType='phone-pad'
-                      className={cn('border-black', formErrors.mobile && 'border-red-400')}
+                      className={cn('min-h-[48px] border-black', formErrors.mobile && 'border-red-400')}
                   />
                   {formErrors.mobile && <Text className='text-red-400'>{formErrors.mobile}</Text>}
                 </View>
@@ -171,7 +171,7 @@ export default function Signup() {
                       value={formState.email}
                       autoCapitalize='none'
                       keyboardType='email-address'
-                      className={cn('border-black', formErrors.email && 'border-red-400')}
+                      className={cn('min-h-[48px] border-black', formErrors.email && 'border-red-400')}
                   />
                   {formErrors.email && <Text className='text-red-400'>{formErrors.email}</Text>}
                 </View>
@@ -184,7 +184,7 @@ export default function Signup() {
                       onSubmitEditing={handleSubmit}
                       secureTextEntry={true}
                       autoCapitalize='none'
-                      className={cn('border-black', formErrors.password && 'border-red-400')}
+                      className={cn('min-h-[48px] border-black', formErrors.password && 'border-red-400')}
                   />
                   {formErrors.password && <Text className='text-red-400'>{formErrors.password}</Text>}
                 </View>
