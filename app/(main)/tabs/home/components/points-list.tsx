@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { View } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 import { Link } from 'expo-router';
 
 import { FlashList } from '@shopify/flash-list';
@@ -32,18 +32,27 @@ export default function PointsList() {
                     showsVerticalScrollIndicator={false}
                     ItemSeparatorComponent={() => <View className='h-full mx-4'/>}
                     renderItem={({ item, index }) => (
-                        <Link key={`store-list-item-${index}`} href={`../../store/${item.store_id}`}>
-                            <View className='max-w-[180px] flex flex-col items-start gap-2'>
-                                <StoreImage
-                                    url={storeDataMap[item.store_id]?.store_img_url || null}
-                                    width={180}
-                                />
+                        <Link
+                            key={`store-list-item-${item.store_id}`}
+                            href={{
+                                pathname: '/(main)/store/[storeID]',
+                                params: { storeID: item.store_id }
+                            }}
+                            asChild
+                        >
+                            <TouchableOpacity activeOpacity={0.5}>
+                                <View className='max-w-[180px] flex flex-col items-start gap-2'>
+                                    <StoreImage
+                                        url={storeDataMap[item.store_id]?.store_img_url || null}
+                                        width={180}
+                                    />
 
-                                <View className='flex flex-col justify-start'>
-                                    <Large className='font-display-semibold'>{truncateText(item.stores!.name, 18)}</Large>
-                                    <Text>{Math.floor(Math.max(item.balance, 0)).toLocaleString()} points</Text>
+                                    <View className='flex flex-col justify-start'>
+                                        <Large className='font-display-semibold'>{truncateText(item.stores!.name, 18)}</Large>
+                                        <Text>{Math.floor(Math.max(item.balance, 0)).toLocaleString()} points</Text>
+                                    </View>
                                 </View>
-                            </View>
+                            </TouchableOpacity>
                         </Link>
                         )
                     }

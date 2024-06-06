@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { useLocalSearchParams } from "expo-router";
 
-import { type MainState, useMainContext } from "../../context/MainContext";
+import { type MainState, useMainContext } from "~/app/(main)/context/MainContext";
 
 import RewardScreen from './components/reward-screen';
 import NotFoundScreen from '~/app/+not-found';
@@ -17,7 +17,6 @@ export default function RewardIDIndex() {
             }
         }
     }, [storeDataMap]);
-
 
     return (
         <>

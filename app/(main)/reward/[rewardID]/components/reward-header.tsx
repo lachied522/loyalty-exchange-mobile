@@ -2,7 +2,7 @@ import { View } from "react-native"
 import { router } from "expo-router"
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import { H2, Small } from "~/components/ui/typography";
+import { H3, Small } from "~/components/ui/typography";
 import { Button } from "~/components/ui/button";
 import { ChevronLeft } from "~/components/Icons";
 import { shadowStyles } from '~/constants/styling';
@@ -24,10 +24,9 @@ export default function RewardHeader() {
                 </Button>
             </View>
 
-            {/* <View className='min-w-[80px] flex items-end justify-center'>
-                <H2 className='font-semibold'>{Math.floor(Math.max(points, 0)).toLocaleString()}</H2>
-                <Small>points</Small>
-            </View> */}
+            <H3>Reward</H3>
+
+            <View className='w-12' />
         </View>
     )
 }

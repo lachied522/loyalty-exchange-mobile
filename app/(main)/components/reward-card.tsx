@@ -31,14 +31,14 @@ export default function RewardCard({ rewardData }: RewardCardProps) {
     }, [userData.points]);
 
     return (
-        <View className='min-h-[370px] flex flex-col justify-end gap-2'>
+        <View className='min-h-[365px] flex flex-col justify-end gap-2'>
             {rewardData.expires_at && (
             <View className='flex flex-row items-center justify-center gap-2'>
                 <TickingClock size={27} />
                 <Large>{formatTimeRemaining(rewardData.expires_at)} left</Large>
             </View>
             )}
-
+            
             <TouchableOpacity
                 onPress={() => {
                         router.push({
@@ -49,6 +49,7 @@ export default function RewardCard({ rewardData }: RewardCardProps) {
                         setMyRewardsIsOpen(false);
                     }
                 }
+                activeOpacity={0.5}
             >
                 <View className='w-[240px] flex flex-col items-center bg-neutral-100 rounded-xl'>
                     <RewardImage
