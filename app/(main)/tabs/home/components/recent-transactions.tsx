@@ -62,17 +62,27 @@ export default function RecentTransactions() {
                     <TableRow key={transaction.id} className='border-0'>
                         <TableCell style={{ width: 2.75 * width / 4 }}>
                           <Link href={`../../store/${transaction.store_id}`}>
-                            <View  className='flex flex-col gap-1'>
-                              <Text>{formatDate(transaction.date)}</Text>
-                              <Text className='font-display-semibold'>{storeDataMap[transaction.store_id].name}</Text>
+                            <View className='flex flex-col gap-1'>
+                              <Text className='font-display-semibold'>
+                                {storeDataMap[transaction.store_id].name}
+                              </Text>
+
+                              <Text>
+                                {formatDate(transaction.date)}
+                              </Text>
                             </View>
                           </Link>
-                        
                         </TableCell>
+
                         <TableCell style={{ width: 1.25 * width / 4 }}>
                           <View className='flex flex-col gap-1'>
-                            <Text>{formatAmount(transaction.amount)}</Text>
-                            <Text className='font-display-semibold'>+{Math.round(transaction.points).toLocaleString()} points</Text>
+                            <Text className='font-display-semibold'>
+                              +{Math.round(transaction.points).toLocaleString()} points
+                            </Text>
+
+                            <Text>
+                              {formatAmount(transaction.amount)}
+                            </Text>
                           </View>
                         </TableCell>
                     </TableRow>

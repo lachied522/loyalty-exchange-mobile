@@ -12,7 +12,7 @@ import { useMainContext, type MainState } from "../../context/MainContext";
 import AvailableRewards from './components/available-rewards';
 import RecentlyRedeemed from './components/recently-redeemed';
 
-export default function RewardsScreen() {
+export default function MyRewardsScreen() {
     const {
         myRewardsIsOpen,
         setMyRewardsIsOpen,

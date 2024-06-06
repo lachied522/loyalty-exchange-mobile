@@ -10,9 +10,9 @@ import { Icon } from '~/components/Icons';
 
 import { useMainContext, type MainState } from "./context/MainContext";
 
-import HomeScreen from "./screens/home/home-screen";
-import RewardsScreen from "./screens/rewards/rewards-screen";
-import SearchScreen from './screens/search/search-screen';
+import HomeScreen from "./tabs/home/home-screen";
+import MyRewardsScreen from "./tabs/my-rewards/rewards-screen";
+import SearchScreen from "./tabs/search/search-screen";
 
 const Tab = createBottomTabNavigator();
 
@@ -41,7 +41,7 @@ export default function MainIndex() {
                 }}
             />
 
-            <RewardsScreen />
+            <MyRewardsScreen />
 
             <Tab.Navigator
                 screenOptions={{

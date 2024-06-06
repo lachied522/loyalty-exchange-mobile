@@ -2,42 +2,38 @@ import { useMemo } from "react";
 import { ScrollView, View } from "react-native";
 import { Stack } from "expo-router";
 
+import { Text } from "~/components/ui/text";
 import { H1, H3, Large } from "~/components/ui/typography";
-import { MapPin } from "~/components/Icons";
+import { Button } from "~/components/ui/button";
+
 import { colors } from "~/constants/styling";
 
 import { useMainContext, type MainState } from "~/app/(main)/context/MainContext";
-import StoreImage from "~/app/(main)/components/store-image";
+import { useRewardModal } from "~/app/(main)/context/RewardModalContext";
+import RewardImage from "~/app/(main)/components/reward-image";
 
-import AvailableRewards from "./available-rewards";
-import RecentActivity from "./recent-activity";
+import RewardHeader from "./reward-header";
 
-import type { StoreData } from "@/types/helpers";
-import StoreHeader from "./store-header";
+import type { Reward } from "~/app/types/helpers";
 
-interface StoreProps {
-    storeData: StoreData
+interface RewardScreenProps {
+    rewardData: Reward
 }
 
-function formatAddress(storeData: StoreData) {
-    if (!storeData.address_line_1) return 'Address not available';
-
-    return `${storeData.address_line_1}, ${storeData.city} ${storeData.state} ${storeData.postcode}`;
-}
-
-export default function StoreScreen({ storeData }: StoreProps) {
+export default function RewardScreen({ rewardData }: RewardScreenProps) {
     const { userData } = useMainContext() as MainState;
+    const { isRewardOpen, onOpenReward } = useRewardModal();
 
     const userPoints = useMemo(() => {
         // get user points for this store
-        return userData.points.find((obj) => obj.store_id === storeData.id)?.balance || 0;
-    }, [userData, storeData]);
+        return userData.points.find((obj) => obj.store_id === rewardData.store_id)?.balance || 0;
+    }, [userData, rewardData]);
 
     return (
         <>
             <Stack.Screen
                 options={{
-                    header: () => <StoreHeader points={userPoints} />
+                    header: () => <RewardHeader />
                 }}
             />
             <ScrollView
@@ -46,11 +42,13 @@ export default function StoreScreen({ storeData }: StoreProps) {
             >
                 <View className='relative'>
                     <View className='z-[10] w-full h-full flex items-center justify-center bg-neutral-800/30 p-12 absolute'>
-                        <H1 className='text-center text-white'>{storeData.name}</H1>
+                        <H1 className='text-center text-white'>
+                            {rewardData.title}
+                        </H1>
                     </View>
 
-                    <StoreImage
-                        url={storeData.store_img_url}
+                    <RewardImage
+                        url={rewardData.image_url}
                         height={240}
                         width='100%'
                         rounded={false}
@@ -59,26 +57,26 @@ export default function StoreScreen({ storeData }: StoreProps) {
                 
                 <View className='flex items-center p-6 bg-white mb-3'>
                     <View className='w-full flex flex-col items-center justify-center p-3 gap-2'>
-                        <H3 className='text-center'>
-                            Earn 10 points for every $1 spent
-                        </H3>
 
                         <View className='h-[1px] w-full my-3 bg-neutral-200' />
                         
-                        <View className='flex flex-row items-center gap-5'>
+                        {/* <View className='flex flex-row items-center gap-5'>
                             <MapPin size={30} color='black' />
 
                             <Large className='max-w-[300px] text-right font-display'>
                                 {formatAddress(storeData)}
                             </Large>
-                        </View>
+                        </View> */}
                     </View>
                 </View>
 
-                <View className='flex flex-col gap-3'>
-                    <AvailableRewards storeData={storeData} />
-
-                    <RecentActivity storeData={storeData} />
+                <View className='w-full bg-white p-6'>
+                    <Button
+                        onPress={() => onOpenReward(rewardData)}
+                        className='min-h-[48px] bg-yellow-400'
+                    >
+                        <Large className='text-black'>Redeem</Large>
+                    </Button>
                 </View>
             </ScrollView>
         </>

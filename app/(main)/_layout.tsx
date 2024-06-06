@@ -1,16 +1,18 @@
 import { useEffect, useState } from 'react';
 import { Stack, router } from "expo-router";
 
-import type { UserData } from '@/types/helpers';
-import { fetchUserData } from '@/utils/functions';
+import type { UserData } from '~/app/types/helpers';
+import { fetchUserData } from '~/app/utils/functions';
 
-import { NotLoggedInError } from '@/utils/errors';
+import { NotLoggedInError } from '~/app/utils/errors';
 
-import { useGlobalContext, type GlobalState } from "@/context/GlobalContext";
+import { useGlobalContext, type GlobalState } from "~/app/context/GlobalContext";
 import { useCustomToast } from '../hooks/useCustomToast';
 
-import LoadingScreen from './loading-screen';
 import MainContextProvider from "./context/MainContext";
+import RewardModalProvider from './context/RewardModalContext';
+import LoadingScreen from './loading-screen';
+import RewardModal from './components/reward-modal';
 
 const skeletonData = {
   id: '',
@@ -63,7 +65,10 @@ export default function MainLayout() {
     
     return (
         <MainContextProvider initialState={userData}>
+          <RewardModalProvider>
             <Stack />
+            <RewardModal />
+          </RewardModalProvider>
         </MainContextProvider>
     )
 }

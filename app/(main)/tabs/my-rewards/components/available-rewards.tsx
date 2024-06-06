@@ -6,9 +6,8 @@ import { FlashList } from '@shopify/flash-list';
 import { Large } from '~/components/ui/typography';
 import { Text } from '~/components/ui/text';
 
-import { useMainContext, type MainState } from '../../../context/MainContext';
-
-import RewardCard from './reward-card';
+import { useMainContext, type MainState } from '~/app/(main)/context/MainContext';
+import RewardCard from '~/app/(main)/components/reward-card';
 
 export default function AvailableRewards() {
     const { userData, storeDataMap } = useMainContext() as MainState;

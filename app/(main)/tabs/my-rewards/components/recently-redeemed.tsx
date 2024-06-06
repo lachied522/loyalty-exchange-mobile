@@ -33,18 +33,19 @@ export default function RecentlyRedeemed() {
                     showsVerticalScrollIndicator={false}
                     ItemSeparatorComponent={() => <View className='w-full border-0'/>}
                     renderItem={({ item, index }) => (
-                            <View className='w-full py-4'>
-                                <Link key={item.id} href={`../../store/${item.rewards.store_id}`} asChild>
+                            <View key={item.id} className='w-full py-4'>
+                                <Link href={`../../store/${item.rewards.store_id}`} asChild>
                                     <TouchableOpacity onPress={() => setMyRewardsIsOpen(false)}>
                                         <View className='w-full flex flex-row items-center justify-between'>
                                             <View className='flex-1'>
-                                                <Text>{formatDate(item.redeemed_at)}</Text>
                                                 <Text className='font-display-semibold'>
                                                     {storeDataMap[item.rewards.store_id]?.name || 'Store Name'}
                                                 </Text>
+
+                                                <Text>{formatDate(item.redeemed_at)}</Text>
                                             </View>
 
-                                            <Text className='flex-1 text-right'>
+                                            <Text className='flex-1 text-right font-display-medium'>
                                                 {item.rewards.title}
                                             </Text>
                                         </View>

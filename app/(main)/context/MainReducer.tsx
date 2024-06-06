@@ -1,7 +1,5 @@
 import type { MainState } from "./MainContext";
 
-import type { Reward } from "@/types/helpers";
-
 export type Action = {
     type: 'SET_DATA',
     payload: MainState['userData']

@@ -10,6 +10,7 @@ import {
   X,
   Info,
   Search,
+  Clock,
   ChevronLeft,
   Check,
   MapPin,
@@ -57,6 +58,7 @@ interopIcon(Loader);
 interopIcon(X);
 interopIcon(Info);
 interopIcon(Search);
+interopIcon(Clock);
 interopIcon(ChevronLeft);
 interopIcon(Check);
 interopIcon(MapPin);
@@ -76,6 +78,7 @@ export {
   X,
   Info,
   Search,
+  Clock,
   ChevronLeft,
   Check,
   MapPin,
